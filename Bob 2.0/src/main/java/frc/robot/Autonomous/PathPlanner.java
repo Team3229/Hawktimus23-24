@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.Autonomous;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -8,8 +8,8 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.DriveSystem.Swerve.SwerveKinematics;
-import frc.robot.DriveSystem.Swerve.SwerveOdometry;
+import frc.robot.Drivetrain.SwerveKinematics;
+import frc.robot.Drivetrain.SwerveOdometry;
 
 public class PathPlanner extends SubsystemBase {
 

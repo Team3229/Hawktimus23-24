@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.DriveSystem.Swerve.SwerveKinematics;
-import frc.robot.DriveSystem.Swerve.SwerveOdometry;
-import frc.robot.DriveSystem.Inputs.Controller;
-import frc.robot.DriveSystem.Inputs.Controller.ControllerType;
-import frc.robot.DriveSystem.Inputs.Controller.Controls;
+import frc.robot.Inputs.Controller;
+import frc.robot.Inputs.Controller.ControllerType;
+import frc.robot.Inputs.Controller.Controls;
+import frc.robot.Vision.Limelight;
+import frc.robot.Autonomous.PathPlanner;
+import frc.robot.Drivetrain.SwerveKinematics;
+import frc.robot.Drivetrain.SwerveOdometry;
 	
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -120,33 +122,7 @@ public class Robot extends TimedRobot {
 						(double) flightStick.get(Controls.FlightStick.AxisZ)
 					);
 
-		//logging (move to seperate method once confirmed works)
-
-		SmartDashboard.putNumber("setAngle", SwerveKinematics.backLeftModule.currentState.angle.getDegrees());
-		SmartDashboard.putNumber("measuredAngle", SwerveKinematics.backLeftModule.getPosition().getDegrees());
-		SmartDashboard.putNumber("setSpeed", SwerveKinematics.backLeftModule.getVelocity());
-		SmartDashboard.putNumber("measuredSpeed", SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond);
-
-		desiredSwerveState[0] = SwerveKinematics.frontLeftModule.currentState.angle.getDegrees();
-		desiredSwerveState[1] = SwerveKinematics.frontLeftModule.currentState.speedMetersPerSecond;
-		desiredSwerveState[2] = SwerveKinematics.frontRightModule.currentState.angle.getDegrees();
-		desiredSwerveState[3] = SwerveKinematics.frontRightModule.currentState.speedMetersPerSecond;
-		desiredSwerveState[4] = SwerveKinematics.backLeftModule.currentState.angle.getDegrees();
-		desiredSwerveState[5] = SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond;
-		desiredSwerveState[6] = SwerveKinematics.backRightModule.currentState.angle.getDegrees();
-		desiredSwerveState[7] = SwerveKinematics.backRightModule.currentState.speedMetersPerSecond;
-
-		measuredSwerveState[0] = SwerveKinematics.frontLeftModule.getPosition().getDegrees();
-		measuredSwerveState[1] = SwerveKinematics.frontLeftModule.getVelocity();
-		measuredSwerveState[2] = SwerveKinematics.frontRightModule.getPosition().getDegrees();
-		measuredSwerveState[3] = SwerveKinematics.frontRightModule.getVelocity();
-		measuredSwerveState[4] = SwerveKinematics.backLeftModule.getPosition().getDegrees();
-		measuredSwerveState[5] = SwerveKinematics.backLeftModule.getVelocity();
-		measuredSwerveState[6] = SwerveKinematics.backRightModule.getPosition().getDegrees();
-		measuredSwerveState[7] = SwerveKinematics.backRightModule.getVelocity();
-
-		SmartDashboard.putNumberArray("desiredSwerveState", desiredSwerveState);
-		SmartDashboard.putNumberArray("measuredSwerveState", measuredSwerveState);
+		logging();
 
 	}
 
@@ -173,4 +149,32 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically whilst in simulation. */
 	@Override
 	public void simulationPeriodic() {}
+
+	public void logging() {
+		SmartDashboard.putNumber("setAngle", SwerveKinematics.backLeftModule.currentState.angle.getDegrees());
+		SmartDashboard.putNumber("measuredAngle", SwerveKinematics.backLeftModule.getPosition().getDegrees());
+		SmartDashboard.putNumber("setSpeed", SwerveKinematics.backLeftModule.getVelocity());
+		SmartDashboard.putNumber("measuredSpeed", SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond);
+
+		desiredSwerveState[0] = SwerveKinematics.frontLeftModule.currentState.angle.getDegrees();
+		desiredSwerveState[1] = SwerveKinematics.frontLeftModule.currentState.speedMetersPerSecond;
+		desiredSwerveState[2] = SwerveKinematics.frontRightModule.currentState.angle.getDegrees();
+		desiredSwerveState[3] = SwerveKinematics.frontRightModule.currentState.speedMetersPerSecond;
+		desiredSwerveState[4] = SwerveKinematics.backLeftModule.currentState.angle.getDegrees();
+		desiredSwerveState[5] = SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond;
+		desiredSwerveState[6] = SwerveKinematics.backRightModule.currentState.angle.getDegrees();
+		desiredSwerveState[7] = SwerveKinematics.backRightModule.currentState.speedMetersPerSecond;
+
+		measuredSwerveState[0] = SwerveKinematics.frontLeftModule.getPosition().getDegrees();
+		measuredSwerveState[1] = SwerveKinematics.frontLeftModule.getVelocity();
+		measuredSwerveState[2] = SwerveKinematics.frontRightModule.getPosition().getDegrees();
+		measuredSwerveState[3] = SwerveKinematics.frontRightModule.getVelocity();
+		measuredSwerveState[4] = SwerveKinematics.backLeftModule.getPosition().getDegrees();
+		measuredSwerveState[5] = SwerveKinematics.backLeftModule.getVelocity();
+		measuredSwerveState[6] = SwerveKinematics.backRightModule.getPosition().getDegrees();
+		measuredSwerveState[7] = SwerveKinematics.backRightModule.getVelocity();
+
+		SmartDashboard.putNumberArray("desiredSwerveState", desiredSwerveState);
+		SmartDashboard.putNumberArray("measuredSwerveState", measuredSwerveState);
+	}
 }

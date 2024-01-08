@@ -1,4 +1,4 @@
-package frc.robot.DriveSystem.Swerve;
+package frc.robot.Drivetrain;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -8,8 +8,8 @@ public class SwerveOdometry {
     
     private static SwerveDrivePoseEstimator odometry;
 
-    public SwerveOdometry(Pose2d intitialPose) {
-        odometry = new SwerveDrivePoseEstimator(SwerveKinematics.kinematics, SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, intitialPose);
+    public void initialize(Pose2d initialPose) {
+        odometry = new SwerveDrivePoseEstimator(SwerveKinematics.kinematics, SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, initialPose);
     }
 
     public static Pose2d getPose() {

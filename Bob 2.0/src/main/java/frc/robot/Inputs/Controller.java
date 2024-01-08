@@ -1,4 +1,4 @@
-package frc.robot.DriveSystem.Inputs;
+package frc.robot.Inputs;
 
 import java.util.HashMap;
 import java.util.Map;
