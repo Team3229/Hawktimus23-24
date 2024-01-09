@@ -1,17 +1,16 @@
 package frc.robot.Drivetrain;
 
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderStatusFrame;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CANcoderConfigurator;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.pathplanner.lib.util.PIDConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
-import com.revrobotics.SparkMaxPIDController.AccelStrategy;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -31,17 +30,20 @@ public class SwerveModule {
     /**The SparkMax motor controller connected to the angular motor of a module. */
     private CANSparkMax angleMotor;
 
-    /**The CANCoder used to determine the absolute rotation of a swerve module. */
-    private CANCoder absoluteEncoder;
+    /**The CANcoder used to determine the absolute rotation of a swerve module. */
+    private CANcoder absoluteEncoder;
+
+    private CANcoderConfigurator absoluteEncoderConfigurator;
+    private CANcoderConfiguration absoluteEncoderConfig;
     /**The RelativeEncoder object used for the driving motor's PID controller. */
     private RelativeEncoder driveEncoder;
     /**The RelativeEncoder object used for the angular motor's PID controller. */
     private RelativeEncoder angleEncoder;
 
     /**The module's driving motor's PID controller. */
-    private SparkMaxPIDController drivePIDController;
+    private SparkPIDController drivePIDController;
     /**The module's angular motor's PID controller. */
-    private SparkMaxPIDController anglePIDController;
+    private SparkPIDController anglePIDController;
 
     /**An object used to represent the current state of the module. */
     public SwerveModuleState currentState;
@@ -52,11 +54,6 @@ public class SwerveModule {
 
     /**The location of the swerve module relative to robot center. (in meters) */
     public Translation2d location;
-
-    /**The maximum acceleration (in RPM/sec) of the module's angular movement. */
-    private static final double angleMaxAccel = 1;
-    /**The maximum velocity (in RPM) of the module's angular movement. */
-    private static final double angleMaxVel = 99999;
 
     /**The radius (in meters) of the module's wheel. */
     private static final double wheelRadius = 0.0508;
@@ -71,14 +68,16 @@ public class SwerveModule {
      * Create a swerve module object.
      * @param driveID (int) The CAN ID of the driving motor's Spark Max.
      * @param angleID (int) The CAN ID of the angular motor's Spark Max.
-     * @param encoderID (int) The CAN ID of the module's CANCoder.
+     * @param encoderID (int) The CAN ID of the module's CANcoder.
      */
     public SwerveModule(int driveID, int angleID, int encoderID, Translation2d moduleLocation) {
         
         this.driveMotor = new CANSparkMax(driveID, MotorType.kBrushless);
         this.angleMotor = new CANSparkMax(angleID, MotorType.kBrushless);
         
-        this.absoluteEncoder = new CANCoder(encoderID);
+        this.absoluteEncoder = new CANcoder(encoderID);
+        this.absoluteEncoderConfigurator = this.absoluteEncoder.getConfigurator();
+        this.absoluteEncoderConfig = new CANcoderConfiguration();
         this.driveEncoder = this.driveMotor.getEncoder();
         this.angleEncoder = this.angleMotor.getEncoder();
 
@@ -107,7 +106,7 @@ public class SwerveModule {
      * @return (Rotation2d) The position of the absolute encoder
      */
     public Rotation2d getAbsolutePosition() {
-        return Rotation2d.fromDegrees(MathUtil.inputModulus(this.absoluteEncoder.getAbsolutePosition(), 0, 360));
+        return Rotation2d.fromDegrees(MathUtil.inputModulus(this.absoluteEncoder.getAbsolutePosition().getValueAsDouble() * 360, 0, 360));
     }
 
     /**
@@ -156,7 +155,7 @@ public class SwerveModule {
 
     /**Configures the module's angular motor.*/
     public void configureAngleMotor() {
-        this.angleMotor.setInverted(false);
+        this.angleMotor.setInverted(true);
         this.angleMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
         this.angleMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
     }
@@ -166,19 +165,19 @@ public class SwerveModule {
      * @param encoderOffset (Rotation2d) The module's angular offset.
      */
     public void configureEncoders(Rotation2d encoderOffset) {
-        this.absoluteEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
-        this.absoluteEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 20);
-        this.absoluteEncoder.configSensorDirection(true);
+        this.absoluteEncoder.getAbsolutePosition().setUpdateFrequency(20);
         doOffset(encoderOffset);
 
         this.angleEncoder.setPositionConversionFactor(360/angleGearRatio);
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
 
         this.driveEncoder.setVelocityConversionFactor(((2*Math.PI*wheelRadius)/60)/driveGearRatio);
+        this.driveEncoder.setPosition(0);
     }
 
     public void doOffset(Rotation2d offset) {
-        this.absoluteEncoder.configMagnetOffset(offset.getDegrees());
+        absoluteEncoderConfig.MagnetSensor.MagnetOffset = offset.getDegrees()/360;
+        this.absoluteEncoderConfigurator.apply(absoluteEncoderConfig.MagnetSensor);
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
     }
 

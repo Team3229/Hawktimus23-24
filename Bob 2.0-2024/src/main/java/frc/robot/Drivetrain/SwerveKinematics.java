@@ -22,7 +22,7 @@ public class SwerveKinematics {
     // public static ModuleOffsets offsets;
 
     /**Array of the angle offsets for each swerve module. (Edit the values here to your needs)*/
-    private static Rotation2d[] moduleOffsets = {Rotation2d.fromDegrees(-27.59765625), Rotation2d.fromDegrees(-308.056640625), Rotation2d.fromDegrees(-102.919921875), Rotation2d.fromDegrees(-34.013671875)};
+    private static Rotation2d[] moduleOffsets = {Rotation2d.fromDegrees(-285.205078125), Rotation2d.fromDegrees(-350.947265625), Rotation2d.fromDegrees(-317.72460937500006), Rotation2d.fromDegrees(-272.021484375)};
 
     /**PID values for the swerve modules' angular motion. (Automatically populated with our constants we used for the 22-23 season) */
     private static final PIDConstants anglePID = new PIDConstants(0.009, 0, 0);
@@ -58,9 +58,9 @@ public class SwerveKinematics {
     //**The distance between the edge of the chassis to the center of a wheel in meters. */
     public static final double moduleEdgeOffset = 0.0508;
     /**The maximum speed (in meters/sec) that a singular swerve module can reach. */
-    private static final double maxModuleSpeed = 12;
+    private static final double maxModuleSpeed = 20;
     /**The maximum linear speed (in meters/sec) the chassis should move at. (Automatically set for SDS MK4 L1 modules) */
-    private static final double chassisSpeed = 3.6576;
+    private static final double chassisSpeed = 5;
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
     public static double maxChassisRotationSpeed = 5;
     /**Whether or not to run the drive motors in brake mode. */
@@ -72,10 +72,10 @@ public class SwerveKinematics {
     public static void initialize() {
 
         // Replace the CAN IDs to suit your needs.
-        frontLeftModule = new SwerveModule(2, 3, 1, new Translation2d(-(robotWidth/2), (robotWidth/2)));
-        frontRightModule = new SwerveModule(14, 15, 16, new Translation2d(-(robotWidth/2), -(robotWidth/2)));
-        backLeftModule = new SwerveModule(6, 7, 8, new Translation2d((robotWidth/2), (robotWidth/2)));
-        backRightModule = new SwerveModule(10, 11, 9, new Translation2d((robotWidth/2), -(robotWidth/2)));
+        frontLeftModule = new SwerveModule(2, 3, 1, new Translation2d((robotWidth/2), (robotWidth/2)));
+        frontRightModule = new SwerveModule(14, 15, 16, new Translation2d((robotWidth/2), -(robotWidth/2)));
+        backLeftModule = new SwerveModule(6, 7, 8, new Translation2d(-(robotWidth/2), (robotWidth/2)));
+        backRightModule = new SwerveModule(10, 11, 9, new Translation2d(-(robotWidth/2), -(robotWidth/2)));
 
         // offsets = new ModuleOffsets();
         // configOffsets(offsets.read());
@@ -121,12 +121,12 @@ public class SwerveKinematics {
         if (relativeMode) {
             robotRotation = Rotation2d.fromDegrees(180);
         } else {
-            robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(navxGyro.getYaw(), 0, 360));
+            robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(-navxGyro.getYaw(), 0, 360));
         }
 
         // Calculate reverse kinematics
-        chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(-Y*chassisSpeed, X*chassisSpeed, -Z*maxChassisRotationSpeed, robotRotation);
-        chassisRelativeState = ChassisSpeeds.fromFieldRelativeSpeeds(-Y*chassisSpeed, X*chassisSpeed, -Z*maxChassisRotationSpeed, Rotation2d.fromDegrees(180));
+        chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(Y*chassisSpeed, X*chassisSpeed, Z*maxChassisRotationSpeed, robotRotation);
+        chassisRelativeState = ChassisSpeeds.fromFieldRelativeSpeeds(Y*chassisSpeed, X*chassisSpeed, Z*maxChassisRotationSpeed, Rotation2d.fromDegrees(180));
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
@@ -200,13 +200,13 @@ public class SwerveKinematics {
     public static void configureMotors() {
 
         frontLeftModule.configureAngleMotor();
-        frontLeftModule.configureDriveMotor(brakeMode, true);
+        frontLeftModule.configureDriveMotor(brakeMode, false);
         frontRightModule.configureAngleMotor();
-        frontRightModule.configureDriveMotor(brakeMode, true);
+        frontRightModule.configureDriveMotor(brakeMode, false);
         backLeftModule.configureAngleMotor();
         backLeftModule.configureDriveMotor(brakeMode, false);
         backRightModule.configureAngleMotor();
-        backRightModule.configureDriveMotor(brakeMode, false);
+        backRightModule.configureDriveMotor(brakeMode, true);
     }
 
     /**Configures and resets the offsets of each module's encoders. */
