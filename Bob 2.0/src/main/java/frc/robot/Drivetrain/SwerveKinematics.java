@@ -18,10 +18,10 @@ public class SwerveKinematics {
     public static SwerveModule frontRightModule;
     public static SwerveModule backLeftModule;
     public static SwerveModule backRightModule;
-    public static ModuleOffsets offsets;
+    // public static ModuleOffsets offsets;
 
     /**Array of the angle offsets for each swerve module. (Edit the values here to your needs)*/
-    private static final Rotation2d[] moduleOffsets = {Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)};
+    private static Rotation2d[] moduleOffsets = {Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)};
 
     /**PID values for the swerve modules' angular motion. (Automatically populated with our constants we used for the 22-23 season) */
     private static final PIDConstants anglePID = new PIDConstants(0.01, 0.0001, 0);
@@ -76,8 +76,8 @@ public class SwerveKinematics {
         backLeftModule = new SwerveModule(6, 7, 8, new Translation2d(-(robotWidth/2) + moduleEdgeOffset, -(robotWidth/2) + moduleEdgeOffset));
         backRightModule = new SwerveModule(10, 11, 9, new Translation2d((robotWidth/2) - moduleEdgeOffset, -(robotWidth/2) + moduleEdgeOffset));
 
-        offsets = new ModuleOffsets();
-        configOffsets(offsets.read());
+        // offsets = new ModuleOffsets();
+        // configOffsets(offsets.read());
 
         navxGyro = new AHRS(SPI.Port.kMXP);
 
@@ -95,14 +95,15 @@ public class SwerveKinematics {
     }
 
     public static void configOffsets(){
-        Rotation2d[] offset = offsets.read();
-        frontLeftModule.configureEncoders(offset[0]);
-        frontRightModule.configureEncoders(offset[1]);
-        backLeftModule.configureEncoders(offset[2]);
-        backRightModule.configureEncoders(offset[3]);
+        // Rotation2d[] offset = offsets.read();
+        frontLeftModule.configureEncoders(moduleOffsets[0]);
+        frontRightModule.configureEncoders(moduleOffsets[1]);
+        backLeftModule.configureEncoders(moduleOffsets[2]);
+        backRightModule.configureEncoders(moduleOffsets[3]);
     }
 
     public static void configOffsets(Rotation2d[] offset){
+        moduleOffsets = offset;
         frontLeftModule.configureEncoders(offset[0]);
         frontRightModule.configureEncoders(offset[1]);
         backLeftModule.configureEncoders(offset[2]);

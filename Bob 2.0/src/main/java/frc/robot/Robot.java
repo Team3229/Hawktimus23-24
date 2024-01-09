@@ -95,13 +95,13 @@ public class Robot extends TimedRobot {
 		SwerveKinematics.configureMotors();
 		SwerveKinematics.configurePID();
 		if (SmartDashboard.getBoolean("resetAngleOffsets", false)) {
-			SwerveKinematics.configOffsets(SwerveKinematics.offsets
-			.calculateOffsets(
-				SwerveKinematics.frontLeftModule.getAbsolutePosition(), 
-				SwerveKinematics.frontRightModule.getAbsolutePosition(), 
-				SwerveKinematics.backLeftModule.getAbsolutePosition(), 
-				SwerveKinematics.backRightModule.getAbsolutePosition()
-			));			
+			// SwerveKinematics.configOffsets(SwerveKinematics.offsets
+			// .calculateOffsets(
+			// 	SwerveKinematics.frontLeftModule.getAbsolutePosition(), 
+			// 	SwerveKinematics.frontRightModule.getAbsolutePosition(), 
+			// 	SwerveKinematics.backLeftModule.getAbsolutePosition(), 
+			// 	SwerveKinematics.backRightModule.getAbsolutePosition()
+			// ));			
 			System.out.println("Reset Offsets");
 			SmartDashboard.putBoolean("resetAngleOffsets", false);
 		}
@@ -151,30 +151,30 @@ public class Robot extends TimedRobot {
 	public void simulationPeriodic() {}
 
 	public void logging() {
-		SmartDashboard.putNumber("setAngle", SwerveKinematics.backLeftModule.currentState.angle.getDegrees());
-		SmartDashboard.putNumber("measuredAngle", SwerveKinematics.backLeftModule.getPosition().getDegrees());
-		SmartDashboard.putNumber("setSpeed", SwerveKinematics.backLeftModule.getVelocity());
-		SmartDashboard.putNumber("measuredSpeed", SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond);
+		// SmartDashboard.putNumber("setAngle", SwerveKinematics.backLeftModule.currentState.angle.getDegrees());
+		// SmartDashboard.putNumber("measuredAngle", SwerveKinematics.backLeftModule.getPosition().getDegrees());
+		// SmartDashboard.putNumber("setSpeed", SwerveKinematics.backLeftModule.getVelocity());
+		// SmartDashboard.putNumber("measuredSpeed", SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond);
 
-		desiredSwerveState[0] = SwerveKinematics.frontLeftModule.currentState.angle.getDegrees();
-		desiredSwerveState[1] = SwerveKinematics.frontLeftModule.currentState.speedMetersPerSecond;
-		desiredSwerveState[2] = SwerveKinematics.frontRightModule.currentState.angle.getDegrees();
-		desiredSwerveState[3] = SwerveKinematics.frontRightModule.currentState.speedMetersPerSecond;
-		desiredSwerveState[4] = SwerveKinematics.backLeftModule.currentState.angle.getDegrees();
-		desiredSwerveState[5] = SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond;
-		desiredSwerveState[6] = SwerveKinematics.backRightModule.currentState.angle.getDegrees();
-		desiredSwerveState[7] = SwerveKinematics.backRightModule.currentState.speedMetersPerSecond;
+		// desiredSwerveState[0] = SwerveKinematics.frontLeftModule.currentState.angle.getDegrees();
+		// desiredSwerveState[1] = SwerveKinematics.frontLeftModule.currentState.speedMetersPerSecond;
+		// desiredSwerveState[2] = SwerveKinematics.frontRightModule.currentState.angle.getDegrees();
+		// desiredSwerveState[3] = SwerveKinematics.frontRightModule.currentState.speedMetersPerSecond;
+		// desiredSwerveState[4] = SwerveKinematics.backLeftModule.currentState.angle.getDegrees();
+		// desiredSwerveState[5] = SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond;
+		// desiredSwerveState[6] = SwerveKinematics.backRightModule.currentState.angle.getDegrees();
+		// desiredSwerveState[7] = SwerveKinematics.backRightModule.currentState.speedMetersPerSecond;
 
-		measuredSwerveState[0] = SwerveKinematics.frontLeftModule.getPosition().getDegrees();
-		measuredSwerveState[1] = SwerveKinematics.frontLeftModule.getVelocity();
-		measuredSwerveState[2] = SwerveKinematics.frontRightModule.getPosition().getDegrees();
-		measuredSwerveState[3] = SwerveKinematics.frontRightModule.getVelocity();
-		measuredSwerveState[4] = SwerveKinematics.backLeftModule.getPosition().getDegrees();
-		measuredSwerveState[5] = SwerveKinematics.backLeftModule.getVelocity();
-		measuredSwerveState[6] = SwerveKinematics.backRightModule.getPosition().getDegrees();
-		measuredSwerveState[7] = SwerveKinematics.backRightModule.getVelocity();
+		// measuredSwerveState[0] = SwerveKinematics.frontLeftModule.getPosition().getDegrees();
+		// measuredSwerveState[1] = SwerveKinematics.frontLeftModule.getVelocity();
+		// measuredSwerveState[2] = SwerveKinematics.frontRightModule.getPosition().getDegrees();
+		// measuredSwerveState[3] = SwerveKinematics.frontRightModule.getVelocity();
+		// measuredSwerveState[4] = SwerveKinematics.backLeftModule.getPosition().getDegrees();
+		// measuredSwerveState[5] = SwerveKinematics.backLeftModule.getVelocity();
+		// measuredSwerveState[6] = SwerveKinematics.backRightModule.getPosition().getDegrees();
+		// measuredSwerveState[7] = SwerveKinematics.backRightModule.getVelocity();
 
-		SmartDashboard.putNumberArray("desiredSwerveState", desiredSwerveState);
-		SmartDashboard.putNumberArray("measuredSwerveState", measuredSwerveState);
+		// SmartDashboard.putNumberArray("desiredSwerveState", desiredSwerveState);
+		// SmartDashboard.putNumberArray("measuredSwerveState", measuredSwerveState);
 	}
 }

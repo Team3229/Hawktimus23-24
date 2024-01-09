@@ -25,10 +25,10 @@ public class ModuleOffsets {
 
     /**
      * Calculates the offsets required to zero the angles, and writes it to the RIO
-     * @param fL (Rotation2d) The front left angle when rotated to be perpendicular to the forwards driving direction
-     * @param fR (Rotation2d) The front right angle when rotated to be perpendicular to the forwards driving direction
-     * @param bL (Rotation2d) The back left angle when rotated to be perpendicular to the forwards driving direction
-     * @param bR (Rotation2d) The back right angle when rotated to be perpendicular to the forwards driving direction
+     * @param fL (Rotation2d) The front left angle when rotated to be parallel to the forwards driving direction
+     * @param fR (Rotation2d) The front right angle when rotated to be parallel to the forwards driving direction
+     * @param bL (Rotation2d) The back left angle when rotated to be parallel to the forwards driving direction
+     * @param bR (Rotation2d) The back right angle when rotated to be parallel to the forwards driving direction
      * @return (double[]) The new offsets that were just written to the RIO
      */
     public Rotation2d[] calculateOffsets(Rotation2d fL, Rotation2d fR, Rotation2d bL, Rotation2d bR) {

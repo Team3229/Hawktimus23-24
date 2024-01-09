@@ -3,6 +3,7 @@ package frc.robot.Drivetrain;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.pathplanner.lib.path.RotationTarget;
 import com.pathplanner.lib.util.PIDConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -165,12 +166,16 @@ public class SwerveModule {
     public void configureEncoders(Rotation2d encoderOffset) {
         this.absoluteEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
         this.absoluteEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 20);
-        this.absoluteEncoder.configMagnetOffset(encoderOffset.getDegrees());
+        doOffset(encoderOffset);
 
         this.angleEncoder.setPositionConversionFactor(360/angleGearRatio);
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
 
         this.driveEncoder.setVelocityConversionFactor(((2*Math.PI*wheelRadius)/60)/driveGearRatio);
+    }
+
+    public void doOffset(Rotation2d offset) {
+        this.absoluteEncoder.configMagnetOffset(offset.getDegrees());
     }
 
     /**
