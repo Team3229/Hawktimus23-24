@@ -172,6 +172,8 @@ public class SwerveModule {
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
 
         this.driveEncoder.setVelocityConversionFactor(((2*Math.PI*wheelRadius)/60)/driveGearRatio);
+
+        this.driveEncoder.setPositionConversionFactor(((2*Math.PI*wheelRadius)/60)/driveGearRatio);
         this.driveEncoder.setPosition(0);
     }
 

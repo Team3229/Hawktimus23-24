@@ -7,7 +7,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,7 +53,7 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.initialize();
 
-		SwerveOdometry.initialize(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+		SwerveOdometry.initialize(limelight.getPose());
 
 	}
 
@@ -79,6 +78,8 @@ public class Robot extends TimedRobot {
 		NamedCommands.registerCommand("doshoot", new Command() {});
 
 		autoCommand = autoManager.getCommand("Example Path");
+
+		autoCommand.initialize();
 		
 	}
 
@@ -86,7 +87,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
-		SwerveOdometry.addSensorData(limelight.getPose().toPose2d());
+		SwerveOdometry.addSensorData(new Pose2d(limelight.getPose().getX(), limelight.getPose().getY(), SwerveKinematics.robotRotation));
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		autoCommand.execute();
@@ -124,14 +125,14 @@ public class Robot extends TimedRobot {
 						(double) flightStick.get(Controls.FlightStick.AxisZ)
 					);
 
+		SwerveOdometry.addSensorData(limelight.getPose());
+		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		SmartDashboard.putNumberArray("odometry", new double[] {
 			SwerveOdometry.getPose().getX(),
 			SwerveOdometry.getPose().getY(),
 			SwerveOdometry.getPose().getRotation().getDegrees()
 		});
-		
-		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		// logging();
 
