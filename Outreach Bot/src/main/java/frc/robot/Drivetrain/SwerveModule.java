@@ -156,6 +156,7 @@ public class SwerveModule {
     /**Configures the module's angular motor.*/
     public void configureAngleMotor() {
         this.angleMotor.setInverted(true);
+        this.angleMotor.setIdleMode(IdleMode.kCoast);
         this.angleMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
         this.angleMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
     }

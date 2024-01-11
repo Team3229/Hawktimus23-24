@@ -22,7 +22,12 @@ public class SwerveKinematics {
     // public static ModuleOffsets offsets;
 
     /**Array of the angle offsets for each swerve module. (Edit the values here to your needs)*/
-    private static Rotation2d[] moduleOffsets = {Rotation2d.fromDegrees(-285.205078125), Rotation2d.fromDegrees(-350.947265625), Rotation2d.fromDegrees(-317.72460937500006), Rotation2d.fromDegrees(-272.021484375)};
+    private static Rotation2d[] moduleOffsets = {
+        Rotation2d.fromDegrees(-206.54296875),
+        Rotation2d.fromDegrees(-303.046875),
+        Rotation2d.fromDegrees(-283.271484375),
+        Rotation2d.fromDegrees(-36.298828125)
+    };
 
     /**PID values for the swerve modules' angular motion. (Automatically populated with our constants we used for the 22-23 season) */
     private static final PIDConstants anglePID = new PIDConstants(0.009, 0, 0);
@@ -200,7 +205,7 @@ public class SwerveKinematics {
     public static void configureMotors() {
 
         frontLeftModule.configureAngleMotor();
-        frontLeftModule.configureDriveMotor(brakeMode, false);
+        frontLeftModule.configureDriveMotor(brakeMode, true);
         frontRightModule.configureAngleMotor();
         frontRightModule.configureDriveMotor(brakeMode, false);
         backLeftModule.configureAngleMotor();
