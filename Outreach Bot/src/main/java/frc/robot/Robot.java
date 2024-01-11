@@ -125,7 +125,8 @@ public class Robot extends TimedRobot {
 						(double) flightStick.get(Controls.FlightStick.AxisZ)
 					);
 
-		SwerveOdometry.addSensorData(limelight.getPose());
+		// Uncomment when limelight added
+		// SwerveOdometry.addSensorData(limelight.getPose());
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		SmartDashboard.putNumberArray("odometry", new double[] {

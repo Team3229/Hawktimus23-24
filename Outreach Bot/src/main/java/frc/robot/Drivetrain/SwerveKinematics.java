@@ -63,9 +63,9 @@ public class SwerveKinematics {
     //**The distance between the edge of the chassis to the center of a wheel in meters. */
     public static final double moduleEdgeOffset = 0.0508;
     /**The maximum speed (in meters/sec) that a singular swerve module can reach. */
-    private static final double maxModuleSpeed = 20;
+    private static final double maxModuleSpeed = 10;
     /**The maximum linear speed (in meters/sec) the chassis should move at. (Automatically set for SDS MK4 L1 modules) */
-    private static final double chassisSpeed = 5;
+    private static final double chassisSpeed = 10;
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
     public static double maxChassisRotationSpeed = 5;
     /**Whether or not to run the drive motors in brake mode. */
