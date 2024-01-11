@@ -6,7 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -74,8 +74,10 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 
 		SwerveKinematics.navxGyro.zeroYaw();
+		SwerveKinematics.chassisRelativeState = new ChassisSpeeds();
+        SwerveKinematics.chassisState = new ChassisSpeeds();
 
-		NamedCommands.registerCommand("doshoot", new Command() {});
+		// NamedCommands.registerCommand("doshoot", new Command() {});
 
 		autoCommand = autoManager.getCommand("Example Path");
 
@@ -87,10 +89,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
-		SwerveOdometry.addSensorData(new Pose2d(limelight.getPose().getX(), limelight.getPose().getY(), SwerveKinematics.robotRotation));
+		// SwerveOdometry.addSensorData(limelight.getPose());
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		autoCommand.execute();
+
+		
+
 	}
 
 	/** This function is called once when teleop is enabled. */
@@ -108,6 +113,10 @@ public class Robot extends TimedRobot {
 		SwerveKinematics.configurePID();
 
 		SwerveKinematics.configOffsets();
+
+		SwerveKinematics.chassisRelativeState = new ChassisSpeeds();
+        SwerveKinematics.chassisState = new ChassisSpeeds();
+
 	}
 
 	/** This function is called periodically during operator control. */

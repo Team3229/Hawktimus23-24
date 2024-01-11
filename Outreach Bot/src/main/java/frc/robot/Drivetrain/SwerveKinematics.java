@@ -49,9 +49,9 @@ public class SwerveKinematics {
     /**An object used to calculate module velocities from overall chassis movement. */
     public static SwerveDriveKinematics kinematics;
     /**The current state of chassis velocity. */
-    private static ChassisSpeeds chassisState;
+    public static ChassisSpeeds chassisState;
     /**The current state of chassis velocity. relative to bot */
-    private static ChassisSpeeds chassisRelativeState;
+    public static ChassisSpeeds chassisRelativeState;
     /**The current set module states. */
     private static SwerveModuleState[] moduleStates;
     /**The current set module positions. */
@@ -97,6 +97,9 @@ public class SwerveKinematics {
         modulePositions[1] = new SwerveModulePosition();
         modulePositions[2] = new SwerveModulePosition();
         modulePositions[3] = new SwerveModulePosition();
+
+        chassisRelativeState = new ChassisSpeeds();
+        chassisState = new ChassisSpeeds();
     }
 
     public static void configOffsets(){
@@ -163,6 +166,8 @@ public class SwerveKinematics {
      * @param speeds (ChassisSpeeds)
      */
     public static void drive(ChassisSpeeds speeds) {
+
+        robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(-navxGyro.getYaw(), 0, 360));
 
         // Calculate reverse kinematics
         chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotRotation);
