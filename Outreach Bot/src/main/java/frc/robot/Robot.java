@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,10 +71,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		SwerveKinematics.navxGyro.zeroYaw();
-		SwerveKinematics.chassisRelativeState = new ChassisSpeeds();
-        SwerveKinematics.chassisState = new ChassisSpeeds();
-
 		// NamedCommands.registerCommand("doshoot", new Command() {});
 
 		autoCommand = autoManager.getCommand("Example Path");
@@ -89,12 +83,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
-		// SwerveOdometry.addSensorData(limelight.getPose());
+		SwerveOdometry.addSensorData(limelight.getPose(), limelight.isValid());
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		autoCommand.execute();
-
-		
 
 	}
 
@@ -114,7 +106,6 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.configOffsets();
 
-		SwerveKinematics.chassisRelativeState = new ChassisSpeeds();
         SwerveKinematics.chassisState = new ChassisSpeeds();
 
 	}

@@ -22,8 +22,10 @@ public class SwerveOdometry {
         odometry.resetPosition(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, position);
     }
 
-    public static void addSensorData(Pose2d position) {
-        odometry.addVisionMeasurement(position, Timer.getFPGATimestamp());
+    public static void addSensorData(Pose2d position, boolean isValidData) {
+        if (isValidData) {
+            odometry.addVisionMeasurement(position, Timer.getFPGATimestamp());
+        }
     }
 
     public static void update(Rotation2d rotation, SwerveModulePosition[] swervePositions) {

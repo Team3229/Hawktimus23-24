@@ -50,8 +50,6 @@ public class SwerveKinematics {
     public static SwerveDriveKinematics kinematics;
     /**The current state of chassis velocity. */
     public static ChassisSpeeds chassisState;
-    /**The current state of chassis velocity. relative to bot */
-    public static ChassisSpeeds chassisRelativeState;
     /**The current set module states. */
     private static SwerveModuleState[] moduleStates;
     /**The current set module positions. */
@@ -98,7 +96,6 @@ public class SwerveKinematics {
         modulePositions[2] = new SwerveModulePosition();
         modulePositions[3] = new SwerveModulePosition();
 
-        chassisRelativeState = new ChassisSpeeds();
         chassisState = new ChassisSpeeds();
     }
 
@@ -134,7 +131,6 @@ public class SwerveKinematics {
 
         // Calculate reverse kinematics
         chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(Y*chassisSpeed, X*chassisSpeed, Z*maxChassisRotationSpeed, robotRotation);
-        chassisRelativeState = ChassisSpeeds.fromFieldRelativeSpeeds(Y*chassisSpeed, X*chassisSpeed, Z*maxChassisRotationSpeed, Rotation2d.fromDegrees(180));
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
@@ -169,9 +165,7 @@ public class SwerveKinematics {
 
         robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(-navxGyro.getYaw(), 0, 360));
 
-        // Calculate reverse kinematics
-        chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotRotation);
-        chassisRelativeState = speeds;
+        chassisState = speeds;
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
@@ -199,7 +193,7 @@ public class SwerveKinematics {
     }
 
     public static ChassisSpeeds getSpeeds() {
-        return chassisRelativeState;
+        return chassisState;
     }
 
     public static void zeroGyro() {

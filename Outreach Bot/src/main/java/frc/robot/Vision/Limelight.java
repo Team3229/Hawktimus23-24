@@ -25,4 +25,8 @@ public class Limelight {
         return new Pose2d(array[0], array[1], Rotation2d.fromDegrees(MathUtil.inputModulus(array[5], 0, 360)));
     }
 
+    public boolean isValid() {
+        return limelight.getEntry("tv").getInteger(0) == 1;
+    }
+
 }
