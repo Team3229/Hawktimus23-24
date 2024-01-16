@@ -13,6 +13,7 @@ import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
 import frc.robot.Vision.Limelight;
 import frc.robot.Autonomous.PathPlanner;
+import frc.robot.Drivetrain.ModuleOffsets;
 import frc.robot.Drivetrain.SwerveKinematics;
 import frc.robot.Drivetrain.SwerveOdometry;
 	
@@ -42,6 +43,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
+		ModuleOffsets.init();
+
 		flightStick = new Controller(ControllerType.FlightStick, 0);
 		xboxController = new Controller(ControllerType.XboxController, 1);
 
@@ -51,6 +54,10 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.initialize();
 
+		if(SmartDashboard.getBoolean("resetAngleOffsets", false)){
+			ModuleOffsets.calculateOffsets(SwerveKinematics.frontLeftModule.getAbsolutePosition(), SwerveKinematics.frontRightModule.getAbsolutePosition(), SwerveKinematics.backLeftModule.getAbsolutePosition(), SwerveKinematics.backRightModule.getAbsolutePosition());
+			SwerveKinematics.configOffsets(ModuleOffsets.read());
+		}
 	}
 
 	/**
@@ -96,6 +103,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 
+		SwerveOdometry.initialize(limelight.getPose());
+
 		// Remove for Comp
 		SwerveKinematics.navxGyro.zeroYaw();
 
@@ -106,7 +115,8 @@ public class Robot extends TimedRobot {
 		SwerveKinematics.configureMotors();
 		SwerveKinematics.configurePID();
 
-		SwerveKinematics.configOffsets();
+		// SwerveKinematics.configOffsets();
+		SwerveKinematics.configOffsets(ModuleOffsets.read());
 
         SwerveKinematics.chassisState = new ChassisSpeeds();
 

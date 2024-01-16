@@ -21,12 +21,12 @@ public class SwerveKinematics {
     public static SwerveModule backRightModule;
     // public static ModuleOffsets offsets;
 
-    /**Array of the angle offsets for each swerve module. (Edit the values here to your needs)*/
+    // /**Array of the angle offsets for each swerve module. (Edit the values here to your needs)*/
     private static Rotation2d[] moduleOffsets = {
-        Rotation2d.fromDegrees(-206.54296875),
-        Rotation2d.fromDegrees(-303.046875),
-        Rotation2d.fromDegrees(-283.271484375),
-        Rotation2d.fromDegrees(-36.298828125)
+        Rotation2d.fromDegrees(-206.54296875-2.637),//fl
+        Rotation2d.fromDegrees(-303.046875-2.988),//fr
+        Rotation2d.fromDegrees(-283.271484375-1.318),//bl
+        Rotation2d.fromDegrees(-36.298828125+ 2.812)//br
     };
 
     /**PID values for the swerve modules' angular motion. (Automatically populated with our constants we used for the 22-23 season) */
@@ -59,7 +59,7 @@ public class SwerveKinematics {
 
     /**The width of the robot chassis in meters. */
     public static final double robotWidth = 0.6858;
-    //TODO: Measure and set this constant
+    //TOD0: Measure and set this constant
     //**The distance between the edge of the chassis to the center of a wheel in meters. */
     public static final double moduleEdgeOffset = 0.0508;
     /**The maximum speed (in meters/sec) that a singular swerve module can reach. */
@@ -82,8 +82,7 @@ public class SwerveKinematics {
         backLeftModule = new SwerveModule(6, 7, 8, new Translation2d(-(robotWidth/2), (robotWidth/2)));
         backRightModule = new SwerveModule(10, 11, 9, new Translation2d(-(robotWidth/2), -(robotWidth/2)));
 
-        // offsets = new ModuleOffsets();
-        // configOffsets(offsets.read());
+        configOffsets(ModuleOffsets.read());
 
         navxGyro = new AHRS(SPI.Port.kMXP);
 
@@ -108,7 +107,6 @@ public class SwerveKinematics {
     }
 
     public static void configOffsets(Rotation2d[] offset){
-        moduleOffsets = offset;
         frontLeftModule.doOffset(offset[0]);
         frontRightModule.doOffset(offset[1]);
         backLeftModule.doOffset(offset[2]);
@@ -216,10 +214,11 @@ public class SwerveKinematics {
 
     /**Configures and resets the offsets of each module's encoders. */
     public static void configureEncoders() {
-        frontLeftModule.configureEncoders(moduleOffsets[0]);
-        frontRightModule.configureEncoders(moduleOffsets[1]);
-        backLeftModule.configureEncoders(moduleOffsets[2]);
-        backRightModule.configureEncoders(moduleOffsets[3]);
+        Rotation2d[] offsets = ModuleOffsets.read();
+        frontLeftModule.configureEncoders(offsets[0]);
+        frontRightModule.configureEncoders(offsets[1]);
+        backLeftModule.configureEncoders(offsets[2]);
+        backRightModule.configureEncoders(offsets[3]);
     }
 
     /**Configures each module's PID Controllers with the provided constants at the top of this class. */

@@ -131,7 +131,7 @@ public class SwerveModule {
     }
 
     public void updateModulePosition() {
-        this.currentPosition = new SwerveModulePosition(driveEncoder.getPosition(), getPosition());
+        this.currentPosition = new SwerveModulePosition(-driveEncoder.getPosition(), getPosition());
     }
 
     /**
@@ -174,7 +174,7 @@ public class SwerveModule {
 
         this.driveEncoder.setVelocityConversionFactor(((2*Math.PI*wheelRadius)/60)/driveGearRatio);
 
-        this.driveEncoder.setPositionConversionFactor(-((2*Math.PI*wheelRadius))/driveGearRatio);
+        this.driveEncoder.setPositionConversionFactor(((2*Math.PI*wheelRadius))/driveGearRatio);
         this.driveEncoder.setPosition(0);
     }
 
