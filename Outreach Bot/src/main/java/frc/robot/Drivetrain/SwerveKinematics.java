@@ -40,6 +40,8 @@ public class SwerveKinematics {
     public static AHRS navxGyro;
     /**The current rotation of the chassis. */
     public static Rotation2d robotRotation = Rotation2d.fromDegrees(0);
+
+    public static Rotation2d gyroOffset = Rotation2d.fromDegrees(0);
     /**
      * Robot relative mode uses the current rotation of the robot as forward, instead of the default
      * field-relative mode. This is useful for picking up objects or lining up with a game piece.
@@ -126,7 +128,7 @@ public class SwerveKinematics {
         if (relativeMode) {
             robotRotation = Rotation2d.fromDegrees(180);
         } else {
-            robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(-navxGyro.getYaw(), 0, 360));
+            robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(gyroOffset.getDegrees()-navxGyro.getYaw(), 0, 360));
         }
 
         // Calculate reverse kinematics
@@ -163,7 +165,7 @@ public class SwerveKinematics {
      */
     public static void drive(ChassisSpeeds speeds) {
 
-        robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(-navxGyro.getYaw(), 0, 360));
+        robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(gyroOffset.getDegrees()-navxGyro.getYaw(), 0, 360));
 
         chassisState = speeds;
         
@@ -228,6 +230,11 @@ public class SwerveKinematics {
         frontRightModule.configurePID(anglePID, drivePID);
         backLeftModule.configurePID(anglePID, drivePID);
         backRightModule.configurePID(anglePID, drivePID);
+    }
+
+    public static void setGyroOffset(Rotation2d offset) {
+        gyroOffset = offset;
+        robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(gyroOffset.getDegrees()-navxGyro.getYaw(), 0, 360));
     }
 
     /**Stops every module's motors. (should not be called during driving; the motors should continue to their setpoints) */

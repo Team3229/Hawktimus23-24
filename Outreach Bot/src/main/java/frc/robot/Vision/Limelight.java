@@ -25,6 +25,10 @@ public class Limelight {
         return new Pose2d(array[0], array[1], Rotation2d.fromDegrees(MathUtil.inputModulus(array[5], 0, 360)));
     }
 
+    public double getLatency() {
+        return (limelight.getEntry("tl").getDouble(0) / 1000) + (limelight.getEntry("cl").getDouble(0) / 1000);
+    }
+
     public boolean isValid() {
         return limelight.getEntry("tv").getInteger(0) == 1;
     }

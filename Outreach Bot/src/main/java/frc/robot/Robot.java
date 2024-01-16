@@ -51,8 +51,6 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.initialize();
 
-		SwerveOdometry.initialize(limelight.getPose());
-
 	}
 
 	/**
@@ -71,6 +69,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
+		SwerveKinematics.setGyroOffset(limelight.getPose().getRotation());
+
+		SwerveOdometry.initialize(limelight.getPose());
+
 		// NamedCommands.registerCommand("doshoot", new Command() {});
 
 		autoCommand = autoManager.getCommand("Example Path");
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
-		SwerveOdometry.addSensorData(limelight.getPose(), limelight.isValid());
+		SwerveOdometry.addSensorData(limelight.getPose(), limelight.getLatency(), limelight.isValid());
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		autoCommand.execute();

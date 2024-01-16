@@ -22,9 +22,9 @@ public class SwerveOdometry {
         odometry.resetPosition(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, position);
     }
 
-    public static void addSensorData(Pose2d position, boolean isValidData) {
+    public static void addSensorData(Pose2d position, double pipelineLatency, boolean isValidData) {
         if (isValidData) {
-            odometry.addVisionMeasurement(position, Timer.getFPGATimestamp());
+            odometry.addVisionMeasurement(position, Timer.getFPGATimestamp() - pipelineLatency);
         }
     }
 
