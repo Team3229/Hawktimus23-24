@@ -54,10 +54,6 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.initialize();
 
-		if(SmartDashboard.getBoolean("resetAngleOffsets", false)){
-			ModuleOffsets.calculateOffsets(SwerveKinematics.frontLeftModule.getAbsolutePosition(), SwerveKinematics.frontRightModule.getAbsolutePosition(), SwerveKinematics.backLeftModule.getAbsolutePosition(), SwerveKinematics.backRightModule.getAbsolutePosition());
-			SwerveKinematics.configOffsets(ModuleOffsets.read());
-		}
 	}
 
 	/**
@@ -115,7 +111,11 @@ public class Robot extends TimedRobot {
 		SwerveKinematics.configureMotors();
 		SwerveKinematics.configurePID();
 
-		// SwerveKinematics.configOffsets();
+		if(SmartDashboard.getBoolean("resetAngleOffsets", false)){
+			ModuleOffsets.calculateOffsets(SwerveKinematics.frontLeftModule.getAbsolutePosition(), SwerveKinematics.frontRightModule.getAbsolutePosition(), SwerveKinematics.backLeftModule.getAbsolutePosition(), SwerveKinematics.backRightModule.getAbsolutePosition());
+			SwerveKinematics.configOffsets(ModuleOffsets.read());
+		}
+
 		SwerveKinematics.configOffsets(ModuleOffsets.read());
 
         SwerveKinematics.chassisState = new ChassisSpeeds();
@@ -153,7 +153,9 @@ public class Robot extends TimedRobot {
 
 	/** This function is called once when the robot is disabled. */
 	@Override
-	public void disabledInit() {}
+	public void disabledInit() {
+		SwerveKinematics.stop();
+	}
 
 	/** This function is called periodically when disabled. */
 	@Override

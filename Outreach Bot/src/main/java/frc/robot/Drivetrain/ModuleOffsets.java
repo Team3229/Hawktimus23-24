@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -37,10 +38,10 @@ public class ModuleOffsets {
         // if the values passed, which are the current values, and should be zero.
         Rotation2d[] currentValues = read();
         Rotation2d[] newOffsets = {
-            currentValues[0].plus(Rotation2d.fromDegrees((fL.getDegrees() < 90 ? -fL.getDegrees(): fL.getDegrees() > 90 && fL.getDegrees() < 270 ? 180 - fL.getDegrees():360 - fL.getDegrees()))),
-            currentValues[1].plus(Rotation2d.fromDegrees((fR.getDegrees() < 90 ? -fR.getDegrees(): fR.getDegrees() > 90 && fR.getDegrees() < 270 ? 180 - fR.getDegrees():360 - fR.getDegrees()))),
-            currentValues[2].plus(Rotation2d.fromDegrees((bL.getDegrees() < 90 ? -bL.getDegrees(): bL.getDegrees() > 90 && bL.getDegrees() < 270 ? 180 - bL.getDegrees():360 - bL.getDegrees()))),
-            currentValues[3].plus(Rotation2d.fromDegrees((bR.getDegrees() < 90 ? -bR.getDegrees(): bR.getDegrees() > 90 && bR.getDegrees() < 270 ? 180 - bR.getDegrees():360 - bR.getDegrees())))
+            Rotation2d.fromDegrees(MathUtil.inputModulus(fL.getDegrees() + currentValues[0].getDegrees(), 0, 360)),
+            Rotation2d.fromDegrees(MathUtil.inputModulus(fR.getDegrees() + currentValues[1].getDegrees(), 0, 360)),
+            Rotation2d.fromDegrees(MathUtil.inputModulus(bL.getDegrees() + currentValues[2].getDegrees(), 0, 360)),
+            Rotation2d.fromDegrees(MathUtil.inputModulus(bR.getDegrees() + currentValues[3].getDegrees(), 0, 360))
         };
         writeOffsets(newOffsets);
         return newOffsets;

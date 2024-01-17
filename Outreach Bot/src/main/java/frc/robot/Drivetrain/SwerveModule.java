@@ -26,12 +26,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 public class SwerveModule {
 
     /**The SparkMax motor controller connected to the driving motor of a module. */
-    private CANSparkMax driveMotor;
+    public CANSparkMax driveMotor;
     /**The SparkMax motor controller connected to the angular motor of a module. */
-    private CANSparkMax angleMotor;
+    public CANSparkMax angleMotor;
 
     /**The CANcoder used to determine the absolute rotation of a swerve module. */
-    private CANcoder absoluteEncoder;
+    public CANcoder absoluteEncoder;
 
     private CANcoderConfigurator absoluteEncoderConfigurator;
     private CANcoderConfiguration absoluteEncoderConfig;
@@ -41,9 +41,9 @@ public class SwerveModule {
     private RelativeEncoder angleEncoder;
 
     /**The module's driving motor's PID controller. */
-    private SparkPIDController drivePIDController;
+    public SparkPIDController drivePIDController;
     /**The module's angular motor's PID controller. */
-    private SparkPIDController anglePIDController;
+    public SparkPIDController anglePIDController;
 
     /**An object used to represent the current state of the module. */
     public SwerveModuleState currentState;
@@ -209,6 +209,9 @@ public class SwerveModule {
     public void stopMotors() {
         this.angleMotor.stopMotor();
         this.driveMotor.stopMotor();
+
+        this.anglePIDController.setReference(0, ControlType.kDutyCycle);
+        this.drivePIDController.setReference(0, ControlType.kDutyCycle);
     }
 
 }
