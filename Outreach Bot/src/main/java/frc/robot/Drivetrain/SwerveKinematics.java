@@ -19,15 +19,6 @@ public class SwerveKinematics {
     public static SwerveModule frontRightModule;
     public static SwerveModule backLeftModule;
     public static SwerveModule backRightModule;
-    // public static ModuleOffsets offsets;
-
-    /**Array of the angle offsets for each swerve module. (Edit the values here to your needs)*/
-    private static Rotation2d[] moduleOffsets = {
-        Rotation2d.fromDegrees(-206.54296875-2.637),//fl
-        Rotation2d.fromDegrees(-303.046875-2.988),//fr
-        Rotation2d.fromDegrees(-283.271484375-1.318),//bl
-        Rotation2d.fromDegrees(-283.271484375-1.318)//br
-    };
 
     /**PID values for the swerve modules' angular motion. (Automatically populated with our constants we used for the 22-23 season) */
     private static final PIDConstants anglePID = new PIDConstants(0.009, 0, 0);
@@ -69,7 +60,7 @@ public class SwerveKinematics {
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
     public static double maxChassisRotationSpeed = 5;
     /**Whether or not to run the drive motors in brake mode. */
-    private static final boolean brakeMode = false;
+    private static final boolean brakeMode = true;
     
     public SwerveKinematics() {}
 
@@ -83,7 +74,6 @@ public class SwerveKinematics {
         backRightModule = new SwerveModule(10, 11, 9, new Translation2d(-(robotWidth/2), -(robotWidth/2)));
 
         configOffsets(ModuleOffsets.read());
-        // configOffsets();
 
         navxGyro = new AHRS(SPI.Port.kMXP);
 
@@ -101,16 +91,7 @@ public class SwerveKinematics {
         chassisState = new ChassisSpeeds();
     }
 
-    public static void configOffsets(){
-        // Rotation2d[] offset = offsets.read();
-        frontLeftModule.doOffset(moduleOffsets[0]);
-        frontRightModule.doOffset(moduleOffsets[1]);
-        backLeftModule.doOffset(moduleOffsets[2]);
-        backRightModule.doOffset(moduleOffsets[3]);
-    }
-
     public static void configOffsets(Rotation2d[] offset){
-        moduleOffsets = offset;
         frontLeftModule.doOffset(offset[0]);
         frontRightModule.doOffset(offset[1]);
         backLeftModule.doOffset(offset[2]);
@@ -212,15 +193,15 @@ public class SwerveKinematics {
         backLeftModule.configureAngleMotor();
         backLeftModule.configureDriveMotor(brakeMode, false);
         backRightModule.configureAngleMotor();
-        backRightModule.configureDriveMotor(brakeMode, true);
+        backRightModule.configureDriveMotor(brakeMode, false);
     }
 
     /**Configures and resets the offsets of each module's encoders. */
     public static void configureEncoders() {
-        frontLeftModule.configureEncoders(moduleOffsets[0]);
-        frontRightModule.configureEncoders(moduleOffsets[1]);
-        backLeftModule.configureEncoders(moduleOffsets[2]);
-        backRightModule.configureEncoders(moduleOffsets[3]);
+        frontLeftModule.configureEncoders();
+        frontRightModule.configureEncoders();
+        backLeftModule.configureEncoders();
+        backRightModule.configureEncoders();
     }
 
     /**Configures each module's PID Controllers with the provided constants at the top of this class. */

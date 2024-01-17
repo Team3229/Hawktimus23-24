@@ -165,9 +165,8 @@ public class SwerveModule {
      * Configures all of the module's encoders
      * @param encoderOffset (Rotation2d) The module's angular offset.
      */
-    public void configureEncoders(Rotation2d encoderOffset) {
-        this.absoluteEncoder.getAbsolutePosition().setUpdateFrequency(20);
-        doOffset(encoderOffset);
+    public void configureEncoders() {
+        this.absoluteEncoder.getAbsolutePosition().setUpdateFrequency(5);
 
         this.angleEncoder.setPositionConversionFactor(360/angleGearRatio);
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
@@ -182,6 +181,10 @@ public class SwerveModule {
         absoluteEncoderConfig.MagnetSensor.MagnetOffset = offset.getDegrees()/360;
         this.absoluteEncoderConfigurator.apply(absoluteEncoderConfig.MagnetSensor);
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
+        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
+        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
+        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
+        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
     }
 
     /**
@@ -203,6 +206,7 @@ public class SwerveModule {
         this.drivePIDController.setP(drivePID.kP);
         this.drivePIDController.setI(drivePID.kI);
         this.drivePIDController.setD(drivePID.kD);
+        
     }
 
     /**Stops the module's motors. (should not be called during driving; the motors should continue to their setpoints) */
