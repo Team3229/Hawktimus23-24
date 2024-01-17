@@ -60,44 +60,44 @@ public class CaptureReplay {
 	//When removing, make sure to switch from using OLDbasePath to basePath, and ssh into the rio to ensure the folder exists.
 	//These are only here for backwards compatitability and do not use the new multi stage system
 	//No time to remake them sadly, so they stay till 2023-2024 season :(
-	public final SendableChooser <String> SparkyAutos = new SendableChooser<>();
+	public static final SendableChooser <String> SparkyAutos = new SendableChooser<>();
 	static final String OLDbasePath = "/home/lvuser/";
-	public final String basicLeft = "bbl";
-	public final String basicMid = "bbm";
-	public final String basicRight = "bbr";
+	public static final String basicLeft = "bbl";
+	public static final String basicMid = "bbm";
+	public static final String basicRight = "bbr";
 
 	/** No selection option, add to all dropdowns. */
 	public static final String noSelection = "N/A";
 	
 	/** If Capture replay has finished all autos. */
-	public boolean autoFinished = false;
+	public static boolean autoFinished = false;
 
-	private File cmdFile;
-	private FileInputStream fReader;
-	private ObjectInputStream cmdRead;
-	private FileOutputStream fWriter;
-	private ObjectOutputStream cmdWrite;
+	private static File cmdFile;
+	private static FileInputStream fReader;
+	private static ObjectInputStream cmdRead;
+	private static FileOutputStream fWriter;
+	private static ObjectOutputStream cmdWrite;
 
 	/** Have inputs started during recording */
-	public boolean inputsStarted = false;
+	public static boolean inputsStarted = false;
 	/** Number of cached null frames during recording */
-	public int cachedNulls = 0;
+	public static int cachedNulls = 0;
 
 	/** The current step in the auto sequence */
-	private int autoStep = 1;
+	private static int autoStep = 1;
 	/** The inputs instance */
-	private Controller[] controllers = {new Controller(ControllerType.FlightStick, 0)};
+	private static Controller[] controllers = {new Controller(ControllerType.FlightStick, 0)};
 
 	public CaptureReplay() {}
 
 	/**Reads the dropdowns and sets up selectedAuto for playback/recording autos. */
-	private void readDropdowns() {
+	private static void readDropdowns() {
 		//Change this so it sets up selectedAuto for all of the autos
 		//2022-2023 Charged Up Sparky auto options read
 		selectedAuto[0] = SparkyAutos.getSelected();
 	}
 	/** Sets up the dropdowns and their options, Call this on robotInit */
-	public void setupDropdowns() {
+	public static void setupDropdowns() {
 		// EXAMPLE IMPLEMENTATION OF DROPDOWNS, DO NOT REMOVE
 		// DummyDropdown.setDefaultOption("NO SELECTION", noSelection);
 		// DummyDropdown.addOption("Dummy Option", DummyOption);
@@ -114,7 +114,7 @@ public class CaptureReplay {
 	/**
 	 * Sets up capture replay for the playback of an auto sequence
 	 */
-	public void setupPlayback() {
+	public static void setupPlayback() {
 		readDropdowns();
 		switch(autoStep) {
 			//Add more cases between 1 and 2, incrementing by one for each stage for autos, changing the paths as necessary.
@@ -140,7 +140,7 @@ public class CaptureReplay {
 	 * Reads the next frame from the selected auto file and handles continuing the sequence if we reach the end of the currently selected file
 	 * @return (Inputs) The inputs instance of the next frame
 	 */
-	public Controller[] readFile() {
+	public static Controller[] readFile() {
 		// System.out.println("Reading auto file...");
 		for(int i = 0; i < controllers.length; i++) {
 			controllers[i].nullControls();
@@ -163,7 +163,7 @@ public class CaptureReplay {
 	 * Sets up capture replay for recording a new file or rewriting an old one
 	 * @param inputFileName (String[]) An array of the file identifiers, selected from the dropdowns
 	 */
-	public void setupRecording() {
+	public static void setupRecording() {
 		readDropdowns();
 		inputsStarted = false;
 		//EXPLANATION COMMENT BLOB BECAUSE THIS HAS IMPORTANT LOGIC
@@ -193,7 +193,7 @@ public class CaptureReplay {
 	 * Records the current frame of inputs to the selected file, does not record blank frames at the starts and ends of an auto sequence.
 	 * @param inputs (Inputs) The inputs for the current frame, to be recorded.
 	 */
-	public void record(Controller[] inputs) {
+	public static void record(Controller[] inputs) {
 		System.out.println("Writing auto file...");
 		Controller[] dummyInputs = inputs;
 		for(int i = 0; i < dummyInputs.length; i++) {
@@ -250,7 +250,7 @@ public class CaptureReplay {
 	}
 
 	/** Closes the currently selected file */
-	public void closeFile() {
+	public static void closeFile() {
 		System.out.println("Auto file closed.");
 		if (fReader != null) {
 			try {
