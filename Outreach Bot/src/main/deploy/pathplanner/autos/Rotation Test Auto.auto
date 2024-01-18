@@ -5,7 +5,7 @@
       "x": 1.0,
       "y": 3.5
     },
-    "rotation": 89.99
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Circle Test"
+            "pathName": "Rotation Test"
           }
         }
       ]
