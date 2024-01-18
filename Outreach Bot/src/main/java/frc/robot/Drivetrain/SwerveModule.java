@@ -97,7 +97,13 @@ public class SwerveModule {
     public void setModuleState(SwerveModuleState desiredState) {
         this.desiredState = SwerveModuleState.optimize(desiredState, getAbsolutePosition());
 
-        this.drivePIDController.setReference(this.desiredState.speedMetersPerSecond, ControlType.kVelocity);
+        // If you don't want module to move, don't force it backwards
+        if (this.desiredState.speedMetersPerSecond == 0) {
+            this.drivePIDController.setReference(0, ControlType.kDutyCycle);
+        } else {
+            this.drivePIDController.setReference(this.desiredState.speedMetersPerSecond, ControlType.kVelocity);
+        }
+
         this.anglePIDController.setReference(this.desiredState.angle.getDegrees(), ControlType.kPosition);
     }
 

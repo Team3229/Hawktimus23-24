@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -72,13 +73,19 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		SwerveKinematics.setGyroOffset(limelight.getPose().getRotation());
+		// SwerveKinematics.setGyroOffset(limelight.getPose().getRotation());
 
-		SwerveOdometry.initialize(limelight.getPose());
+		SwerveOdometry.initialize(new Pose2d(limelight.getPose().getX(), limelight.getPose().getY(), SwerveKinematics.robotRotation));
 
-		// NamedCommands.registerCommand("doshoot", new Command() {});
+		SwerveKinematics.configureEncoders();
+		SwerveKinematics.configureMotors();
+		SwerveKinematics.configurePID();
+		SwerveKinematics.configOffsets(ModuleOffsets.read());
+        SwerveKinematics.chassisState = new ChassisSpeeds();
 
-		autoCommand = autoManager.getCommand("Example Path");
+		// NamedCommands.registerCommand("exampleCommand", new Command() {});
+
+		autoCommand = autoManager.getAutoCommand("Circle Test Auto");
 
 		autoCommand.initialize();
 		
@@ -89,9 +96,15 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 
 		SwerveOdometry.addSensorData(limelight.getPose(), limelight.getLatency(), limelight.isValid());
-		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		autoCommand.execute();
+
+		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
+		SmartDashboard.putNumberArray("odometry", new double[] {
+			SwerveOdometry.getPose().getX(),
+			SwerveOdometry.getPose().getY(),
+			SwerveOdometry.getPose().getRotation().getDegrees()
+		});
 
 	}
 
@@ -99,10 +112,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 
-		SwerveOdometry.initialize(limelight.getPose());
-
 		// Remove for Comp
-		SwerveKinematics.navxGyro.zeroYaw();
+		SwerveKinematics.zeroGyro();
+
+		SwerveOdometry.initialize(new Pose2d(limelight.getPose().getX(), limelight.getPose().getY(), SwerveKinematics.robotRotation));
 
 		flightStick.nullControls();
 		xboxController.nullControls();

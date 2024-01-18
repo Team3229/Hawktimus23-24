@@ -1,7 +1,6 @@
 package frc.robot.Autonomous;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -14,6 +13,17 @@ import frc.robot.Drivetrain.SwerveOdometry;
 
 public class PathPlanner extends SubsystemBase {
 
+    private HolonomicPathFollowerConfig autoConfig = 
+        new HolonomicPathFollowerConfig(
+
+            new PIDConstants(0.01, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(0.01, 0.0, 0.0), // Rotation PID constants
+            SwerveKinematics.maxModuleSpeed, // Max module speed, in m/s
+            Math.sqrt(2 * (Math.pow(SwerveKinematics.robotWidth/2 - SwerveKinematics.moduleEdgeOffset, 2))), // Drive base radius in meters. Distance from robot center to furthest module.
+            new ReplanningConfig() // Default path replanning config. See the API for the options here
+
+        );
+
     public PathPlanner() {
         
         // Configure AutoBuilder last
@@ -22,14 +32,7 @@ public class PathPlanner extends SubsystemBase {
                 SwerveOdometry::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 SwerveKinematics::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 SwerveKinematics::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
-                                                 // Constants class
-                        new PIDConstants(0.01, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(0.01, 0.0, 0.0), // Rotation PID constants
-                        4.5, // Max module speed, in m/s
-                        Math.sqrt(2 * (Math.pow(SwerveKinematics.robotWidth/2 - SwerveKinematics.moduleEdgeOffset, 2))), // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
-                ),
+                autoConfig,
                 () -> {
                     // Boolean supplier that controls when the path will be mirrored for the red alliance
                     // This will flip the path being followed to the red side of the field.
@@ -45,8 +48,7 @@ public class PathPlanner extends SubsystemBase {
         );
     }
 
-    public Command getCommand(String autoName) {
-        PathPlannerPath path = PathPlannerPath.fromPathFile(autoName);
-        return AutoBuilder.followPath(path);
+    public Command getAutoCommand(String autoName) {
+        return AutoBuilder.buildAuto(autoName);
     }
 }
