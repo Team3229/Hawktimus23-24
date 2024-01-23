@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.Controller;
@@ -31,8 +32,7 @@ public class Robot extends TimedRobot {
 
 	Command autoCommand;
 	PathPlanner autoManager;
-
-	Limelight limelight;
+	SendableChooser<Command> autoChooser;
 
 	double[] desiredSwerveState = {0,0,0,0,0,0,0,0};
 	double[] measuredSwerveState = {0,0,0,0,0,0,0,0};
@@ -51,9 +51,13 @@ public class Robot extends TimedRobot {
 
 		autoManager = new PathPlanner();
 
-		limelight = new Limelight();
+		Limelight.initialize();
 
 		SwerveKinematics.initialize();
+
+		autoChooser = autoManager.getDropdown();
+
+		SmartDashboard.putData("Choose Auto", autoChooser);
 
 	}
 
@@ -77,15 +81,11 @@ public class Robot extends TimedRobot {
 
 		SwerveOdometry.initialize(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
 
-		SwerveKinematics.configureEncoders();
-		SwerveKinematics.configureMotors();
-		SwerveKinematics.configurePID();
+		SwerveKinematics.configureDrivetrain();
 		SwerveKinematics.configOffsets(ModuleOffsets.read());
         SwerveKinematics.chassisState = new ChassisSpeeds();
 
-		// NamedCommands.registerCommand("exampleCommand", new Command() {});
-
-		autoCommand = autoManager.getAutoCommand("Position Test Auto");
+		autoCommand = autoChooser.getSelected();
 
 		autoCommand.initialize();
 		
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
-		SwerveOdometry.addSensorData(limelight.getPose(), limelight.getLatency(), limelight.isValid());
+		SwerveOdometry.addSensorData(Limelight.getPose(), Limelight.getLatency(), Limelight.isValid());
 
 		if (!autoCommand.isFinished()) {
 			autoCommand.execute();
@@ -104,6 +104,7 @@ public class Robot extends TimedRobot {
 		}
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
+
 		SmartDashboard.putNumberArray("odometry", new double[] {
 			SwerveOdometry.getPose().getX(),
 			SwerveOdometry.getPose().getY(),
@@ -119,14 +120,12 @@ public class Robot extends TimedRobot {
 		// Remove for Comp
 		SwerveKinematics.zeroGyro();
 
-		SwerveOdometry.initialize(new Pose2d(limelight.getPose().getX(), limelight.getPose().getY(), SwerveKinematics.robotRotation));
+		SwerveOdometry.initialize(new Pose2d(Limelight.getPose().getX(), Limelight.getPose().getY(), SwerveKinematics.robotRotation));
 
 		flightStick.nullControls();
 		xboxController.nullControls();
 
-		SwerveKinematics.configureEncoders();
-		SwerveKinematics.configureMotors();
-		SwerveKinematics.configurePID();
+		SwerveKinematics.configureDrivetrain();
 
 		if(SmartDashboard.getBoolean("resetAngleOffsets", false)){
 			SwerveKinematics.configOffsets(ModuleOffsets.calculateOffsets(SwerveKinematics.frontLeftModule.getAbsolutePosition(), SwerveKinematics.frontRightModule.getAbsolutePosition(), SwerveKinematics.backLeftModule.getAbsolutePosition(), SwerveKinematics.backRightModule.getAbsolutePosition()));
@@ -157,6 +156,7 @@ public class Robot extends TimedRobot {
 		if((boolean) flightStick.get(Controls.FlightStick.Button10)){
 			SwerveKinematics.navxGyro.zeroYaw();
 		}
+
 		// Uncomment when limelight added
 		// SwerveOdometry.addSensorData(limelight.getPose());
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);

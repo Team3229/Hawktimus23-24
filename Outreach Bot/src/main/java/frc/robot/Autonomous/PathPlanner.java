@@ -6,6 +6,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Drivetrain.SwerveKinematics;
@@ -50,5 +51,9 @@ public class PathPlanner extends SubsystemBase {
 
     public Command getAutoCommand(String autoName) {
         return AutoBuilder.buildAuto(autoName);
+    }
+
+    public SendableChooser<Command> getDropdown() {
+        return AutoBuilder.buildAutoChooser();
     }
 }

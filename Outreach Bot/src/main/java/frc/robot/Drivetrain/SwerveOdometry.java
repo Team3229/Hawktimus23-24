@@ -11,7 +11,14 @@ public class SwerveOdometry {
     private static SwerveDrivePoseEstimator odometry;
 
     public static void initialize(Pose2d initialPose) {
-        odometry = new SwerveDrivePoseEstimator(SwerveKinematics.kinematics, SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, initialPose);
+
+        odometry = new SwerveDrivePoseEstimator(
+            SwerveKinematics.kinematics,
+            SwerveKinematics.robotRotation,
+            SwerveKinematics.modulePositions,
+            initialPose
+        );
+        
     }
 
     public static Pose2d getPose() {

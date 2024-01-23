@@ -79,9 +79,7 @@ public class SwerveKinematics {
 
         kinematics = new SwerveDriveKinematics(frontLeftModule.location, frontRightModule.location, backLeftModule.location, backRightModule.location);
 
-        configureEncoders();
-        configureMotors();
-        configurePID();
+        configureDrivetrain();
 
         modulePositions[0] = new SwerveModulePosition();
         modulePositions[1] = new SwerveModulePosition();
@@ -89,6 +87,12 @@ public class SwerveKinematics {
         modulePositions[3] = new SwerveModulePosition();
 
         chassisState = new ChassisSpeeds();
+    }
+
+    public static void configureDrivetrain() {
+        configureEncoders();
+        configureMotors();
+        configurePID();
     }
 
     public static void configOffsets(Rotation2d[] offset){
@@ -188,7 +192,7 @@ public class SwerveKinematics {
     }
 
     /**Configures each module's motors. */
-    public static void configureMotors() {
+    private static void configureMotors() {
 
         frontLeftModule.configureAngleMotor();
         frontLeftModule.configureDriveMotor(brakeMode, true);
@@ -201,7 +205,7 @@ public class SwerveKinematics {
     }
 
     /**Configures and resets the offsets of each module's encoders. */
-    public static void configureEncoders() {
+    private static void configureEncoders() {
         frontLeftModule.configureEncoders();
         frontRightModule.configureEncoders();
         backLeftModule.configureEncoders();
@@ -209,7 +213,7 @@ public class SwerveKinematics {
     }
 
     /**Configures each module's PID Controllers with the provided constants at the top of this class. */
-    public static void configurePID() {
+    private static void configurePID() {
 
         frontLeftModule.configurePID(anglePID, drivePID);
         frontRightModule.configurePID(anglePID, drivePID);

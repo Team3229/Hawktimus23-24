@@ -32,9 +32,7 @@ public class ModuleOffsets {
      * @return (double[]) The new offsets that were just written to the RIO
      */
     public static Rotation2d[] calculateOffsets(Rotation2d fL, Rotation2d fR, Rotation2d bL, Rotation2d bR) {
-        // takes the current values, assumes they should be 0, and returns an [] of the new values to set them to after storing it for futute use
-        // if old offsets < 90, its closer to 0. Else if > 90 & < 270, closer to 180. Else its > 270, so closer to 360
-        // if the values passed, which are the current values, and should be zero.
+        // takes the current values, assumes they should be 0, and returns an [] of the new values to set them to after storing it for future use
         Rotation2d[] currentValues = read();
         Rotation2d[] newOffsets = {
             currentValues[0].plus(Rotation2d.fromDegrees((fL.getDegrees() < 90 ? -fL.getDegrees(): fL.getDegrees() > 90 && fL.getDegrees() < 270 ? 180 - fL.getDegrees():360 - fL.getDegrees()))),
