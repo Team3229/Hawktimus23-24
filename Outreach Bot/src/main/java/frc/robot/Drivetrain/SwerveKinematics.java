@@ -149,6 +149,10 @@ public class SwerveKinematics {
         robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(gyroOffset.getDegrees()-navxGyro.getYaw(), 0, 360));
 
         chassisState = speeds;
+
+        // chassisState.omegaRadiansPerSecond *= -1;
+        // chassisState.vxMetersPerSecond *= -1;
+        // chassisState.vyMetersPerSecond *= -1;
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);

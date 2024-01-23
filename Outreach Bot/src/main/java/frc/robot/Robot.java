@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
 
 		// SwerveKinematics.setGyroOffset(limelight.getPose().getRotation());
 
-		SwerveOdometry.initialize(new Pose2d(limelight.getPose().getX(), limelight.getPose().getY(), SwerveKinematics.robotRotation));
+		SwerveOdometry.initialize(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
 
 		SwerveKinematics.configureEncoders();
 		SwerveKinematics.configureMotors();
@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
 
 		// NamedCommands.registerCommand("exampleCommand", new Command() {});
 
-		autoCommand = autoManager.getAutoCommand("Circle Test Auto");
+		autoCommand = autoManager.getAutoCommand("Position Test Auto");
 
 		autoCommand.initialize();
 		
@@ -97,7 +97,11 @@ public class Robot extends TimedRobot {
 
 		SwerveOdometry.addSensorData(limelight.getPose(), limelight.getLatency(), limelight.isValid());
 
-		autoCommand.execute();
+		if (!autoCommand.isFinished()) {
+			autoCommand.execute();
+		} else {
+			SwerveKinematics.stop();
+		}
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 		SmartDashboard.putNumberArray("odometry", new double[] {
