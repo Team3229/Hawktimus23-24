@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 		Limelight.initialize();
 
 		SwerveKinematics.initialize();
+		SwerveOdometry.initialize(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
 
 		autoChooser = autoManager.getDropdown();
 
@@ -77,9 +78,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		// SwerveKinematics.setGyroOffset(limelight.getPose().getRotation());
-
-		SwerveOdometry.initialize(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
+		SwerveKinematics.zeroGyro();
 
 		SwerveKinematics.configureDrivetrain();
 		SwerveKinematics.configOffsets(ModuleOffsets.read());
@@ -95,15 +94,15 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
-		SwerveOdometry.addSensorData(Limelight.getPose(), Limelight.getLatency(), Limelight.isValid());
+		SwerveOdometry.addSensorData(Limelight.getPose(), Limelight.getLatency(), false);
+
+		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		if (!autoCommand.isFinished()) {
 			autoCommand.execute();
 		} else {
 			SwerveKinematics.stop();
 		}
-
-		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		SmartDashboard.putNumberArray("odometry", new double[] {
 			SwerveOdometry.getPose().getX(),

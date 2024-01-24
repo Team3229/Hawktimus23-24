@@ -21,6 +21,17 @@ public class ModuleOffsets {
     /** Adds a boolean to reset the offsets or not within SmartDashboard, Implemented in Robot.java */
     public static void init() {
         SmartDashboard.putBoolean("resetAngleOffsets", false);
+        
+        // create files if they don't exist
+        new File(path).mkdirs();
+        try {
+            new File(path + fileNames[0]).createNewFile();
+            new File(path + fileNames[1]).createNewFile();
+            new File(path + fileNames[2]).createNewFile();
+            new File(path + fileNames[3]).createNewFile();
+        } catch (Exception e) {
+            System.out.println(" [MODULE OFFSETS] An error occured while creating offset files.");
+        }
     }
 
     /**
@@ -58,7 +69,7 @@ public class ModuleOffsets {
                 writer.close();
             }
         } catch(IOException e){
-            System.out.println("An error occurred while writing the swerve angle offsets to file.");
+            System.out.println(" [MODULE OFFSETS] An error occurred while writing the swerve angle offsets to file.");
             e.printStackTrace();
         }
     }
@@ -80,7 +91,7 @@ public class ModuleOffsets {
                 scanner.close();
             }
         } catch(IOException e){
-            System.out.println("An error occurred while reading the swerve angle offsets from file.");
+            System.out.println(" [MODULE OFFSETS] An error occurred while reading the swerve angle offsets from file.");
             e.printStackTrace();
         }
         return values;

@@ -54,7 +54,7 @@ public class SwerveKinematics {
     //**The distance between the edge of the chassis to the center of a wheel in meters. */
     public static final double moduleEdgeOffset = 0.0508;
     /**The maximum speed (in meters/sec) that a singular swerve module can reach. */
-    public static final double maxModuleSpeed = 10;
+    public static final double maxModuleSpeed = 20;
     /**The maximum linear speed (in meters/sec) the chassis should move at. (Automatically set for SDS MK4 L1 modules) */
     private static final double chassisSpeed = 10;
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
@@ -117,7 +117,7 @@ public class SwerveKinematics {
         }
 
         // Calculate reverse kinematics
-        chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(Y*chassisSpeed, X*chassisSpeed, Z*maxChassisRotationSpeed, robotRotation);
+        chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(-Y*chassisSpeed, -X*chassisSpeed, -Z*maxChassisRotationSpeed, robotRotation);
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
@@ -154,9 +154,9 @@ public class SwerveKinematics {
 
         chassisState = speeds;
 
-        // chassisState.omegaRadiansPerSecond *= -1;
-        // chassisState.vxMetersPerSecond *= -1;
-        // chassisState.vyMetersPerSecond *= -1;
+        chassisState.omegaRadiansPerSecond *= -1;
+        chassisState.vxMetersPerSecond *= -1;
+        chassisState.vyMetersPerSecond *= -1;
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
@@ -189,6 +189,7 @@ public class SwerveKinematics {
 
     public static void zeroGyro() {
         navxGyro.zeroYaw();
+        robotRotation = Rotation2d.fromDegrees(0);
     }
 
     /**Configures each module's motors. */
@@ -197,9 +198,9 @@ public class SwerveKinematics {
         frontLeftModule.configureAngleMotor();
         frontLeftModule.configureDriveMotor(brakeMode, true);
         frontRightModule.configureAngleMotor();
-        frontRightModule.configureDriveMotor(brakeMode, false);
+        frontRightModule.configureDriveMotor(brakeMode, true);
         backLeftModule.configureAngleMotor();
-        backLeftModule.configureDriveMotor(brakeMode, false);
+        backLeftModule.configureDriveMotor(brakeMode, true);
         backRightModule.configureAngleMotor();
         backRightModule.configureDriveMotor(brakeMode, false);
     }

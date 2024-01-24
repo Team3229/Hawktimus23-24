@@ -100,11 +100,12 @@ public class SwerveModule {
         // If you don't want module to move, don't force it backwards
         if (this.desiredState.speedMetersPerSecond == 0) {
             this.drivePIDController.setReference(0, ControlType.kDutyCycle);
+            this.anglePIDController.setReference(0, ControlType.kDutyCycle);
         } else {
             this.drivePIDController.setReference(this.desiredState.speedMetersPerSecond, ControlType.kVelocity);
+            this.anglePIDController.setReference(this.desiredState.angle.getDegrees(), ControlType.kPosition);
         }
 
-        this.anglePIDController.setReference(this.desiredState.angle.getDegrees(), ControlType.kPosition);
     }
 
     /**
@@ -156,14 +157,14 @@ public class SwerveModule {
         }
 
         this.driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
-        this.driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
+        this.driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
     }
 
     /**Configures the module's angular motor.*/
     public void configureAngleMotor() {
         this.angleMotor.setInverted(true);
         this.angleMotor.setIdleMode(IdleMode.kCoast);
-        this.angleMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
+        this.angleMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
         this.angleMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
     }
 
@@ -184,13 +185,10 @@ public class SwerveModule {
     }
 
     public void doOffset(Rotation2d offset) {
+
         absoluteEncoderConfig.MagnetSensor.MagnetOffset = offset.getDegrees()/360;
         this.absoluteEncoderConfigurator.apply(absoluteEncoderConfig.MagnetSensor);
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
-        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
-        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
-        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
-        // this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());
     }
 
     /**

@@ -11,7 +11,6 @@ public class SwerveOdometry {
     private static SwerveDrivePoseEstimator odometry;
 
     public static void initialize(Pose2d initialPose) {
-
         odometry = new SwerveDrivePoseEstimator(
             SwerveKinematics.kinematics,
             SwerveKinematics.robotRotation,
@@ -26,8 +25,6 @@ public class SwerveOdometry {
     }
 
     public static void setPose(Pose2d position) {
-        System.out.println("X: " + position.getX());
-        System.out.println("Y: " + position.getY());
         odometry.resetPosition(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, position);
     }
 

@@ -17,7 +17,7 @@ public class PathPlanner extends SubsystemBase {
     private HolonomicPathFollowerConfig autoConfig = 
         new HolonomicPathFollowerConfig(
 
-            new PIDConstants(5, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(40, 0.0, 0.5), // Translation PID constants
             new PIDConstants(5, 0.0, 0.0), // Rotation PID constants
             SwerveKinematics.maxModuleSpeed, // Max module speed, in m/s
             Math.sqrt(2 * (Math.pow(SwerveKinematics.robotWidth/2 - SwerveKinematics.moduleEdgeOffset, 2))), // Drive base radius in meters. Distance from robot center to furthest module.
@@ -47,10 +47,6 @@ public class PathPlanner extends SubsystemBase {
                 },
                 this // Reference to this subsystem to set requirements
         );
-    }
-
-    public Command getAutoCommand(String autoName) {
-        return AutoBuilder.buildAuto(autoName);
     }
 
     public SendableChooser<Command> getDropdown() {
