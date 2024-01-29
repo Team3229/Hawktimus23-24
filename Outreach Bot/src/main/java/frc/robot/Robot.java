@@ -28,7 +28,6 @@ import frc.robot.Drivetrain.SwerveOdometry;
 public class Robot extends TimedRobot {
 
 	Controller flightStick;
-	Controller xboxController;
 
 	Command autoCommand;
 	PathPlanner autoManager;
@@ -47,7 +46,6 @@ public class Robot extends TimedRobot {
 		ModuleOffsets.init();
 
 		flightStick = new Controller(ControllerType.FlightStick, 0);
-		xboxController = new Controller(ControllerType.XboxController, 1);
 
 		autoManager = new PathPlanner();
 
@@ -122,7 +120,6 @@ public class Robot extends TimedRobot {
 		SwerveOdometry.initialize(new Pose2d(Limelight.getPose().getX(), Limelight.getPose().getY(), SwerveKinematics.robotRotation));
 
 		flightStick.nullControls();
-		xboxController.nullControls();
 
 		SwerveKinematics.configureDrivetrain();
 
@@ -142,7 +139,6 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		flightStick.update();
-		// xboxController.update();
 
 		SwerveKinematics.maxChassisRotationSpeed = 10 * 0.5 * ((-(double) flightStick.get(Controls.FlightStick.Throttle)) + 1);
 
