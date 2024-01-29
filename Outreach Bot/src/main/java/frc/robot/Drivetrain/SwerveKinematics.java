@@ -57,6 +57,8 @@ public class SwerveKinematics {
     public static final double maxModuleSpeed = 20;
     /**The maximum linear speed (in meters/sec) the chassis should move at. (Automatically set for SDS MK4 L1 modules) */
     private static final double chassisSpeed = 10;
+    /**The percentage of the Chassis Speed of which the bot runs at. */
+    private static final double chassisSpeedPercentage = .5;
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
     public static double maxChassisRotationSpeed = 5;
     /**Whether or not to run the drive motors in brake mode. */
@@ -117,7 +119,7 @@ public class SwerveKinematics {
         }
 
         // Calculate reverse kinematics
-        chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(-Y*chassisSpeed, -X*chassisSpeed, -Z*maxChassisRotationSpeed, robotRotation);
+        chassisState = ChassisSpeeds.fromFieldRelativeSpeeds(-Y*chassisSpeed*chassisSpeedPercentage, -X*chassisSpeed*chassisSpeedPercentage, -Z*maxChassisRotationSpeed, robotRotation);
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
