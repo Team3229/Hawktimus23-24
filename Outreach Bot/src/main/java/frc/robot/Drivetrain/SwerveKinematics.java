@@ -56,7 +56,7 @@ public class SwerveKinematics {
     /**The maximum speed (in meters/sec) that a singular swerve module can reach. */
     public static final double maxModuleSpeed = 20;
     /**The maximum linear speed (in meters/sec) the chassis should move at. (Automatically set for SDS MK4 L1 modules) */
-    private static final double chassisSpeed = 3.81;
+    private static final double chassisSpeed = 12.5;
     /**The percentage of the Chassis Speed of which the bot runs at. */
     private static final double chassisSpeedPercentage = .5;
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
