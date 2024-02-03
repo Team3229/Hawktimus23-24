@@ -11,6 +11,7 @@ public class Controller {
     private ControllerType controllerType;
     public GenericHID controller;
     Map<Object, Object> inputs;
+    private final double STICK_DEADBAND = 0.125;
 
     public Controller(ControllerType type, int id) {
         this.controllerType = type;
@@ -23,11 +24,10 @@ public class Controller {
     public void update() {
         switch(controllerType) {
             case FlightStick:
-                inputs.put(Controls.FlightStick.AxisX, controller.getRawAxis(0));
-                inputs.put(Controls.FlightStick.AxisY, controller.getRawAxis(1));
-                inputs.put(Controls.FlightStick.AxisZ, controller.getRawAxis(2));
-                inputs.put(Controls.FlightStick.Throttle, controller.getRawAxis(3));
-                
+                inputs.put(Controls.FlightStick.AxisX, Math.abs(controller.getRawAxis(0)) > STICK_DEADBAND ? controller.getRawAxis(0) : 0);
+                inputs.put(Controls.FlightStick.AxisY, Math.abs(controller.getRawAxis(1)) > STICK_DEADBAND ? controller.getRawAxis(1) : 0);
+                inputs.put(Controls.FlightStick.AxisZ, Math.abs(controller.getRawAxis(2)) > .5 ? controller.getRawAxis(2) : 0);
+                inputs.put(Controls.FlightStick.Throttle, Math.abs(controller.getRawAxis(3)) > STICK_DEADBAND ? controller.getRawAxis(3) : 0);
                 inputs.put(Controls.FlightStick.Trigger, controller.getRawButton(1));
                 inputs.put(Controls.FlightStick.Button2, controller.getRawButton(2));
                 inputs.put(Controls.FlightStick.Button3, controller.getRawButton(3));
