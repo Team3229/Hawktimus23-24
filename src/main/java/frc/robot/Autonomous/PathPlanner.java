@@ -7,6 +7,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Drivetrain.SwerveKinematics;
@@ -47,6 +48,8 @@ public class PathPlanner extends SubsystemBase {
                 },
                 this // Reference to this subsystem to set requirements
         );
+
+		SmartDashboard.putData("Choose Auto", this.getDropdown());
     }
 
     public SendableChooser<Command> getDropdown() {

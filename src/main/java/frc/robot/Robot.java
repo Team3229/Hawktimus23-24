@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.Controller;
 import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
-import frc.robot.Vision.Limelight;
+import frc.robot.Vision.Vision;
 import frc.robot.Autonomous.PathPlanner;
 import frc.robot.Drivetrain.ModuleOffsets;
 import frc.robot.Drivetrain.SwerveKinematics;
@@ -43,20 +43,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
-		ModuleOffsets.init();
+		ModuleOffsets.initialize();
 
 		flightStick = new Controller(ControllerType.FlightStick, 0);
 
 		autoManager = new PathPlanner();
 
-		Limelight.initialize();
+		Vision.initialize();
 
 		SwerveKinematics.initialize();
 		SwerveOdometry.initialize(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
-
-		autoChooser = autoManager.getDropdown();
-
-		SmartDashboard.putData("Choose Auto", autoChooser);
 
 	}
 
@@ -92,7 +88,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 
-		SwerveOdometry.addSensorData(Limelight.getPose(), Limelight.getLatency(), false);
+		SwerveOdometry.addSensorData(Vision.getPose(), Vision.getLatency(), false);
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
@@ -117,7 +113,7 @@ public class Robot extends TimedRobot {
 		// Remove for Comp
 		SwerveKinematics.zeroGyro();
 
-		SwerveOdometry.initialize(new Pose2d(Limelight.getPose().getX(), Limelight.getPose().getY(), SwerveKinematics.robotRotation));
+		SwerveOdometry.initialize(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
 
 		flightStick.nullControls();
 
