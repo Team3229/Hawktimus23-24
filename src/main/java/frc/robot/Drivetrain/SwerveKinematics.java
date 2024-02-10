@@ -58,7 +58,7 @@ public class SwerveKinematics {
     /**The maximum linear speed (in meters/sec) the chassis should move at. (Automatically set for SDS MK4 L1 modules) */
     private static final double chassisSpeed = 12.5;
     /**The percentage of the Chassis Speed of which the bot runs at. */
-    private static final double chassisSpeedPercentage = .75;
+    private static final double chassisSpeedPercentage = 1;
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
     public static double maxChassisRotationSpeed = 5;
     /**Whether or not to run the drive motors in brake mode. */
