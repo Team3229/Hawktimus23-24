@@ -10,14 +10,16 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Inputs.Controller;
-import frc.robot.Inputs.Controller.ControllerType;
-import frc.robot.Inputs.Controller.Controls;
+import frc.robot.Inputs.RunControls;
 import frc.robot.Vision.Vision;
 import frc.robot.Autonomous.PathPlanner;
 import frc.robot.Drivetrain.ModuleOffsets;
 import frc.robot.Drivetrain.SwerveKinematics;
 import frc.robot.Drivetrain.SwerveOdometry;
+import frc.robot.GameSystems.CoreFeatures.Arm;
+import frc.robot.GameSystems.CoreFeatures.Intake;
+import frc.robot.GameSystems.CoreFeatures.LinearRail;
+import frc.robot.GameSystems.CoreFeatures.Outtake;
 	
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,8 +28,6 @@ import frc.robot.Drivetrain.SwerveOdometry;
  * project.
  */
 public class Robot extends TimedRobot {
-
-	Controller flightStick;
 
 	Command autoCommand;
 	PathPlanner autoManager;
@@ -45,7 +45,12 @@ public class Robot extends TimedRobot {
 
 		ModuleOffsets.initialize();
 
-		flightStick = new Controller(ControllerType.FlightStick, 0);
+		RunControls.init();
+
+		Intake.init();
+		Outtake.init();
+		Arm.init();
+		LinearRail.init();
 
 		autoManager = new PathPlanner();
 
@@ -115,7 +120,7 @@ public class Robot extends TimedRobot {
 
 		SwerveOdometry.initialize(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
 
-		flightStick.nullControls();
+		RunControls.nullControls();
 
 		SwerveKinematics.configureDrivetrain();
 
@@ -134,19 +139,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		flightStick.update();
-
-		SwerveKinematics.maxChassisRotationSpeed = 10 * 0.5 * ((-(double) flightStick.get(Controls.FlightStick.Throttle)) + 1);
-
-		SwerveKinematics.drive(
-						(double) flightStick.get(Controls.FlightStick.AxisX),
-						(double) flightStick.get(Controls.FlightStick.AxisY),
-						(double) flightStick.get(Controls.FlightStick.AxisZ)
-					);
-
-		if((boolean) flightStick.get(Controls.FlightStick.Button10)){
-			SwerveKinematics.navxGyro.zeroYaw();
-		}
+		RunControls.run();
 
 		// Uncomment when limelight added
 		// SwerveOdometry.addSensorData(limelight.getPose());
