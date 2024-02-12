@@ -90,9 +90,9 @@ public class Robot extends TimedRobot {
 	}
 
 	/** This function is called periodically during autonomous. */
-	@Override
+	@Override 
 	public void autonomousPeriodic() {
-
+		
 		SwerveOdometry.addSensorData(Vision.getPose(), Vision.getLatency(), false);
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
@@ -140,6 +140,10 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		RunControls.run();
+
+		LinearRail.update();
+		Intake.update();
+		Outtake.update();
 
 		// Uncomment when limelight added
 		// SwerveOdometry.addSensorData(limelight.getPose());

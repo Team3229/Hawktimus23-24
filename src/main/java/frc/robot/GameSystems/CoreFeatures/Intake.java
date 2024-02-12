@@ -15,21 +15,82 @@ public class Intake {
     public static boolean hasNote = false;
     private static CANSparkMax intake;
     private static final int INTAKE_ID = 0;
+    private static final double INTAKE_SPEED = 0.5;
+    public static IntakeStates state = IntakeStates.idle;
+    private enum IntakeStates {
+        intaking,
+        outtaking,
+        ejecting,
+        idle
+    }
 
     public static void init(){
         intake = new CANSparkMax(INTAKE_ID, MotorType.kBrushless);
     }
 
-    private static void detectNote(){
-
+    public static void update(){
+        detectNote();
+        switch(state){
+            case ejecting:
+                ejecting();
+                break;
+            case idle:
+                stop();
+                break;
+            case intaking:
+                intaking();
+                break;
+            case outtaking:
+                outtaking();
+                break;
+        }
     }
 
-    public static void spinUp(double rpm){
+    private static void ejecting(){
+        if(hasNote){
+            intake.set(INTAKE_SPEED);
+        } else {
+            stop();
+        }
+    }
 
+    private static void intaking(){
+        if(!hasNote){
+            intake.set(-INTAKE_SPEED);
+        } else {
+            stop();
+        }
+    }
+
+    private static void outtaking(){
+        if(hasNote){
+            intake.set(-INTAKE_SPEED);
+        } else {
+            stop();
+        }
+    }
+
+    //REMEMBER TO FINISH THIS ONCE WE KNOW WHAT SENSOR TO USE
+    private static boolean detectNote(){
+        hasNote = false;
+        return hasNote;
+    }
+
+    public static void intake(){
+        state = IntakeStates.intaking;
+    }
+
+    public static void eject(){
+        state = IntakeStates.ejecting;
+    }
+
+    public static void outtake(){
+        state = IntakeStates.outtaking;
     }
 
     public static void stop(){
-
+        state = IntakeStates.idle;
+        intake.stopMotor();
     }
 }
 ;
