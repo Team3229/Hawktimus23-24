@@ -7,13 +7,11 @@ public class IntakeCommands {
     public static Command intakeNote = new Command() {
         @Override
         public void initialize() {
-
+            Intake.intake();
         }
 
         @Override
-        public void execute() {
-            Intake.intake();
-        }
+        public void execute() {}
 
         @Override
         public void end(boolean interrupted) {
@@ -29,13 +27,11 @@ public class IntakeCommands {
     public static Command shootAmp = new Command() {
         @Override
         public void initialize() {
-
+            Intake.outtake();
         }
 
         @Override
-        public void execute() {
-            Intake.intake();
-        }
+        public void execute() {}
 
         @Override
         public void end(boolean interrupted) {

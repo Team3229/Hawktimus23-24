@@ -11,35 +11,37 @@ Grabbing note
 -Slow speed intake
 -Once grabbed, stow
  */
-public class Grab extends Command {
+public class Grab {
     
     private static SequentialCommandGroup sequence;
 
-    @Override
-    public void initialize() {
-        sequence.addCommands(
+    public static Command command = new Command() {
+        @Override
+        public void initialize() {
+            sequence.addCommands(
 
-            ArmCommands.intakeNote,
-            IntakeCommands.intakeNote,
-            ArmCommands.stow
+                ArmCommands.intakeNote,
+                IntakeCommands.intakeNote,
+                ArmCommands.stow
 
-        );
-        sequence.initialize();
-    }
+            );
+            sequence.initialize();
+        }
 
-    @Override
-    public void execute() {
-        sequence.execute();
-    }
+        @Override
+        public void execute() {
+            sequence.execute();
+        }
 
-    @Override
-    public void end(boolean interrupted) {
-        sequence.end(interrupted);
-    }
+        @Override
+        public void end(boolean interrupted) {
+            sequence.end(interrupted);
+        }
 
-    @Override
-    public boolean isFinished() {
-        return sequence.isFinished();
-    }
+        @Override
+        public boolean isFinished() {
+            return sequence.isFinished();
+        }
+    };
 
 }

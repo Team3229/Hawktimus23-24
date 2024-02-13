@@ -1,8 +1,10 @@
 package frc.robot.Inputs;
 
+import frc.robot.Autonomous.Sequences.Grab;
 import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
+import frc.robot.Utils.RunCommand;
 
 public class RunControls {
 
@@ -19,6 +21,7 @@ public class RunControls {
     public static void run(){
         nullControls();
         update();
+        RunCommand.periodic();
 
         runDriver();
         runManip();
@@ -39,6 +42,11 @@ public class RunControls {
     }
 
     private static void runManip(){
+
+        //Command example
+        if ((boolean) flightStick.get(Controls.FlightStick.Button8)) {
+            RunCommand.run(Grab.command);
+        }
 
     }
     private static void update(){
