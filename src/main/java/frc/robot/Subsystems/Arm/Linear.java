@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+package frc.robot.Subsystems.Arm;
 /*
 -Slides to forward and backward positions
 -Refuses to slide if arm is in the way
@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class LinearArm {
+public class Linear {
 
     private static CANSparkMax linearRail;
     private static final int RAIL_ID = 0;

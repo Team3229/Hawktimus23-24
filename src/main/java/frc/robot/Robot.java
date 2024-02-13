@@ -11,13 +11,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.RunControls;
-import frc.robot.Subsystems.AngularArm;
-import frc.robot.Subsystems.Intake;
-import frc.robot.Subsystems.LinearArm;
-import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.Arm.Angular;
+import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Autonomous.PathPlanner;
 	
@@ -49,8 +49,8 @@ public class Robot extends TimedRobot {
 
 		Intake.init();
 		Shooter.init();
-		AngularArm.init();
-		LinearArm.init();
+		Angular.init();
+		Linear.init();
 
 		autoManager = new PathPlanner();
 
@@ -141,7 +141,7 @@ public class Robot extends TimedRobot {
 
 		RunControls.run();
 
-		LinearArm.update();
+		Linear.update();
 		Intake.update();
 		Shooter.update();
 

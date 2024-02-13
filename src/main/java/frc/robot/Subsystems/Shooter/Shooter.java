@@ -1,7 +1,9 @@
-package frc.robot.Subsystems;
+package frc.robot.Subsystems.Shooter;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import frc.robot.Subsystems.Intake.Intake;
 
 /*
 -Spin up (to given RPM)
