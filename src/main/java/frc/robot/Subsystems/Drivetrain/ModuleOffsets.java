@@ -1,6 +1,6 @@
 //Otters: 3229 Programming SubTeam
 
-package frc.robot.Drivetrain;
+package frc.robot.Subsystems.Drivetrain;
 
 import java.io.File;
 import java.io.FileWriter;

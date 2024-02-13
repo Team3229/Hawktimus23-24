@@ -1,8 +1,8 @@
 package frc.robot.Inputs;
 
-import frc.robot.Drivetrain.SwerveKinematics;
 import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
+import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 
 public class RunControls {
 

@@ -1,4 +1,4 @@
-package frc.robot.Drivetrain;
+package frc.robot.Subsystems.Drivetrain;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;

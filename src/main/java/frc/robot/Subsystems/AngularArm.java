@@ -1,4 +1,4 @@
-package frc.robot.GameSystems.CoreFeatures;
+package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -7,7 +7,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 Controls the arm
 -Move to target angle
  */
-public class Arm {
+public class AngularArm {
 
     private static CANSparkMax arm;
     private static final int ARM_ID = 0;

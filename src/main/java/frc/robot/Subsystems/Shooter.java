@@ -1,4 +1,4 @@
-package frc.robot.GameSystems.CoreFeatures;
+package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -7,7 +7,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 -Spin up (to given RPM)
 -Request intake to send note forward
  */
-public class Outtake {
+public class Shooter {
 
     private static CANSparkMax outtake;
     private static final int OUTTAKE_ID = 0;

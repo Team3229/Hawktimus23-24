@@ -11,15 +11,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.RunControls;
-import frc.robot.Vision.Vision;
+import frc.robot.Subsystems.AngularArm;
+import frc.robot.Subsystems.Intake;
+import frc.robot.Subsystems.LinearArm;
+import frc.robot.Subsystems.Shooter;
+import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
+import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
+import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Autonomous.PathPlanner;
-import frc.robot.Drivetrain.ModuleOffsets;
-import frc.robot.Drivetrain.SwerveKinematics;
-import frc.robot.Drivetrain.SwerveOdometry;
-import frc.robot.GameSystems.CoreFeatures.Arm;
-import frc.robot.GameSystems.CoreFeatures.Intake;
-import frc.robot.GameSystems.CoreFeatures.LinearRail;
-import frc.robot.GameSystems.CoreFeatures.Outtake;
 	
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -48,9 +48,9 @@ public class Robot extends TimedRobot {
 		RunControls.init();
 
 		Intake.init();
-		Outtake.init();
-		Arm.init();
-		LinearRail.init();
+		Shooter.init();
+		AngularArm.init();
+		LinearArm.init();
 
 		autoManager = new PathPlanner();
 
@@ -141,9 +141,9 @@ public class Robot extends TimedRobot {
 
 		RunControls.run();
 
-		LinearRail.update();
+		LinearArm.update();
 		Intake.update();
-		Outtake.update();
+		Shooter.update();
 
 		// Uncomment when limelight added
 		// SwerveOdometry.addSensorData(limelight.getPose());
