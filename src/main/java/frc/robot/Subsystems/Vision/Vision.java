@@ -9,6 +9,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -23,6 +24,7 @@ public class Vision {
 
     private static PhotonPoseEstimator photonPoseEstimator;
     private static Pose2d output = new Pose2d();
+    private static Pose3d output2 = new Pose3d();
 
     public static void initialize() {
         camera = new PhotonCamera("photonvision");
@@ -44,6 +46,18 @@ public class Vision {
                 output = pose.estimatedPose.toPose2d();
             });
         return output;
+    }
+
+    private static Pose3d robotPose() {
+        photonPoseEstimator.update().ifPresent(
+            (EstimatedRobotPose pose) -> {
+                output2 = pose.estimatedPose;
+            });
+        return output2;
+    }
+
+    public static double getDistance(Pose3d object) {
+        return new Transform3d(robotPose(), object).getTranslation().getDistance(new Translation3d());
     }
 
     public static double getLatency() {

@@ -43,4 +43,13 @@ public class RunCommand {
         commandList.remove(commandList.indexOf(command));
     }
 
+    /**
+     * Returns a boolean on whether or not the provided command is currently scheduled
+     * @param command
+     * @return true if command is running
+     */
+    public static boolean isActive(Command command) {
+        return commandList.contains(command);
+    }
+
 }

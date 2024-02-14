@@ -41,7 +41,7 @@ public class Intake {
                 intaking();
                 break;
             case outtaking:
-                outtaking();
+                feeding();
                 break;
         }
     }
@@ -62,7 +62,7 @@ public class Intake {
         }
     }
 
-    private static void outtaking(){
+    private static void feeding(){
         if(hasNote){
             intake.set(-INTAKE_SPEED);
         } else {
@@ -84,7 +84,7 @@ public class Intake {
         state = IntakeStates.ejecting;
     }
 
-    public static void outtake(){
+    public static void feed(){
         state = IntakeStates.outtaking;
     }
 

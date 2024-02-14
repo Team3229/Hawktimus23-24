@@ -27,7 +27,7 @@ public class IntakeCommands {
     public static Command shootAmp = new Command() {
         @Override
         public void initialize() {
-            Intake.outtake();
+            Intake.feed();
         }
 
         @Override
@@ -40,14 +40,14 @@ public class IntakeCommands {
 
         @Override
         public boolean isFinished() {
-            return Intake.hasNote;
+            return !Intake.hasNote;
         }
     };
 
     public static Command shootSpeaker = new Command() {
         @Override
         public void initialize() {
-            Intake.outtake();
+            Intake.feed();
         }
 
         @Override
