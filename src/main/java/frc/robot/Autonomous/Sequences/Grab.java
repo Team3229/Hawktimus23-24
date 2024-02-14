@@ -20,9 +20,9 @@ public class Grab {
         public void initialize() {
             sequence.addCommands(
 
-                ArmCommands.intakeNote,
+                ArmCommands.intakePosition,
                 IntakeCommands.intakeNote,
-                ArmCommands.stow
+                ArmCommands.stowPosition
 
             );
             sequence.initialize();

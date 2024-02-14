@@ -1,7 +1,12 @@
 package frc.robot.Autonomous.Sequences;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Subsystems.Arm.ArmCommands;
+import frc.robot.Subsystems.Drivetrain.DrivetrainCommands;
+import frc.robot.Subsystems.Intake.IntakeCommands;
+import frc.robot.Subsystems.Shooter.ShooterCommands;
 
 /*
 Shooting note
@@ -21,8 +26,13 @@ public class ScoreSpeaker extends Command {
     public void initialize() {
         sequence.addCommands(
 
-            
-
+            new ParallelCommandGroup(
+                ShooterCommands.shootSpeaker(/*put output of RPMs equation etc. */0),
+                ArmCommands.speakerPosition(/*put output of distance equation etc. */null),
+                DrivetrainCommands.lineUpSpeaker(/*desired rotation goes here*/null)
+            ),
+            IntakeCommands.shootSpeaker,
+            ArmCommands.stowPosition
         );
         sequence.initialize();
     }

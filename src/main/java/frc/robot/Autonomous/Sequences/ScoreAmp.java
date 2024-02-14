@@ -24,12 +24,12 @@ public class ScoreAmp extends Command {
         sequence.addCommands(
 
             DrivetrainCommands.lineUpAmp,
-            ArmCommands.amp,
+            ArmCommands.ampPosition,
             new ParallelCommandGroup(
                 IntakeCommands.shootAmp,
                 ShooterCommands.shootAmp
             ),
-            ArmCommands.stow
+            ArmCommands.stowPosition
 
         );
         sequence.initialize();
