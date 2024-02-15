@@ -19,11 +19,13 @@ public class Grab {
         @Override
         public void initialize() {
             sequence.addCommands(
-
-                ArmCommands.intakePosition,
+                ArmCommands.raise,
+                ArmCommands.forwardRail,
+                ArmCommands.intakePos,
                 IntakeCommands.intakeNote,
-                ArmCommands.stowPosition
-
+                ArmCommands.raise,
+                ArmCommands.backwardRail,
+                ArmCommands.stow           
             );
             sequence.initialize();
         }

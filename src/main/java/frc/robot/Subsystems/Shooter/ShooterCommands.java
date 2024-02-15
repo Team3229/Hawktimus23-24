@@ -7,45 +7,25 @@ public class ShooterCommands {
     public static Command shootAmp = new Command() {
         @Override
         public void initialize() {
-
-        }
-
-        @Override
-        public void execute() {
-            
-        }
-
-        @Override
-        public void end(boolean interrupted) {
-            
+            Shooter.spinUp(Shooter.AMP_SPEED);
         }
 
         @Override
         public boolean isFinished() {
-            return true;
+            return Shooter.currentSpeed >= Shooter.AMP_SPEED;
         }
     };
 
-    public static Command shootSpeaker(double RPM) {
+    public static Command shootSpeaker(double speed) {
         return new Command() {
             @Override
             public void initialize() {
-
-            }
-
-            @Override
-            public void execute() {
-                
-            }
-
-            @Override
-            public void end(boolean interrupted) {
-                
+                Shooter.spinUp(speed);
             }
 
             @Override
             public boolean isFinished() {
-                return true;
+                return Shooter.currentSpeed >= speed;
             }
         };
     }

@@ -28,11 +28,12 @@ public class ScoreSpeaker extends Command {
 
             new ParallelCommandGroup(
                 ShooterCommands.shootSpeaker(/*put output of RPMs equation etc. */0),
-                ArmCommands.speakerPosition(/*put output of distance equation etc. */null),
+                ArmCommands.speakerPosition(/*put output of distance equation etc. */0),
                 DrivetrainCommands.lineUpSpeaker(/*desired rotation goes here*/null)
             ),
             IntakeCommands.shootSpeaker,
-            ArmCommands.stowPosition
+            ArmCommands.stow
+            
         );
         sequence.initialize();
     }

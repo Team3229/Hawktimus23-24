@@ -29,7 +29,7 @@ public class ScoreAmp extends Command {
                 IntakeCommands.shootAmp,
                 ShooterCommands.shootAmp
             ),
-            ArmCommands.stowPosition
+            ArmCommands.stow
 
         );
         sequence.initialize();

@@ -13,6 +13,7 @@ public class Shooter {
 
     private static CANSparkMax outtake;
     private static final int OUTTAKE_ID = 0;
+    public static final double AMP_SPEED = .1;
     public static OuttakeStates state = OuttakeStates.idle;
     private static double targetSpeed = 0;
     public static double currentSpeed = 0;
@@ -45,8 +46,8 @@ public class Shooter {
         }
     }
 
-    public static void spinUp(double target){
-        targetSpeed = target;
+    public static void spinUp(double speed){
+        targetSpeed = speed;
         state = OuttakeStates.spinningUp;
     }
 

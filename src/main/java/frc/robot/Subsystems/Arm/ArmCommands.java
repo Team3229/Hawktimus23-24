@@ -5,92 +5,88 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class ArmCommands {
     
-    public static Command stowPosition = new Command() {
+    public static Command stow = new Command() {
         @Override
         public void initialize() {
-
-        }
-
-        @Override
-        public void execute() {
-            
-        }
-
-        @Override
-        public void end(boolean interrupted) {
-            
+            Angular.stow();
         }
 
         @Override
         public boolean isFinished() {
-            return false;
+            return Angular.atTarget;
         }
     };
 
-    public static Command intakePosition = new Command() {
+    public static Command intakePos = new Command() {
         @Override
         public void initialize() {
-
-        }
-
-        @Override
-        public void execute() {
-            
-        }
-
-        @Override
-        public void end(boolean interrupted) {
-            
+            Angular.unstow();
         }
 
         @Override
         public boolean isFinished() {
-            return false;
+            return Angular.atTarget;
+        }
+    };
+    
+    public static Command raise = new Command() {
+        @Override
+        public void initialize() {
+            Angular.raise();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return Angular.atTarget;
         }
     };
     
     public static Command ampPosition = new Command() {
         @Override
         public void initialize() {
-
-        }
-
-        @Override
-        public void execute() {
-            
-        }
-
-        @Override
-        public void end(boolean interrupted) {
-            
+            Angular.amp();
         }
 
         @Override
         public boolean isFinished() {
-            return false;
+            return Angular.atTarget;
         }
     };
 
-    public static Command speakerPosition(Rotation2d rot) {
+    public static Command forwardRail = new Command() {
+        @Override
+        public void initialize() {
+            Linear.front();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return Linear.atSide;
+        }
+    };
+
+    public static Command backwardRail = new Command() {
+        @Override
+        public void initialize() {
+            Linear.back();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return Linear.atSide;
+        }
+    };
+
+    public static Command speakerPosition(double degrees) {
         return new Command() {
             @Override
             public void initialize() {
-
-            }
-
-            @Override
-            public void execute() {
-                Angular.goToAngle(rot);
-            }
-
-            @Override
-            public void end(boolean interrupted) {
-                
+                Angular.shoot(degrees);
             }
 
             @Override
             public boolean isFinished() {
-                return false;
+                return Angular.atTarget;
             }
         };
     }

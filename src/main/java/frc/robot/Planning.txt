@@ -94,3 +94,12 @@ Manip controlls:
 -activate grabbing sequenece
 -stow
 -reverse intake? (hard to reach?)
+
+
+2/15/24 Update to the notes
+
+Left to be done:
+Arm.goToAngle
+Intake.hasNote
+Determing ideal angle, rot, and rpm of shooter for speaker
+Angles to be used
