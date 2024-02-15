@@ -13,6 +13,8 @@ public class Controller {
     Map<Object, Object> inputs;
     private final double STICK_DEADBAND = 0.125;
 
+    private final double JOYSTICK_GAIN = 0;
+
     public Controller(ControllerType type, int id) {
         this.controllerType = type;
         this.controller = new GenericHID(id);
@@ -24,9 +26,9 @@ public class Controller {
     public void update() {
         switch(controllerType) {
             case FlightStick:
-                inputs.put(Controls.FlightStick.AxisX, Math.abs(controller.getRawAxis(0)) > STICK_DEADBAND ? controller.getRawAxis(0) : 0);
-                inputs.put(Controls.FlightStick.AxisY, Math.abs(controller.getRawAxis(1)) > STICK_DEADBAND ? controller.getRawAxis(1) : 0);
-                inputs.put(Controls.FlightStick.AxisZ, Math.abs(controller.getRawAxis(2)) > .5 ? controller.getRawAxis(2) : 0);
+                inputs.put(Controls.FlightStick.AxisX, JOYSTICK_GAIN * (Math.pow(controller.getRawAxis(0), 3)) + (1-JOYSTICK_GAIN) * controller.getRawAxis(0));
+                inputs.put(Controls.FlightStick.AxisY, JOYSTICK_GAIN * (Math.pow(controller.getRawAxis(1), 3)) + (1-JOYSTICK_GAIN) * controller.getRawAxis(1));
+                inputs.put(Controls.FlightStick.AxisZ, JOYSTICK_GAIN * (Math.pow(controller.getRawAxis(2), 3)) + (1-JOYSTICK_GAIN) * controller.getRawAxis(2));
                 inputs.put(Controls.FlightStick.Throttle, Math.abs(controller.getRawAxis(3)) > STICK_DEADBAND ? controller.getRawAxis(3) : 0);
                 inputs.put(Controls.FlightStick.Trigger, controller.getRawButton(1));
                 inputs.put(Controls.FlightStick.Button2, controller.getRawButton(2));
