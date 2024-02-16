@@ -18,6 +18,14 @@ public class ModuleOffsets {
     /** The filenames we will be storing the offsets in */
     private static final String[] fileNames = {"frontLeft.txt", "frontRight.txt", "backLeft.txt", "backRight.txt"};
 
+    public static void checkBoolean(){
+        if(SmartDashboard.getBoolean("resetAngleOffsets", false)){
+			SwerveKinematics.configOffsets(ModuleOffsets.calculateOffsets(SwerveKinematics.frontLeftModule.getAbsolutePosition(), SwerveKinematics.frontRightModule.getAbsolutePosition(), SwerveKinematics.backLeftModule.getAbsolutePosition(), SwerveKinematics.backRightModule.getAbsolutePosition()));
+			SmartDashboard.putBoolean("resetAngleOffsets", false);
+		} else {
+			SwerveKinematics.configOffsets(ModuleOffsets.read());
+		}
+    }
     /** Adds a boolean to reset the offsets or not within SmartDashboard, Implemented in Robot.java */
     public static void initialize() {
         SmartDashboard.putBoolean("resetAngleOffsets", false);

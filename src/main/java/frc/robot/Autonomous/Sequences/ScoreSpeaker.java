@@ -7,6 +7,7 @@ import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.DrivetrainCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Subsystems.Shooter.ShooterCommands;
+import frc.robot.Utils.RunCommand;
 
 /*
 Shooting note
@@ -31,7 +32,7 @@ public class ScoreSpeaker extends Command {
                 ArmCommands.speakerPosition(/*put output of distance equation etc. */0),
                 DrivetrainCommands.lineUpSpeaker(/*desired rotation goes here*/null)
             ),
-            IntakeCommands.shootSpeaker,
+            IntakeCommands.feed,
             ArmCommands.stow
             
         );
@@ -50,7 +51,7 @@ public class ScoreSpeaker extends Command {
 
     @Override
     public boolean isFinished() {
-        return sequence.isFinished();
+        return sequence.isFinished() | RunCommand.manualOverride;
     }
 
 }

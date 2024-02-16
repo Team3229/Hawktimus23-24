@@ -82,7 +82,7 @@ public class SwerveKinematics {
         kinematics = new SwerveDriveKinematics(frontLeftModule.location, frontRightModule.location, backLeftModule.location, backRightModule.location);
 
         configureDrivetrain();
-
+        
         modulePositions[0] = new SwerveModulePosition();
         modulePositions[1] = new SwerveModulePosition();
         modulePositions[2] = new SwerveModulePosition();

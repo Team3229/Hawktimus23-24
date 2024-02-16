@@ -7,6 +7,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RunCommand {
     
     private static List<Command> commandList;
+    public static boolean manualOverride = false;
+
+    public static void toggleOverride(){
+        manualOverride = !manualOverride;
+    }
 
     /**
      * Periodic function of {@link #RunCommand}; needs to be run every 20ms

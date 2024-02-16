@@ -100,6 +100,18 @@ Manip controlls:
 
 Left to be done:
 Arm.goToAngle
+-Waiting on arm to be finalized
 Intake.hasNote
+-Waiting on sensor to be finalized
 Determing ideal angle, rot, and rpm of shooter for speaker
-Angles to be used
+Setup hooks for auto shooting
+-correct side of field
+-has note
+-Not amp intent
+Setup hook for toggling amp intent [FINISHED]
+Setup hook for amp scoring
+-Radius (constant) bubble around amp to activate
+-Has amp intent
+-has note
+-1.25 radius currently
+Markout coordinates for every single Point of interest, and store in a constants file [FINISHED]

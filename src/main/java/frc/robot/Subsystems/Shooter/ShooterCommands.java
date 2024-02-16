@@ -11,6 +11,11 @@ public class ShooterCommands {
         }
 
         @Override
+        public void end(boolean interrupted) {
+            Shooter.ampIntent = false;
+        }
+
+        @Override
         public boolean isFinished() {
             return Shooter.currentSpeed >= Shooter.AMP_SPEED;
         }
@@ -21,6 +26,11 @@ public class ShooterCommands {
             @Override
             public void initialize() {
                 Shooter.spinUp(speed);
+            }
+
+            @Override
+            public void end(boolean interrupted) {
+                Shooter.ampIntent = false;
             }
 
             @Override

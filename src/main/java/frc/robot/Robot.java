@@ -11,13 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.RunControls;
-import frc.robot.Subsystems.Arm.Angular;
-import frc.robot.Subsystems.Arm.Linear;
+import frc.robot.Subsystems.Subsystems;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
-import frc.robot.Subsystems.Intake.Intake;
-import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Autonomous.PathPlanner;
 	
@@ -47,10 +44,7 @@ public class Robot extends TimedRobot {
 
 		RunControls.init();
 
-		Intake.init();
-		Shooter.init();
-		Angular.init();
-		Linear.init();
+		Subsystems.init();
 
 		autoManager = new PathPlanner();
 
@@ -92,8 +86,8 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically during autonomous. */
 	@Override 
 	public void autonomousPeriodic() {
-		
-		SwerveOdometry.addSensorData(Vision.getPose(), Vision.getLatency(), false);
+
+		Subsystems.update();
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
@@ -102,12 +96,6 @@ public class Robot extends TimedRobot {
 		} else {
 			SwerveKinematics.stop();
 		}
-
-		SmartDashboard.putNumberArray("odometry", new double[] {
-			SwerveOdometry.getPose().getX(),
-			SwerveOdometry.getPose().getY(),
-			SwerveOdometry.getPose().getRotation().getDegrees()
-		});
 
 	}
 
@@ -124,12 +112,7 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.configureDrivetrain();
 
-		if(SmartDashboard.getBoolean("resetAngleOffsets", false)){
-			SwerveKinematics.configOffsets(ModuleOffsets.calculateOffsets(SwerveKinematics.frontLeftModule.getAbsolutePosition(), SwerveKinematics.frontRightModule.getAbsolutePosition(), SwerveKinematics.backLeftModule.getAbsolutePosition(), SwerveKinematics.backRightModule.getAbsolutePosition()));
-			SmartDashboard.putBoolean("resetAngleOffsets", false);
-		} else {
-			SwerveKinematics.configOffsets(ModuleOffsets.read());
-		}
+		ModuleOffsets.checkBoolean();
 
         SwerveKinematics.chassisState = new ChassisSpeeds();
 
@@ -141,21 +124,9 @@ public class Robot extends TimedRobot {
 
 		RunControls.run();
 
-		Linear.update();
-		Intake.update();
-		Shooter.update();
-
-		// Uncomment when limelight added
-		// SwerveOdometry.addSensorData(limelight.getPose());
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
-	
-		SmartDashboard.putNumberArray("odometry", new double[] {
-			SwerveOdometry.getPose().getX(),
-			SwerveOdometry.getPose().getY(),
-			SwerveOdometry.getPose().getRotation().getDegrees()
-		});
 
-		// logging();
+		Subsystems.update();
 
 	}
 
@@ -195,6 +166,12 @@ public class Robot extends TimedRobot {
 		measuredSwerveState[5] = -SwerveKinematics.backLeftModule.getVelocity();
 		measuredSwerveState[6] = SwerveKinematics.backRightModule.getPosition().getDegrees();
 		measuredSwerveState[7] = -SwerveKinematics.backRightModule.getVelocity();
+
+		SmartDashboard.putNumberArray("odometry", new double[] {
+			SwerveOdometry.getPose().getX(),
+			SwerveOdometry.getPose().getY(),
+			SwerveOdometry.getPose().getRotation().getDegrees()
+		});
 		
 		SmartDashboard.putNumberArray("measuredSwerveState", measuredSwerveState);
 
@@ -204,10 +181,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("frontRight", SwerveKinematics.frontRightModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("backRight", SwerveKinematics.backRightModule.getAbsolutePosition().getDegrees());
-		SmartDashboard.putNumber("frontLefte", SwerveKinematics.frontLeftModule.getPosition().getDegrees());
-		SmartDashboard.putNumber("frontRighte", SwerveKinematics.frontRightModule.getPosition().getDegrees());
-		SmartDashboard.putNumber("backLefte", SwerveKinematics.backLeftModule.getPosition().getDegrees());
-		SmartDashboard.putNumber("backRighte", SwerveKinematics.backRightModule.getPosition().getDegrees());
 
 	}
 }

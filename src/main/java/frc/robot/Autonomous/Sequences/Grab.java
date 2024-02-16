@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
-
+import frc.robot.Utils.RunCommand;
 /*
 Grabbing note
 -unstow
@@ -42,8 +42,9 @@ public class Grab {
 
         @Override
         public boolean isFinished() {
-            return sequence.isFinished();
+            return sequence.isFinished() | RunCommand.manualOverride;
         }
+
     };
 
 }

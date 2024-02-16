@@ -17,6 +17,7 @@ public class Shooter {
     public static OuttakeStates state = OuttakeStates.idle;
     private static double targetSpeed = 0;
     public static double currentSpeed = 0;
+    public static boolean ampIntent = false;
     private static enum OuttakeStates {
         idle,
         spinningUp
@@ -56,5 +57,9 @@ public class Shooter {
         targetSpeed = 0;
         state = OuttakeStates.idle;
         outtake.stopMotor();
+    }
+
+    public static void toggleAmpIntent(){
+        ampIntent = !ampIntent;
     }
 }

@@ -74,7 +74,7 @@ public class SwerveModule {
         
         this.driveMotor = new CANSparkMax(driveID, MotorType.kBrushless);
         this.angleMotor = new CANSparkMax(angleID, MotorType.kBrushless);
-        
+
         this.absoluteEncoder = new CANcoder(encoderID);
         this.absoluteEncoderConfigurator = this.absoluteEncoder.getConfigurator();
         this.absoluteEncoderConfig = new CANcoderConfiguration();
