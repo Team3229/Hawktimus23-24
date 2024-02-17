@@ -129,15 +129,7 @@ Intake.hasNote
 -Create driver controls scheme
 
 Things to test
--Find good angles for all arm positions
--Tune RPM function
--Tune intake speeds
--Tune all PID values
--Test Pathplanner
--Test all auto sequences
--Test vision system
--Create autos via Pathplanner
--Tune controller gain
+
 
 Driver controls:
     Currently bound:
@@ -158,3 +150,19 @@ Manip controls:
         Amp Intent toggle
         Grab sequence activate
         Eject Note
+
+
+Alright, everything left to do:
+-Finish detectNote w/ sensor (Whenever that is made)
+-Test EVERYTHING, including but not limited to:
+-All auto sequences
+-Controls scheme
+-Arm set angles
+-Tune RPM function
+-Tune intake speeds
+-Tune all PID values
+-Test Pathplanner
+-Create autos via Pathplanner
+-Test all auto sequences
+-Test vision system
+-Tune controller gain
