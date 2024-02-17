@@ -15,8 +15,12 @@ import frc.robot.Subsystems.Subsystems;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
+import frc.robot.Utils.RunCommand;
 import frc.robot.Autonomous.PathPlanner;
+import frc.robot.Autonomous.Sequences.ScoreSpeaker;
 	
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -181,6 +185,12 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("frontRight", SwerveKinematics.frontRightModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("backRight", SwerveKinematics.backRightModule.getAbsolutePosition().getDegrees());
+
+		SmartDashboard.putBoolean("Amp Intent", Shooter.ampIntent);
+		SmartDashboard.putBoolean("Has Note", Intake.hasNote);
+		SmartDashboard.putBoolean("Auto Shooting", RunCommand.isActive(ScoreSpeaker.command));
+		SmartDashboard.putBoolean("Manip Manual Control", RunControls.manipManualControl);
+		SmartDashboard.putBoolean("Auto Override", RunCommand.manualOverride);
 
 	}
 }
