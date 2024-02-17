@@ -62,7 +62,7 @@ public class SwerveModule {
     private static final double angleGearRatio = 21.42857;
 
     /**The gear ratio of the drive aspect of the module. (default is from the SDS MK4 L1) */
-    private static final double driveGearRatio = 8.14;
+    private static final double driveGearRatio = 6.12;
 
     /**
      * Create a swerve module object.

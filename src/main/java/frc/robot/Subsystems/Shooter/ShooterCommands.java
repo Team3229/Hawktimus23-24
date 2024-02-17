@@ -17,27 +17,24 @@ public class ShooterCommands {
 
         @Override
         public boolean isFinished() {
-            return Shooter.currentSpeed >= Shooter.AMP_SPEED;
+            return Shooter.atSpeed;
         }
     };
 
-    public static Command shootSpeaker(double speed) {
-        return new Command() {
-            @Override
-            public void initialize() {
-                Shooter.spinUp(speed);
-            }
+    public static Command shootSpeaker = new Command() {
+        @Override
+        public void initialize() {
+            Shooter.spinUp(Shooter.targetSpeed);
+        }
 
-            @Override
-            public void end(boolean interrupted) {
-                Shooter.ampIntent = false;
-            }
+        @Override
+        public void end(boolean interrupted) {
+            Shooter.ampIntent = false;
+        }
 
-            @Override
-            public boolean isFinished() {
-                return Shooter.currentSpeed >= speed;
-            }
-        };
-    }
-
+        @Override
+        public boolean isFinished() {
+            return Shooter.atSpeed;
+        }
+    };
 }

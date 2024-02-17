@@ -17,7 +17,7 @@ public class Intake {
     private static final int INTAKE_ID = 0;
     private static final double INTAKE_SPEED = 0.5;
     public static IntakeStates state = IntakeStates.idle;
-    private enum IntakeStates {
+    public enum IntakeStates {
         intaking,
         outtaking,
         ejecting,

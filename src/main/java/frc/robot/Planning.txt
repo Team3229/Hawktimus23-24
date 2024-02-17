@@ -103,15 +103,58 @@ Arm.goToAngle
 -Waiting on arm to be finalized
 Intake.hasNote
 -Waiting on sensor to be finalized
-Determing ideal angle, rot, and rpm of shooter for speaker
-Setup hooks for auto shooting
+Determing ideal angle, rot, and rpm of shooter for speaker [FINISHED]
+Setup hooks for auto shooting [FINISHED]
 -correct side of field
 -has note
 -Not amp intent
 Setup hook for toggling amp intent [FINISHED]
-Setup hook for amp scoring
+Setup hook for amp scoring [FINISHED]
 -Radius (constant) bubble around amp to activate
 -Has amp intent
 -has note
 -1.25 radius currently
 Markout coordinates for every single Point of interest, and store in a constants file [FINISHED]
+
+
+Things left as of 2/17/24
+Arm.goToAngle [FINISHED]
+
+-Drivetrain commands to lineup to stuff [FINISHED]
+-swap swerve gear ration to sdsl3 [FINISHED]
+
+Things to program
+Intake.hasNote
+-Waiting on sensor to be finalized
+-Create driver controls scheme
+
+Things to test
+-Find good angles for all arm positions
+-Tune RPM function
+-Tune intake speeds
+-Tune all PID values
+-Test Pathplanner
+-Test all auto sequences
+-Test vision system
+-Create autos via Pathplanner
+-Tune controller gain
+
+Driver controls:
+    Currently bound:
+        Flightstick -> Drive
+        Throttle -> Rot. speed
+        POV -> Polar movement
+        Auto-Override
+        Relative mode
+        Reset NavX
+Manip controls: 
+    Auto Override
+    Left to bind:
+        Manual control toggle
+            Flightstick Y -> Arm
+            Trigger -> Intake toggle
+            Weird trigger -> Spin up shooter
+            Hazard button -> linear rail
+        Amp Intent toggle
+        Grab sequence activate
+        Eject Note

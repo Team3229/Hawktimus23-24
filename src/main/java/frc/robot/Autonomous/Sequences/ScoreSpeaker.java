@@ -19,39 +19,39 @@ Shooting note
 -reset everything, stow
 -Return driver control
  */
-public class ScoreSpeaker extends Command {
+public class ScoreSpeaker {
     
     private static SequentialCommandGroup sequence;
+    public static Command command = new Command() {
+        @Override
+        public void initialize() {
+            sequence.addCommands(
 
-    @Override
-    public void initialize() {
-        sequence.addCommands(
+                new ParallelCommandGroup(
+                    ShooterCommands.shootSpeaker,
+                    ArmCommands.speakerPosition,
+                    DrivetrainCommands.lineUpSpeaker
+                ),
+                IntakeCommands.feed,
+                ArmCommands.stow
+                
+            );
+            sequence.initialize();
+        }
 
-            new ParallelCommandGroup(
-                ShooterCommands.shootSpeaker(/*put output of RPMs equation etc. */0),
-                ArmCommands.speakerPosition(/*put output of distance equation etc. */0),
-                DrivetrainCommands.lineUpSpeaker(/*desired rotation goes here*/null)
-            ),
-            IntakeCommands.feed,
-            ArmCommands.stow
-            
-        );
-        sequence.initialize();
-    }
+        @Override
+        public void execute() {
+            sequence.execute();
+        }
 
-    @Override
-    public void execute() {
-        sequence.execute();
-    }
+        @Override
+        public void end(boolean interrupted) {
+            sequence.end(interrupted);
+        }
 
-    @Override
-    public void end(boolean interrupted) {
-        sequence.end(interrupted);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return sequence.isFinished() | RunCommand.manualOverride;
-    }
-
+        @Override
+        public boolean isFinished() {
+            return sequence.isFinished() | RunCommand.manualOverride;
+        }
+    };
 }

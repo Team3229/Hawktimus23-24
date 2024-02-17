@@ -31,7 +31,7 @@ public class Controller {
                 inputs.put(Controls.FlightStick.AxisZ, JOYSTICK_GAIN * (Math.pow(controller.getRawAxis(2), 3)) + (1-JOYSTICK_GAIN) * controller.getRawAxis(2));
                 inputs.put(Controls.FlightStick.Throttle, Math.abs(controller.getRawAxis(3)) > STICK_DEADBAND ? controller.getRawAxis(3) : 0);
                 inputs.put(Controls.FlightStick.Trigger, controller.getRawButton(1));
-                inputs.put(Controls.FlightStick.Button2, controller.getRawButton(2));
+                inputs.put(Controls.FlightStick.Hazard, controller.getRawButton(2));
                 inputs.put(Controls.FlightStick.Button3, controller.getRawButton(3));
                 inputs.put(Controls.FlightStick.Button4, controller.getRawButton(4));
                 inputs.put(Controls.FlightStick.Button5, controller.getRawButton(5));
@@ -44,7 +44,7 @@ public class Controller {
                 inputs.put(Controls.FlightStick.Button12, controller.getRawButton(12));
 
                 inputs.put(Controls.FlightStick.TriggerToggle, controller.getRawButtonPressed(1));
-                inputs.put(Controls.FlightStick.Button2Toggle, controller.getRawButtonPressed(2));
+                inputs.put(Controls.FlightStick.HazardToggle, controller.getRawButtonPressed(2));
                 inputs.put(Controls.FlightStick.Button3Toggle, controller.getRawButtonPressed(3));
                 inputs.put(Controls.FlightStick.Button4Toggle, controller.getRawButtonPressed(4));
                 inputs.put(Controls.FlightStick.Button5Toggle, controller.getRawButtonPressed(5));
@@ -109,7 +109,7 @@ public class Controller {
                 inputs.put(Controls.FlightStick.Throttle, 0.0);
                 
                 inputs.put(Controls.FlightStick.Trigger, false);
-                inputs.put(Controls.FlightStick.Button2, false);
+                inputs.put(Controls.FlightStick.Hazard, false);
                 inputs.put(Controls.FlightStick.Button3, false);
                 inputs.put(Controls.FlightStick.Button4, false);
                 inputs.put(Controls.FlightStick.Button5, false);
@@ -122,7 +122,7 @@ public class Controller {
                 inputs.put(Controls.FlightStick.Button12, false);
 
                 inputs.put(Controls.FlightStick.TriggerToggle, false);
-                inputs.put(Controls.FlightStick.Button2Toggle, false);
+                inputs.put(Controls.FlightStick.HazardToggle, false);
                 inputs.put(Controls.FlightStick.Button3Toggle, false);
                 inputs.put(Controls.FlightStick.Button4Toggle, false);
                 inputs.put(Controls.FlightStick.Button5Toggle, false);
@@ -201,7 +201,7 @@ public class Controller {
           /** boolean */
           Trigger,
           /** boolean */
-          Button2,
+          Hazard,
           /** boolean */
           Button3,
           /** boolean */
@@ -226,7 +226,7 @@ public class Controller {
           /** boolean */
           TriggerToggle,
           /** boolean */
-          Button2Toggle,
+          HazardToggle,
           /** boolean */
           Button3Toggle,
           /** boolean */

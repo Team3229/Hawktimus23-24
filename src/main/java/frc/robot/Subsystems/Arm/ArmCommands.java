@@ -76,18 +76,10 @@ public class ArmCommands {
         }
     };
 
-    public static Command speakerPosition(double degrees) {
-        return new Command() {
-            @Override
-            public void initialize() {
-                Angular.shoot(degrees);
-            }
-
-            @Override
-            public boolean isFinished() {
-                return Angular.atTarget;
-            }
-        };
-    }
-
+    public static Command speakerPosition = new Command() {
+        @Override
+        public boolean isFinished() {
+            return Angular.atTarget;
+        }
+    };
 }

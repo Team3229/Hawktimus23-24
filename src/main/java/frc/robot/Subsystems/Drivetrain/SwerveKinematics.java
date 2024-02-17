@@ -4,6 +4,8 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -11,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import frc.robot.Subsystems.Vision.Vision;
 
 public class SwerveKinematics {
 
@@ -22,10 +25,8 @@ public class SwerveKinematics {
 
     /**PID values for the swerve modules' angular motion. (Automatically populated with our constants we used for the 22-23 season) */
     private static final PIDConstants anglePID = new PIDConstants(0.009, 0, 0);
-    // private static final double[] anglePID = {0.01, 0.0001, 0};
     /**PID values for the swerve modules' driving motion. (Automatically populated with our constants we used for the 22-23 season) */
     private static final PIDConstants drivePID = new PIDConstants(0.1, 0, 0);
-    // private static final double[] drivePID = {0.1, 0, 0};
 
     /**Kauai Labs NavX Gyro. */
     public static AHRS navxGyro;
@@ -37,7 +38,7 @@ public class SwerveKinematics {
      * Robot relative mode uses the current rotation of the robot as forward, instead of the default
      * field-relative mode. This is useful for picking up objects or lining up with a game piece.
      */
-    private static boolean relativeMode;
+    public static boolean relativeMode;
 
     /**An object used to calculate module velocities from overall chassis movement. */
     public static SwerveDriveKinematics kinematics;
@@ -63,7 +64,11 @@ public class SwerveKinematics {
     public static double maxChassisRotationSpeed = 5;
     /**Whether or not to run the drive motors in brake mode. */
     private static final boolean brakeMode = true;
-    
+
+    public static PIDController linearXMovement = new PIDController(40, 0.0, 0.5);
+    public static PIDController linearYMovement = new PIDController(40, 0.0, 0.5);
+    public static PIDController angularMovement = new PIDController(5, 0, 0);
+
     public SwerveKinematics() {}
 
     /**Initializes the drivetrain. */
@@ -183,6 +188,14 @@ public class SwerveKinematics {
         modulePositions[1] = frontRightModule.currentPosition;
         modulePositions[2] = backLeftModule.currentPosition;
         modulePositions[3] = backRightModule.currentPosition;
+    }
+
+    public static void goToPosition(Pose2d position) {
+        drive(
+            linearXMovement.calculate(Vision.getPose().getX(), position.getX()),
+            linearYMovement.calculate(Vision.getPose().getY(), position.getY()),
+            angularMovement.calculate(Vision.getPose().getRotation().getDegrees(),position.getRotation().getDegrees())
+        );
     }
 
     public static ChassisSpeeds getSpeeds() {
