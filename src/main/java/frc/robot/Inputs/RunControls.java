@@ -103,7 +103,7 @@ public class RunControls {
                 if(Shooter.state == ShooterStates.spinningUp){
                     Shooter.stop();
                 } else {
-                    Shooter.spinUp(5000);
+                    Shooter.spinUp(5000 * ((double) manipStick.get(Controls.FlightStick.Throttle)/2) + 0.5);
                 }
             }
             
