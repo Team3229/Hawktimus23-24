@@ -3,6 +3,8 @@ package frc.robot.Subsystems.Intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+
 /*
 Controls intaking a note
 -Detect a note
@@ -16,15 +18,18 @@ public class Intake {
     private static CANSparkMax intake;
     private static final int INTAKE_ID = 0;
     private static final double INTAKE_SPEED = 0.5;
+    private static DigitalInput sensor;
+    private static final int SENSOR_CHANNEL = 0;
     public static IntakeStates state = IntakeStates.idle;
     public enum IntakeStates {
         intaking,
-        outtaking,
+        feed,
         ejecting,
         idle
     }
 
     public static void init(){
+        sensor = new DigitalInput(SENSOR_CHANNEL);
         intake = new CANSparkMax(INTAKE_ID, MotorType.kBrushless);
     }
 
@@ -40,7 +45,7 @@ public class Intake {
             case intaking:
                 intaking();
                 break;
-            case outtaking:
+            case feed:
                 feeding();
                 break;
         }
@@ -70,9 +75,8 @@ public class Intake {
         }
     }
 
-    //REMEMBER TO FINISH THIS ONCE WE KNOW WHAT SENSOR TO USE
     private static boolean detectNote(){
-        hasNote = false;
+        hasNote = !sensor.get();
         return hasNote;
     }
 
@@ -85,7 +89,7 @@ public class Intake {
     }
 
     public static void feed(){
-        state = IntakeStates.outtaking;
+        state = IntakeStates.feed;
     }
 
     public static void stop(){

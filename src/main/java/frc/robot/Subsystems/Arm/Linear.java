@@ -12,7 +12,7 @@ public class Linear {
 
     private static CANSparkMax linearRail;
     private static final int RAIL_ID = 0;
-    public static boolean isBackward = true;
+    public static boolean goingBackwards = true;
     public static boolean atSide = false;
     private static SparkLimitSwitch forwardLimitSwitch;
     private static SparkLimitSwitch backwardLimitSwitch;
@@ -26,15 +26,17 @@ public class Linear {
     }
 
     public static void update(){
-        if(isBackward){
+        if(goingBackwards){
             //Going backwards
             if(backwardLimitSwitch.isPressed()){
                 //At back switch
                 atSide = true;
                 linearRail.stopMotor();
+                //if the rail reaches the end the motor stops
             } else {
                 atSide = false;
                 linearRail.set(-RAIL_SPEED);
+                //if the rail hasen't yet reached the end the motor goes
             }
         } else {
             //Going forwards
@@ -42,19 +44,21 @@ public class Linear {
                 //At front switch
                 atSide = true;
                 linearRail.stopMotor();
+                //if the rail reaches the end the motor stops
             } else {
                 atSide = false;
                 linearRail.set(RAIL_SPEED);
+                 //if the rail hasen't yet reached the end the motor goes
             }
         }
     }
 
     public static void front(){
-        isBackward = false;
+        goingBackwards = false;
     }
 
     public static void back(){
-        isBackward = true;
+        goingBackwards = true;
     }
     
 }

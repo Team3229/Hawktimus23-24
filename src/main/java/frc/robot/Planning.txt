@@ -153,8 +153,8 @@ Manip controls:
 
 
 Alright, everything left to do:
--Finish detectNote w/ sensor (Whenever that is made)
 -Test EVERYTHING, including but not limited to:
+-Sensor
 -All auto sequences
 -Controls scheme
 -Arm set angles
@@ -166,3 +166,20 @@ Alright, everything left to do:
 -Test all auto sequences
 -Test vision system
 -Tune controller gain
+
+
+   X|_O_|O
+   O|_X_|X
+   X| X |O
+   GG-Nick       X
+   GG-Jimmy      O
+
+   |_-_|_-_|_-_|_-_|_-_|
+   |_-_|_-_|_-_|_-_|_-_|
+   |_O_|_-_|_-_|_-_|_-_|
+   |_O_|_O_|_X_|_-_|_X_|
+   |_X_|_O_|_O_|_-_|_X_|
+   |_X_|_X_|_O_|_O_|_X_|
+
+   GG-Nick  X ❌ 🐒
+   GG-Jimmy O 👑 :D

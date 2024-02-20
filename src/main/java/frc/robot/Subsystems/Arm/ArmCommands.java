@@ -79,6 +79,7 @@ public class ArmCommands {
     public static Command speakerPosition = new Command() {
         @Override
         public boolean isFinished() {
+            //The arm is constantly trying to move to its target, thus this needs nothing more.
             return Angular.atTarget;
         }
     };

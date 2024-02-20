@@ -40,7 +40,7 @@ public class IntakeCommands {
 
         @Override
         public boolean isFinished() {
-            return Intake.hasNote;
+            return !Intake.hasNote;
         }
     };
 

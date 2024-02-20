@@ -7,7 +7,6 @@ import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.DrivetrainCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Subsystems.Shooter.ShooterCommands;
-import frc.robot.Utils.RunCommand;
 
 /*
 Shooting note
@@ -26,7 +25,6 @@ public class ScoreSpeaker {
         @Override
         public void initialize() {
             sequence.addCommands(
-
                 new ParallelCommandGroup(
                     ShooterCommands.shootSpeaker,
                     ArmCommands.speakerPosition,
@@ -34,7 +32,6 @@ public class ScoreSpeaker {
                 ),
                 IntakeCommands.feed,
                 ArmCommands.stow
-                
             );
             sequence.initialize();
         }
@@ -51,7 +48,7 @@ public class ScoreSpeaker {
 
         @Override
         public boolean isFinished() {
-            return sequence.isFinished() | RunCommand.manualOverride;
+            return sequence.isFinished();
         }
     };
 }

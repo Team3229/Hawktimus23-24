@@ -1,10 +1,10 @@
 package frc.robot.Autonomous.Sequences;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
-import frc.robot.Utils.RunCommand;
 /*
 Grabbing note
 -unstow
@@ -19,12 +19,16 @@ public class Grab {
         @Override
         public void initialize() {
             sequence.addCommands(
-                ArmCommands.raise,
-                ArmCommands.forwardRail,
+                new ParallelCommandGroup(
+                    ArmCommands.raise,
+                    ArmCommands.forwardRail
+                ),
                 ArmCommands.intakePos,
                 IntakeCommands.intakeNote,
-                ArmCommands.raise,
-                ArmCommands.backwardRail,
+                new ParallelCommandGroup(
+                    ArmCommands.raise,
+                    ArmCommands.backwardRail
+                ),
                 ArmCommands.stow           
             );
             sequence.initialize();
@@ -42,7 +46,7 @@ public class Grab {
 
         @Override
         public boolean isFinished() {
-            return sequence.isFinished() | RunCommand.manualOverride;
+            return sequence.isFinished();
         }
 
     };

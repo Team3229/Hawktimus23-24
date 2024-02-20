@@ -24,12 +24,7 @@ public class ShooterCommands {
     public static Command shootSpeaker = new Command() {
         @Override
         public void initialize() {
-            Shooter.spinUp(Shooter.targetSpeed);
-        }
-
-        @Override
-        public void end(boolean interrupted) {
-            Shooter.ampIntent = false;
+            Shooter.spinUp();
         }
 
         @Override

@@ -13,6 +13,9 @@ public class RunCommand {
      * Periodic function of {@link #RunCommand}; needs to be run every 20ms
      */
     public static void periodic() {
+        
+        if(manualOverride) commandList.removeAll(commandList);
+
         int size = commandList.size();
         for (int i = 0; i < size; i++) {
             Command command = commandList.get(i);
@@ -22,6 +25,7 @@ public class RunCommand {
                 commandList.remove(i);
             }
         }
+
     }
 
     /**

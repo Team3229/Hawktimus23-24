@@ -16,10 +16,12 @@ import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.Intake.IntakeStates;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.RunCommand;
 import frc.robot.Autonomous.PathPlanner;
+import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
 	
 /**
@@ -55,6 +57,7 @@ public class Robot extends TimedRobot {
 		Vision.initialize();
 
 		SwerveKinematics.initialize();
+
 		SwerveOdometry.initialize(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
 
 	}
@@ -162,25 +165,12 @@ public class Robot extends TimedRobot {
 
 	public void logging() {
 
-		measuredSwerveState[0] = SwerveKinematics.frontLeftModule.getPosition().getDegrees();
-		measuredSwerveState[1] = -SwerveKinematics.frontLeftModule.getVelocity();
-		measuredSwerveState[2] = SwerveKinematics.frontRightModule.getPosition().getDegrees();
-		measuredSwerveState[3] = -SwerveKinematics.frontRightModule.getVelocity();
-		measuredSwerveState[4] = SwerveKinematics.backLeftModule.getPosition().getDegrees();
-		measuredSwerveState[5] = -SwerveKinematics.backLeftModule.getVelocity();
-		measuredSwerveState[6] = SwerveKinematics.backRightModule.getPosition().getDegrees();
-		measuredSwerveState[7] = -SwerveKinematics.backRightModule.getVelocity();
-
 		SmartDashboard.putNumberArray("odometry", new double[] {
 			SwerveOdometry.getPose().getX(),
 			SwerveOdometry.getPose().getY(),
 			SwerveOdometry.getPose().getRotation().getDegrees()
 		});
 		
-		SmartDashboard.putNumberArray("measuredSwerveState", measuredSwerveState);
-
-		SmartDashboard.putNumber("navX", SwerveKinematics.robotRotation.getDegrees());
-
 		SmartDashboard.putNumber("frontLeft", SwerveKinematics.frontLeftModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("frontRight", SwerveKinematics.frontRightModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());
@@ -188,9 +178,12 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putBoolean("Amp Intent", Shooter.ampIntent);
 		SmartDashboard.putBoolean("Has Note", Intake.hasNote);
-		SmartDashboard.putBoolean("Auto Shooting", RunCommand.isActive(ScoreSpeaker.command));
+		SmartDashboard.putBoolean("Auto Control", RunCommand.isActive(ScoreSpeaker.command) | RunCommand.isActive(ScoreAmp.command));
 		SmartDashboard.putBoolean("Manip Manual Control", RunControls.manipManualControl);
 		SmartDashboard.putBoolean("Auto Override", RunCommand.manualOverride);
+		SmartDashboard.putBoolean("Intake Active", Intake.state == IntakeStates.intaking);
+
+		SmartDashboard.putNumber("Shooter RPM", Shooter.encoder.getPosition());
 
 	}
 }

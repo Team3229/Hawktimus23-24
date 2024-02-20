@@ -17,14 +17,14 @@ public class Shooter {
     private static CANSparkMax outtake;
     private static final int OUTTAKE_ID = 0;
     public static final double AMP_SPEED = .1;
-    public static OuttakeStates state = OuttakeStates.idle;
+    public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;
     public static boolean ampIntent = false;
     public static boolean atSpeed = false;
     public static final double RPM_DEADBAND = 10;
     private static SparkPIDController pid;
-    private static RelativeEncoder encoder;
-    public static enum OuttakeStates {
+    public static RelativeEncoder encoder;
+    public static enum ShooterStates {
         idle,
         spinningUp
     }
@@ -57,12 +57,16 @@ public class Shooter {
 
     public static void spinUp(double speed){
         targetSpeed = speed;
-        state = OuttakeStates.spinningUp;
+        state = ShooterStates.spinningUp;
+    }
+    
+    public static void spinUp(){
+        state = ShooterStates.spinningUp;
     }
 
     public static void stop(){
         targetSpeed = 0;
-        state = OuttakeStates.idle;
+        state = ShooterStates.idle;
         outtake.stopMotor();
     }
 

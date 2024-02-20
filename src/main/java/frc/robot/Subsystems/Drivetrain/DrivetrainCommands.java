@@ -30,7 +30,7 @@ public class DrivetrainCommands {
     public static Command lineUpSpeaker = new Command() {
         @Override
         public void execute() {
-            SwerveKinematics.goToPosition(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), Subsystems.rotation));
+            SwerveKinematics.goToPosition(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), Subsystems.targetRotation));
         }
 
         @Override

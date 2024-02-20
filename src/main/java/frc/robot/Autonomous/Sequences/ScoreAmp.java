@@ -7,7 +7,6 @@ import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.DrivetrainCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Subsystems.Shooter.ShooterCommands;
-import frc.robot.Utils.RunCommand;
 
 /*
 Dropping into the amp:
@@ -49,7 +48,7 @@ public class ScoreAmp {
 
         @Override
         public boolean isFinished() {
-            return sequence.isFinished() | RunCommand.manualOverride;
+            return sequence.isFinished();
         }
     };
 

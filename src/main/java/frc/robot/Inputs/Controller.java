@@ -29,7 +29,7 @@ public class Controller {
                 inputs.put(Controls.FlightStick.AxisX, JOYSTICK_GAIN * (Math.pow(controller.getRawAxis(0), 3)) + (1-JOYSTICK_GAIN) * controller.getRawAxis(0));
                 inputs.put(Controls.FlightStick.AxisY, JOYSTICK_GAIN * (Math.pow(controller.getRawAxis(1), 3)) + (1-JOYSTICK_GAIN) * controller.getRawAxis(1));
                 inputs.put(Controls.FlightStick.AxisZ, JOYSTICK_GAIN * (Math.pow(controller.getRawAxis(2), 3)) + (1-JOYSTICK_GAIN) * controller.getRawAxis(2));
-                inputs.put(Controls.FlightStick.Throttle, Math.abs(controller.getRawAxis(3)) > STICK_DEADBAND ? controller.getRawAxis(3) : 0);
+                inputs.put(Controls.FlightStick.Throttle, Math.abs(controller.getRawAxis(3)-1)/2 > STICK_DEADBAND ? Math.abs(controller.getRawAxis(3)-1)/2 : 0);
                 inputs.put(Controls.FlightStick.Trigger, controller.getRawButton(1));
                 inputs.put(Controls.FlightStick.Hazard, controller.getRawButton(2));
                 inputs.put(Controls.FlightStick.Button3, controller.getRawButton(3));
@@ -190,11 +190,11 @@ public class Controller {
           //Axes
           /** double */
           AxisX,
-          /** double */
+          /** 1 to -1 */
           AxisY,
           /** double */
           AxisZ,
-          /** double */
+          /** 0 to 1 */
           Throttle,
 
           //Buttons
