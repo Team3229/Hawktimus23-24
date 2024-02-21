@@ -4,14 +4,21 @@
 
 package frc.robot;
 
+import java.awt.geom.Point2D;
+
+import com.revrobotics.CANSparkBase.ControlType;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.RunControls;
 import frc.robot.Subsystems.Subsystems;
+import frc.robot.Subsystems.Arm.Angular;
+import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -19,6 +26,7 @@ import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Intake.Intake.IntakeStates;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
+import frc.robot.Utils.FieldConstants;
 import frc.robot.Utils.RunCommand;
 import frc.robot.Autonomous.PathPlanner;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
@@ -94,15 +102,35 @@ public class Robot extends TimedRobot {
 	@Override 
 	public void autonomousPeriodic() {
 
-		Subsystems.update();
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
+		Pose2d pose = SwerveOdometry.getPose();
+        
+		if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
+			//Make a line from the robot towards the speaker
+			Point2D speaker = new Point2D.Double(FieldConstants.BLUE_SPEAKER[0], FieldConstants.BLUE_SPEAKER[1]);
+			Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
+			Shooter.targetSpeed = speaker.distance(bot) * 1200;
+		} else {
+			//Red team, same deal as before.
+			Point2D speaker = new Point2D.Double(FieldConstants.RED_SPEAKER[0], FieldConstants.RED_SPEAKER[1]);
+			Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
+			Shooter.targetSpeed = speaker.distance(bot) * 1200;
+		}
+
+		Shooter.pid.setReference(Shooter.targetSpeed,ControlType.kVelocity);
+        Shooter.atSpeed = Math.abs(Shooter.encoder.getPosition()) <= Shooter.RPM_DEADBAND;
+		
 		if (!autoCommand.isFinished()) {
 			autoCommand.execute();
 		} else {
 			SwerveKinematics.stop();
 		}
+
+		Intake.update();
+		Angular.update();
+		Linear.update();
 
 	}
 

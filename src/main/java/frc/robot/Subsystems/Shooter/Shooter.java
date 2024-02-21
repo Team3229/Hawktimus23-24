@@ -22,7 +22,7 @@ public class Shooter {
     public static boolean ampIntent = false;
     public static boolean atSpeed = false;
     public static final double RPM_DEADBAND = 10;
-    private static SparkPIDController pid;
+    public static SparkPIDController pid;
     public static RelativeEncoder encoder;
     public static enum ShooterStates {
         idle,
