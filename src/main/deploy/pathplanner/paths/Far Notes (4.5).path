@@ -224,6 +224,23 @@
           ]
         }
       }
+    },
+    {
+      "name": "Shoot 5th Note",
+      "waypointRelativePos": 6.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
