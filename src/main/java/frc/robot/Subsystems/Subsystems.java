@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
+import frc.robot.Inputs.RunControls;
 import frc.robot.Subsystems.Arm.Angular;
 import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -34,7 +35,7 @@ public class Subsystems {
 		Shooter.update();
         Angular.update();
 
-        if(RunCommand.manualOverride) return;
+        if(RunCommand.manualOverride | RunControls.manipManualControl) return;
 
         if(Intake.hasNote){
             if(Shooter.ampIntent){

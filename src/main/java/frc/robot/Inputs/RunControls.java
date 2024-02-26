@@ -19,7 +19,7 @@ public class RunControls {
     private static Controller driveStick;
     private static Controller manipStick;
 
-    public static boolean manipManualControl = false;
+    public static boolean manipManualControl = true;
 
     public static void init(){
         driveStick = new Controller(ControllerType.FlightStick, 0);
