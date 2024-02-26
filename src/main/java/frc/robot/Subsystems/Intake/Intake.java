@@ -16,7 +16,7 @@ Controls intaking a note
 public class Intake {
     public static boolean hasNote = false;
     private static CANSparkMax intake;
-    private static final int INTAKE_ID = 0;
+    private static final int INTAKE_ID = 9;
     private static final double INTAKE_SPEED = 0.5;
     private static DigitalInput sensor;
     private static final int SENSOR_CHANNEL = 0;

@@ -15,7 +15,7 @@ import frc.robot.Subsystems.Intake.Intake;
 public class Shooter {
 
     private static CANSparkMax outtake;
-    private static final int OUTTAKE_ID = 0;
+    private static final int OUTTAKE_ID = 8;
     public static final double AMP_SPEED = .1;
     public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;

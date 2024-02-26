@@ -11,7 +11,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 public class Linear {
 
     private static CANSparkMax linearRail;
-    private static final int RAIL_ID = 0;
+    private static final int RAIL_ID = 7;
     public static boolean goingBackwards = true;
     public static boolean atSide = false;
     private static SparkLimitSwitch forwardLimitSwitch;

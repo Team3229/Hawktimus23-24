@@ -16,8 +16,8 @@ public class Angular {
 
     public static CANSparkMax arm;
     private static CANSparkMax arm2;
-    private static final int ARM_ID = 0;
-    private static final int ARM2_ID = 0;
+    private static final int ARM_ID = 15;
+    private static final int ARM2_ID = 16;
 
     public static double targetAngle = 0;
 
