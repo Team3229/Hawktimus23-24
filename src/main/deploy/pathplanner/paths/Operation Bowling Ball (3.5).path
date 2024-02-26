@@ -48,6 +48,22 @@
     },
     {
       "anchor": {
+        "x": 4.920957288419569,
+        "y": 6.358984244359359
+      },
+      "prevControl": {
+        "x": 4.918787656150686,
+        "y": 6.563740902090359
+      },
+      "nextControl": {
+        "x": 4.923126920688452,
+        "y": 6.154227586628359
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
         "x": 8.281967377058862,
         "y": 6.593200975274989
       },
@@ -115,17 +131,17 @@
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 3,
+      "waypointRelativePos": 4.0,
       "rotationDegrees": -120.57922687212728,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 4,
+      "waypointRelativePos": 5.0,
       "rotationDegrees": -125.5376777919744,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 5,
+      "waypointRelativePos": 6.0,
       "rotationDegrees": -90.58437839710047,
       "rotateFast": false
     }
@@ -173,7 +189,7 @@
       }
     },
     {
-      "name": "Grab + Shoot 3rd Note",
+      "name": "Grab 3rd Note",
       "waypointRelativePos": 2.0,
       "command": {
         "type": "sequential",
@@ -184,12 +200,6 @@
               "data": {
                 "name": "Grab"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Speaker"
-              }
             }
           ]
         }
@@ -197,7 +207,7 @@
     },
     {
       "name": "Grab 4th Note",
-      "waypointRelativePos": 5.0,
+      "waypointRelativePos": 6.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -214,7 +224,24 @@
     },
     {
       "name": "Shoot 4th Note",
-      "waypointRelativePos": 6.0,
+      "waypointRelativePos": 7.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot 3rd Note",
+      "waypointRelativePos": 3.0,
       "command": {
         "type": "sequential",
         "data": {

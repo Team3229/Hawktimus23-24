@@ -48,6 +48,22 @@
     },
     {
       "anchor": {
+        "x": 5.2137282020641065,
+        "y": 6.499514282908736
+      },
+      "prevControl": {
+        "x": 5.101242511106633,
+        "y": 6.9090275983690335
+      },
+      "nextControl": {
+        "x": 5.32621389302158,
+        "y": 6.0900009674484386
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
         "x": 7.591028020857753,
         "y": 5.738309907432939
       },
@@ -64,15 +80,15 @@
     },
     {
       "anchor": {
-        "x": 6.361390183550694,
+        "x": 5.2137282020641065,
         "y": 6.499514282908736
       },
       "prevControl": {
-        "x": 6.5142034203469255,
+        "x": 5.366541438860338,
         "y": 6.490731155499399
       },
       "nextControl": {
-        "x": 6.208576946754462,
+        "x": 5.060914965267875,
         "y": 6.508297410318073
       },
       "isLocked": false,
@@ -152,7 +168,7 @@
       }
     },
     {
-      "name": "Grab + Shoot 3rd Note",
+      "name": "Grab 3rd Note",
       "waypointRelativePos": 2.0,
       "command": {
         "type": "sequential",
@@ -163,12 +179,6 @@
               "data": {
                 "name": "Grab"
               }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Speaker"
-              }
             }
           ]
         }
@@ -176,7 +186,7 @@
     },
     {
       "name": "Grab 4th Note",
-      "waypointRelativePos": 3.0,
+      "waypointRelativePos": 4.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -193,7 +203,7 @@
     },
     {
       "name": "Shoot 4th Note",
-      "waypointRelativePos": 4.0,
+      "waypointRelativePos": 5.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -210,7 +220,7 @@
     },
     {
       "name": "Grab 5th Note",
-      "waypointRelativePos": 5.0,
+      "waypointRelativePos": 6.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -227,7 +237,24 @@
     },
     {
       "name": "Shoot 5th Note",
-      "waypointRelativePos": 6.0,
+      "waypointRelativePos": 7.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot 3rd Note",
+      "waypointRelativePos": 3.0,
       "command": {
         "type": "sequential",
         "data": {
