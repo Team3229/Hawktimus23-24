@@ -55,6 +55,9 @@ public class SwerveModule {
     /**The location of the swerve module relative to robot center. (in meters) */
     public Translation2d location;
 
+    // TODO: Totally preference and ultimately a stylistic decision. But generally for constants, 
+    // defined like this, I see people subscribing to the convention where their names are all upper case. 
+    // see: https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html
     /**The radius (in meters) of the module's wheel. */
     private static final double wheelRadius = 0.0508;
 

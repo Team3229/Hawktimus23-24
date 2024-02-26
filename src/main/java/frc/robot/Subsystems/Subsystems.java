@@ -76,6 +76,7 @@ public class Subsystems {
                 if(!intersect){
                     //We have LoS on the speaker (Not through the stage) therefore we are good to shoot, as long as its possible!
                     double shootingAngle = Math.atan(2/speaker.distance(bot));
+                    // TODO: Ideally avoid magic numbers. I'd lift that 60 and 90 to constants
                     if(60 <= shootingAngle & shootingAngle <= 90){
                         //We can shoot!
                         double rotDegrees = Math.atan((myLine.getX2()-myLine.getX1())/(myLine.getY2()-myLine.getY1())) * 180/Math.PI;
@@ -88,6 +89,7 @@ public class Subsystems {
                 }
             }
         } else {
+            // TODO: I think we could simplify this into some common behavior. Happy to help take a crack at making this more DRY. 
             //Red team, same deal as before.
             if((pose.getX() > FieldConstants.BLUE_SHOOTING_LINE[0])){
                 Point2D speaker = new Point2D.Double(FieldConstants.RED_SPEAKER[0], FieldConstants.RED_SPEAKER[1]);

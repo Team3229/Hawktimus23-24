@@ -26,6 +26,16 @@ public class Linear {
     }
 
     public static void update(){
+        // TODO: Could we lift this state and de-duplicate this logic? 
+        // Could we do something like?: 
+        // SparkLimitSwitch targetLimitSwitch = (goingBackwards) ? backwardLimitSwitch : forwardLimitSwitch;
+        // atSide = targetLimitSwitch.isPressed();
+        // if (atSide) {
+        //     linearRail.stopMotor();
+        // } else {
+        //     linearRail.set(goingBackwards ? -RAIL_SPEED : RAIL_SPEED);
+        // }
+
         if(goingBackwards){
             //Going backwards
             if(backwardLimitSwitch.isPressed()){

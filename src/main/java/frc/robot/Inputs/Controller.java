@@ -6,10 +6,24 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
+/**
+ * All in all, I really like the thought behind the design. I'm kind of a simp for table/map 
+ * driven interfaces too. That said, I do have some concerns about this implementation. 
+ * 
+ * My recommendation would probably be to design controller as a base class which exposes 
+ * any common/sharable notions (e.g. getForwardInput() or something), and then have those explicitly 
+ * overriden by any derived classes (e.g. an XboxController class). You can then write any code particular to those 
+ * derived classes. I know this would end up with you having written some yucky wrapper methods like, "getAButton()", 
+ * which would effectively be a one-liner that wrap a getRawButtonPressed(), but it would yield some benefits. Most significantly
+ * would be getting a concrete return type - which would mean you're not casting values from your controller classes.  
+ * 
+ */
 public class Controller {
     
     private ControllerType controllerType;
     public GenericHID controller;
+    // By having the associated type be of "Object", you have no certainty in the actual return type. 
+    // As a consequence, this means that you'll end up proliferating type casts throughout the rest of your code. 
     Map<Object, Object> inputs;
     private final double STICK_DEADBAND = 0.125;
 
@@ -23,6 +37,10 @@ public class Controller {
         nullControls();
     }
 
+    // I get especially worried here. Each teleop tick it looks like we're polling every potential input from the controller. 
+    // Depending on how the underlying library works, each of these could be a very IO heavy task. 
+    // If we are set on wanting to have this paradigm be map/table driven through the HashMap, maybe we could look into coming up with a 
+    // way such that we associate an input with a Function type or lambda, such that we could do some lazy evaluation. 
     public void update() {
         switch(controllerType) {
             case FlightStick:

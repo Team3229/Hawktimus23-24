@@ -33,10 +33,16 @@ public class ModuleOffsets {
         // create files if they don't exist
         new File(path).mkdirs();
         try {
+            // TODO: This assumes a fixed length. 
             new File(path + fileNames[0]).createNewFile();
             new File(path + fileNames[1]).createNewFile();
             new File(path + fileNames[2]).createNewFile();
             new File(path + fileNames[3]).createNewFile();
+            // Instead consider using a loop bound to the size of the array. 
+            // e.g....
+            // for (String fileName : fileNames) {
+            //     new File(path + fileName).createNewFile();
+            // }
         } catch (Exception e) {
             System.out.println(" [MODULE OFFSETS] An error occured while creating offset files.");
         }
@@ -54,6 +60,8 @@ public class ModuleOffsets {
         // takes the current values, assumes they should be 0, and returns an [] of the new values to set them to after storing it for future use
         Rotation2d[] currentValues = read();
         Rotation2d[] newOffsets = {
+            // TODO: This might be worth formatting for readability sake. 
+            // And mostly preference, but it's not so common to see deeply nested ternaries. 
             currentValues[0].plus(Rotation2d.fromDegrees((fL.getDegrees() < 90 ? -fL.getDegrees(): fL.getDegrees() > 90 && fL.getDegrees() < 270 ? 180 - fL.getDegrees():360 - fL.getDegrees()))),
             currentValues[1].plus(Rotation2d.fromDegrees((fR.getDegrees() < 90 ? -fR.getDegrees(): fR.getDegrees() > 90 && fR.getDegrees() < 270 ? 180 - fR.getDegrees():360 - fR.getDegrees()))),
             currentValues[2].plus(Rotation2d.fromDegrees((bL.getDegrees() < 90 ? -bL.getDegrees(): bL.getDegrees() > 90 && bL.getDegrees() < 270 ? 180 - bL.getDegrees():360 - bL.getDegrees()))),
@@ -93,6 +101,7 @@ public class ModuleOffsets {
             for (int i = 0; i < fileNames.length; i++) {
                 File file = new File(path + fileNames[i]);
                 Scanner scanner = new Scanner(file);
+                // A little confused here: Does this mean we're overwriting these values each file?
                 if (scanner.hasNextLine()) {
                     values[i] = Rotation2d.fromDegrees(Double.parseDouble(scanner.nextLine()));
                 }

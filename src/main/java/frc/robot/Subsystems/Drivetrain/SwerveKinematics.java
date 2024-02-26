@@ -15,6 +15,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Subsystems.Vision.Vision;
 
+// Is there a reason why most of this class' members are declared static? 
+// And if there is, it might be worth having the constructor throw some error to inform 
+// user of the proper use case. If the concern here is the potential of inadvertently instantiating 
+// multiple instances of this class then it might be worth checking out the Singleton pattern.
 public class SwerveKinematics {
 
     // Swerve Modules
