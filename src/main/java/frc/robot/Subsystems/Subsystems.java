@@ -125,6 +125,16 @@ public class Subsystems {
         //Shoot in amp if possible
         //If we are in the radius to amp score
         Pose2d pose = SwerveOdometry.getPose();
+        // TODO: Could maybe reduce something like:
+        // double[] ampPosition = FieldConstants.BLUE_AMP;
+        // if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        //     ampPosition= FieldConstants.RED_AMP;
+        // }
+
+        // if(Math.pow((pose.getX() - ampPosition[0]),2) + Math.pow((pose.getY() - ampPosition[1]),2) < Math.pow(AMP_RADIUS, 2)){
+        //     RunCommand.run((ScoreAmp.command));
+        // }
+
         if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
             //Blue team
             if(Math.pow((pose.getX() - FieldConstants.BLUE_AMP[0]),2) + Math.pow((pose.getY() - FieldConstants.BLUE_AMP[1]),2) < Math.pow(AMP_RADIUS, 2)){
