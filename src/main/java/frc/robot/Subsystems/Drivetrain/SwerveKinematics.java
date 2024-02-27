@@ -75,10 +75,10 @@ public class SwerveKinematics {
     public static void initialize() {
 
         // Replace the CAN IDs to suit your needs.
-        frontLeftModule = new SwerveModule(13, 14, 1, new Translation2d((robotWidth/2), (robotWidth/2)));
-        frontRightModule = new SwerveModule(6, 5, 16, new Translation2d((robotWidth/2), -(robotWidth/2)));
-        backLeftModule = new SwerveModule(12, 11, 8, new Translation2d(-(robotWidth/2), (robotWidth/2)));
-        backRightModule = new SwerveModule(3, 4, 9, new Translation2d(-(robotWidth/2), -(robotWidth/2)));
+        frontLeftModule = new SwerveModule(14, 15, 18, new Translation2d((robotWidth/2), (robotWidth/2)));
+        frontRightModule = new SwerveModule(6, 5, 10, new Translation2d((robotWidth/2), -(robotWidth/2)));
+        backLeftModule = new SwerveModule(13, 12, 11, new Translation2d(-(robotWidth/2), (robotWidth/2)));
+        backRightModule = new SwerveModule(3, 4, 2, new Translation2d(-(robotWidth/2), -(robotWidth/2)));
 
         configOffsets(ModuleOffsets.read());
 
