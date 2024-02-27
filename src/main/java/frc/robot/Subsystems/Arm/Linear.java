@@ -5,59 +5,49 @@ package frc.robot.Subsystems.Arm;
  */
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkLimitSwitch;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Linear {
 
     private static CANSparkMax linearRail;
     private static final int RAIL_ID = 7;
-    public static boolean goingBackwards = true;
-    public static boolean atSide = false;
-    private static SparkLimitSwitch forwardLimitSwitch;
-    private static SparkLimitSwitch backwardLimitSwitch;
-    private static final double RAIL_SPEED = 0.5;
+    private static SparkPIDController pid;
 
+    private static RelativeEncoder encoder;
+    public static boolean atTarget = false;
+    private static double LINEAR_DEADBAND = 1;
+    private static double DISTANCE = 8;
+    public static boolean goingBackwards = false;
+
+    private static final int LINEAR_P = 0;
+    private static final int LINEAR_I = 0;
+    private static final int LINEAR_D = 0;
 
     public static void init(){
         linearRail = new CANSparkMax(RAIL_ID, MotorType.kBrushless);
-        forwardLimitSwitch = linearRail.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
-        backwardLimitSwitch = linearRail.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+        pid = linearRail.getPIDController();
+        encoder = linearRail.getEncoder();
+        encoder.setPositionConversionFactor(Math.PI * 1.375 * 36 * DISTANCE);
+        pid.setP(LINEAR_P);
+        pid.setI(LINEAR_I);
+        pid.setD(LINEAR_D);
+
     }
 
     public static void update(){
-        if(goingBackwards){
-            //Going backwards
-            if(backwardLimitSwitch.isPressed()){
-                //At back switch
-                atSide = true;
-                linearRail.stopMotor();
-                //if the rail reaches the end the motor stops
-            } else {
-                atSide = false;
-                linearRail.set(-RAIL_SPEED);
-                //if the rail hasen't yet reached the end the motor goes
-            }
-        } else {
-            //Going forwards
-            if(forwardLimitSwitch.isPressed()){
-                //At front switch
-                atSide = true;
-                linearRail.stopMotor();
-                //if the rail reaches the end the motor stops
-            } else {
-                atSide = false;
-                linearRail.set(RAIL_SPEED);
-                 //if the rail hasen't yet reached the end the motor goes
-            }
-        }
+        atTarget = Math.abs(encoder.getPosition()) <= LINEAR_DEADBAND;
     }
 
     public static void front(){
+        pid.setReference(1, ControlType.kPosition);
         goingBackwards = false;
     }
 
     public static void back(){
+        pid.setReference(0, ControlType.kPosition);
         goingBackwards = true;
     }
     

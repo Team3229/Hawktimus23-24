@@ -31,6 +31,9 @@ public class Angular {
 
     private static RelativeEncoder encoder;
 
+    private static final int ARM_P = 0;
+    private static final int ARM_I = 0;
+    private static final int ARM_D = 0;
     private static SparkPIDController pidController;
 
     public static void update(){
@@ -61,8 +64,11 @@ public class Angular {
     public static void init(){
         arm = new CANSparkMax(ARM_ID, MotorType.kBrushless);
         arm2 = new CANSparkMax(ARM2_ID,MotorType.kBrushless);
-        arm2.follow(arm);
+        arm2.follow(arm,  true);
         pidController = arm.getPIDController();
+        pidController.setP(ARM_P);
+        pidController.setI(ARM_I);
+        pidController.setD(ARM_D);
         encoder = arm.getAlternateEncoder(8192);
         encoder.setPositionConversionFactor(60 * 360);
         pidController.setOutputRange(AMP_ANGLE, UNSTOWED_ANGLE);

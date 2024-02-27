@@ -60,7 +60,7 @@ public class ArmCommands {
 
         @Override
         public boolean isFinished() {
-            return Linear.atSide;
+            return Linear.atTarget;
         }
     };
 
@@ -72,7 +72,7 @@ public class ArmCommands {
 
         @Override
         public boolean isFinished() {
-            return Linear.atSide;
+            return Linear.atTarget;
         }
     };
 
