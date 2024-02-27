@@ -36,7 +36,7 @@ public class SwerveModule {
     private CANcoderConfigurator absoluteEncoderConfigurator;
     private CANcoderConfiguration absoluteEncoderConfig;
     /**The RelativeEncoder object used for the driving motor's PID controller. */
-    private RelativeEncoder driveEncoder;
+    public RelativeEncoder driveEncoder;
     /**The RelativeEncoder object used for the angular motor's PID controller. */
     private RelativeEncoder angleEncoder;
 

@@ -6,6 +6,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Intake.Intake;
 
 /*
@@ -44,6 +45,8 @@ public class Shooter {
     }
 
     public static void update(){
+        SmartDashboard.putNumber("Shooter setpoint", targetSpeed);
+        SmartDashboard.putNumber("Shooter getpoint", encoder.getPosition());
         switch(state){
             case idle:
                 stop();

@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Vision.Vision;
 
 public class SwerveKinematics {
@@ -130,6 +131,8 @@ public class SwerveKinematics {
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
 
         // Set each module state
+        SmartDashboard.putNumber("FL setpoint", moduleStates[0].speedMetersPerSecond);
+        SmartDashboard.putNumber("FL getpoint", frontLeftModule.driveEncoder.getPosition());
         frontLeftModule.setModuleState(moduleStates[0]);
         frontRightModule.setModuleState(moduleStates[1]);
         backLeftModule.setModuleState(moduleStates[2]);

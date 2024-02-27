@@ -4,6 +4,9 @@ package frc.robot.Subsystems.Arm;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
@@ -38,6 +41,8 @@ public class Angular {
 
     public static void update(){
         goToAngle();
+        SmartDashboard.putNumber("Arm setpoint", targetAngle);
+        SmartDashboard.putNumber("Arm gotpoint", encoder.getPosition());
     }
 
     public static void stow(){

@@ -10,6 +10,8 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Linear {
 
     private static CANSparkMax linearRail;
@@ -34,11 +36,12 @@ public class Linear {
         pid.setP(LINEAR_P);
         pid.setI(LINEAR_I);
         pid.setD(LINEAR_D);
-
     }
 
     public static void update(){
         atTarget = Math.abs(encoder.getPosition()) <= LINEAR_DEADBAND;
+        SmartDashboard.putNumber("Linear setpoint", goingBackwards == false ? 1 : 0);
+        SmartDashboard.putNumber("Linear getpoint", encoder.getPosition());
     }
 
     public static void front(){
