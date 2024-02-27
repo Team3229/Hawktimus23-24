@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 
 		RunControls.init();
 
-		Subsystems.init();
+		// Subsystems.init();
 
 		autoManager = new PathPlanner();
 
@@ -107,20 +107,20 @@ public class Robot extends TimedRobot {
 
 		Pose2d pose = SwerveOdometry.getPose();
         
-		if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
-			//Make a line from the robot towards the speaker
-			Point2D speaker = new Point2D.Double(FieldConstants.BLUE_SPEAKER[0], FieldConstants.BLUE_SPEAKER[1]);
-			Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
-			Shooter.targetSpeed = speaker.distance(bot) * 1200;
-		} else {
-			//Red team, same deal as before.
-			Point2D speaker = new Point2D.Double(FieldConstants.RED_SPEAKER[0], FieldConstants.RED_SPEAKER[1]);
-			Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
-			Shooter.targetSpeed = speaker.distance(bot) * 1200;
-		}
+		// if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
+		// 	//Make a line from the robot towards the speaker
+		// 	Point2D speaker = new Point2D.Double(FieldConstants.BLUE_SPEAKER[0], FieldConstants.BLUE_SPEAKER[1]);
+		// 	Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
+		// 	Shooter.targetSpeed = speaker.distance(bot) * 1200;
+		// } else {
+		// 	//Red team, same deal as before.
+		// 	Point2D speaker = new Point2D.Double(FieldConstants.RED_SPEAKER[0], FieldConstants.RED_SPEAKER[1]);
+		// 	Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
+		// 	Shooter.targetSpeed = speaker.distance(bot) * 1200;
+		// }
 
-		Shooter.pid.setReference(Shooter.targetSpeed,ControlType.kVelocity);
-        Shooter.atSpeed = Math.abs(Shooter.encoder.getPosition()) <= Shooter.RPM_DEADBAND;
+		// Shooter.pid.setReference(Shooter.targetSpeed,ControlType.kVelocity);
+        // Shooter.atSpeed = Math.abs(Shooter.encoder.getPosition()) <= Shooter.RPM_DEADBAND;
 		
 		if (!autoCommand.isFinished()) {
 			autoCommand.execute();
@@ -128,9 +128,9 @@ public class Robot extends TimedRobot {
 			SwerveKinematics.stop();
 		}
 
-		Intake.update();
-		Angular.update();
-		Linear.update();
+		// Intake.update();
+		// Angular.update();
+		// Linear.update();
 
 	}
 
@@ -204,14 +204,17 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("backRight", SwerveKinematics.backRightModule.getAbsolutePosition().getDegrees());
 
-		SmartDashboard.putBoolean("Amp Intent", Shooter.ampIntent);
-		SmartDashboard.putBoolean("Has Note", Intake.hasNote);
-		SmartDashboard.putBoolean("Auto Control", RunCommand.isActive(ScoreSpeaker.command) | RunCommand.isActive(ScoreAmp.command));
-		SmartDashboard.putBoolean("Manip Manual Control", RunControls.manipManualControl);
-		SmartDashboard.putBoolean("Auto Override", RunCommand.manualOverride);
-		SmartDashboard.putBoolean("Intake Active", Intake.state == IntakeStates.intaking);
+		// SmartDashboard.putBoolean("Amp Intent", Shooter.ampIntent);
+		// SmartDashboard.putBoolean("Has Note", Intake.hasNote);
+		// SmartDashboard.putBoolean("Auto Control", RunCommand.isActive(ScoreSpeaker.command) | RunCommand.isActive(ScoreAmp.command));
+		// SmartDashboard.putBoolean("Manip Manual Control", RunControls.manipManualControl);
+		// SmartDashboard.putBoolean("Auto Override", RunCommand.manualOverride);
+		// SmartDashboard.putBoolean("Intake Active", Intake.state == IntakeStates.intaking);
 
-		SmartDashboard.putNumber("Shooter RPM", Shooter.encoder.getPosition());
+		// SmartDashboard.putNumber("Shooter RPM", Shooter.encoder.getPosition());
+
+		SmartDashboard.putNumber("driveActual", SwerveKinematics.backLeftModule.currentState.speedMetersPerSecond);
+		SmartDashboard.putNumber("driveDesired", SwerveKinematics.backLeftModule.desiredState.speedMetersPerSecond);
 
 	}
 }

@@ -36,12 +36,12 @@ public class RunControls {
         update();
 
         //Those commands take driving control, only allow the override to be ran.  Everything else is fully auto.
-        if(RunCommand.isActive(ScoreAmp.command) | RunCommand.isActive(ScoreSpeaker.command)){
-            if((boolean) driveStick.get(Controls.FlightStick.Button5Toggle) | (boolean) manipStick.get(Controls.FlightStick.Button5Toggle)){
-                RunCommand.manualOverride = !RunCommand.manualOverride;
-            }
-            return;
-        }
+        // if(RunCommand.isActive(ScoreAmp.command) | RunCommand.isActive(ScoreSpeaker.command)){
+        //     if((boolean) driveStick.get(Controls.FlightStick.Button5Toggle) | (boolean) manipStick.get(Controls.FlightStick.Button5Toggle)){
+        //         RunCommand.manualOverride = !RunCommand.manualOverride;
+        //     }
+        //     return;
+        // }
 
         runDriver();
         runManip();
@@ -72,61 +72,61 @@ public class RunControls {
     }
 
     private static void runManip(){
-        if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
-            manipManualControl = !manipManualControl;
-        }
+        // if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
+        //     manipManualControl = !manipManualControl;
+        // }
 
-        if(manipManualControl){
-            //Manual control scheme
-            double nextAngle = Math.round(Angular.targetAngle + (double) manipStick.get(Controls.FlightStick.AxisY));
-            if(nextAngle > 0 & nextAngle < 120){
-                Angular.targetAngle = nextAngle;
-            }
+        // if(manipManualControl){
+        //     //Manual control scheme
+        //     double nextAngle = Math.round(Angular.targetAngle + (double) manipStick.get(Controls.FlightStick.AxisY));
+        //     if(nextAngle > 0 & nextAngle < 120){
+        //         Angular.targetAngle = nextAngle;
+        //     }
 
-            if((boolean) manipStick.get(Controls.FlightStick.HazardToggle)){
-                if(Linear.goingBackwards){
-                    Linear.front();
-                } else {
-                    Linear.back();
-                }
-            }
+        //     if((boolean) manipStick.get(Controls.FlightStick.HazardToggle)){
+        //         if(Linear.goingBackwards){
+        //             Linear.front();
+        //         } else {
+        //             Linear.back();
+        //         }
+        //     }
 
-            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
-                if(Intake.state == IntakeStates.feed){
-                    Intake.stop();
-                } else {
-                    Intake.feed();
-                }
-            }
+        //     if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+        //         if(Intake.state == IntakeStates.feed){
+        //             Intake.stop();
+        //         } else {
+        //             Intake.feed();
+        //         }
+        //     }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
-                if(Shooter.state == ShooterStates.spinningUp){
-                    Shooter.stop();
-                } else {
-                    Shooter.spinUp(5000 * ((double) manipStick.get(Controls.FlightStick.Throttle)/2) + 0.5);
-                }
-            }
+        //     if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
+        //         if(Shooter.state == ShooterStates.spinningUp){
+        //             Shooter.stop();
+        //         } else {
+        //             Shooter.spinUp(5000 * ((double) manipStick.get(Controls.FlightStick.Throttle)/2) + 0.5);
+        //         }
+        //     }
             
-            if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
-                if(Intake.state == IntakeStates.intaking){
-                    Intake.stop();
-                } else {
-                    Intake.intake();
-                }
-            }
+        //     if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
+        //         if(Intake.state == IntakeStates.intaking){
+        //             Intake.stop();
+        //         } else {
+        //             Intake.intake();
+        //         }
+        //     }
 
-        } else {
-            //Auto control scheme
-            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
-                Intake.eject();
-            }
-            if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
-                Shooter.ampIntent = !Shooter.ampIntent;
-            }
-            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
-                RunCommand.run(Grab.command);
-            }
-        }
+        // } else {
+        //     //Auto control scheme
+        //     if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
+        //         Intake.eject();
+        //     }
+        //     if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
+        //         Shooter.ampIntent = !Shooter.ampIntent;
+        //     }
+        //     if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+        //         RunCommand.run(Grab.command);
+        //     }
+        // }
 
     }
     private static void update(){

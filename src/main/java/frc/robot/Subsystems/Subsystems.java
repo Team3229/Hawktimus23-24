@@ -30,20 +30,20 @@ public class Subsystems {
     }
 
     public static void update(){
-        Linear.update();
-		Intake.update();
-		Shooter.update();
-        Angular.update();
+        // Linear.update();
+		// Intake.update();
+		// Shooter.update();
+        // Angular.update();
 
-        if(RunCommand.manualOverride | RunControls.manipManualControl) return;
+        // if(RunCommand.manualOverride | RunControls.manipManualControl) return;
 
-        if(Intake.hasNote){
-            if(Shooter.ampIntent){
-                ampAttempt();
-            } else {
-                shootAttempt();
-            }
-        }
+        // if(Intake.hasNote){
+        //     if(Shooter.ampIntent){
+        //         ampAttempt();
+        //     } else {
+        //         shootAttempt();
+        //     }
+        // }
 
     }
 
