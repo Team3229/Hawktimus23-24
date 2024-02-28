@@ -218,9 +218,9 @@ public class SwerveKinematics {
         frontRightModule.configureAngleMotor();
         frontRightModule.configureDriveMotor(brakeMode, true);
         backLeftModule.configureAngleMotor();
-        backLeftModule.configureDriveMotor(brakeMode, true);
+        backLeftModule.configureDriveMotor(brakeMode, false);
         backRightModule.configureAngleMotor();
-        backRightModule.configureDriveMotor(brakeMode, true);
+        backRightModule.configureDriveMotor(brakeMode, false);
     }
 
     /**Configures and resets the offsets of each module's encoders. */

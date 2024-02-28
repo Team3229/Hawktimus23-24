@@ -36,7 +36,7 @@ public class SwerveOdometry {
     }
 
     public static void update(Rotation2d rotation, SwerveModulePosition[] swervePositions) {
-        SwerveOdometry.addSensorData(Vision.getPose(), Vision.getLatency(), false);
+        SwerveOdometry.addSensorData(Vision.getPose(), Vision.getLatency(), Vision.isValid());
         odometry.update(rotation, swervePositions);
     }
 

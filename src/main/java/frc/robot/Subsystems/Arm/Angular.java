@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 
 /*
@@ -70,6 +71,8 @@ public class Angular {
         arm = new CANSparkMax(ARM_ID, MotorType.kBrushless);
         arm2 = new CANSparkMax(ARM2_ID,MotorType.kBrushless);
         arm2.follow(arm,  true);
+        arm.setIdleMode(IdleMode.kBrake);
+        arm2.setIdleMode(IdleMode.kBrake);
         pidController = arm.getPIDController();
         pidController.setP(ARM_P);
         pidController.setI(ARM_I);

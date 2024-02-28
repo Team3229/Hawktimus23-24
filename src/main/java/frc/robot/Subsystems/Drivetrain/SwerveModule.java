@@ -75,6 +75,9 @@ public class SwerveModule {
         this.driveMotor = new CANSparkMax(driveID, MotorType.kBrushless);
         this.angleMotor = new CANSparkMax(angleID, MotorType.kBrushless);
 
+        driveMotor.restoreFactoryDefaults();
+        angleMotor.restoreFactoryDefaults();
+
         this.absoluteEncoder = new CANcoder(encoderID);
         this.absoluteEncoderConfigurator = this.absoluteEncoder.getConfigurator();
         this.absoluteEncoderConfig = new CANcoderConfiguration();
@@ -173,7 +176,7 @@ public class SwerveModule {
      * @param encoderOffset (Rotation2d) The module's angular offset.
      */
     public void configureEncoders() {
-        this.absoluteEncoder.getAbsolutePosition().setUpdateFrequency(5);
+        this.absoluteEncoder.getAbsolutePosition().setUpdateFrequency(50);
 
         this.angleEncoder.setPositionConversionFactor(360/angleGearRatio);
         this.angleEncoder.setPosition(getAbsolutePosition().getDegrees());

@@ -34,6 +34,8 @@ public class Vision {
         robotToCam = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
 
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, robotToCam);
+    
+        visionData = new PhotonPipelineResult();
     }
 
     public static void periodic() {
