@@ -46,7 +46,7 @@ public class Shooter {
 
     public static void update(){
         SmartDashboard.putNumber("Shooter setpoint", targetSpeed);
-        SmartDashboard.putNumber("Shooter getpoint", encoder.getPosition());
+        SmartDashboard.putNumber("Shooter getpoint", encoder.getVelocity());
         switch(state){
             case idle:
                 stop();
