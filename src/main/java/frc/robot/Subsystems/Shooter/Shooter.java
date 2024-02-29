@@ -58,12 +58,12 @@ public class Shooter {
     }
 
     private static void spinningUp(){
-       // if(Intake.hasNote){
+       if(Intake.hasNote){
             pid.setReference(targetSpeed,ControlType.kVelocity);
             atSpeed = Math.abs(encoder.getPosition()) <= RPM_DEADBAND;
-       // } else {
-       //     stop();
-      //  }
+       } else {
+           stop();
+       }
     }
 
     public static void spinUp(double speed){
