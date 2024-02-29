@@ -1,12 +1,12 @@
 package frc.robot.Autonomous.Sequences;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.DrivetrainCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Subsystems.Shooter.ShooterCommands;
+import frc.robot.Utils.ParallelGroup;
+import frc.robot.Utils.SequentialGroup;
 
 /*
 Dropping into the amp:
@@ -17,16 +17,16 @@ Dropping into the amp:
  */
 public class ScoreAmp {
 
-    private static SequentialCommandGroup sequence;
+    private static SequentialGroup sequence;
 
     public static Command command = new Command() {
         @Override
         public void initialize() {
-            sequence = new SequentialCommandGroup(
+            sequence = new SequentialGroup(
 
                 DrivetrainCommands.lineUpAmp,
                 ArmCommands.ampPosition,
-                new ParallelCommandGroup(
+                new ParallelGroup(
                     IntakeCommands.feed,
                     ShooterCommands.shootAmp
                 ),
@@ -42,9 +42,7 @@ public class ScoreAmp {
         }
 
         @Override
-        public void end(boolean interrupted) {
-            sequence.end(interrupted);
-        }
+        public void end(boolean interrupted) {}
 
         @Override
         public boolean isFinished() {

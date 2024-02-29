@@ -3,7 +3,7 @@ package frc.robot.Autonomous.Sequences;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
-import frc.robot.Utils.ParallelCommandGroup;
+import frc.robot.Utils.ParallelGroup;
 import frc.robot.Utils.SequentialGroup;
 /*
 Grabbing note
@@ -19,13 +19,13 @@ public class Grab {
         @Override
         public void initialize() {
             sequence = new SequentialGroup(
-                new ParallelCommandGroup(
+                new ParallelGroup(
                     ArmCommands.raise,
                     ArmCommands.forwardRail
                 ),
                 ArmCommands.intakePos,
                 IntakeCommands.intakeNote,
-                new ParallelCommandGroup(
+                new ParallelGroup(
                     ArmCommands.raise,
                     ArmCommands.backwardRail
                 ),

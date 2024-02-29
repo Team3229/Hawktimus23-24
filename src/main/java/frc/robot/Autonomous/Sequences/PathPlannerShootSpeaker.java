@@ -4,8 +4,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.Subsystems;
 import frc.robot.Subsystems.Arm.Angular;
 import frc.robot.Subsystems.Arm.ArmCommands;
@@ -13,6 +11,9 @@ import frc.robot.Subsystems.Drivetrain.DrivetrainCommands;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Utils.FieldConstants;
+import frc.robot.Utils.ParallelGroup;
+import frc.robot.Utils.SequentialGroup;
+
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -28,7 +29,7 @@ Shooting note
  */
 public class PathPlannerShootSpeaker {
     
-    private static SequentialCommandGroup sequence;
+    private static SequentialGroup sequence;
     public static Command command = new Command() {
         @Override
         public void initialize() {
@@ -54,8 +55,8 @@ public class PathPlannerShootSpeaker {
                 Angular.targetAngle = shootingAngle;
                 Subsystems.targetRotation = Rotation2d.fromDegrees(rotDegrees);
             }
-            sequence = new SequentialCommandGroup(
-                new ParallelCommandGroup(
+            sequence = new SequentialGroup(
+                new ParallelGroup(
                     ArmCommands.speakerPosition,
                     DrivetrainCommands.lineUpSpeaker
                 ),
@@ -71,9 +72,7 @@ public class PathPlannerShootSpeaker {
         }
 
         @Override
-        public void end(boolean interrupted) {
-            sequence.end(interrupted);
-        }
+        public void end(boolean interrupted) {}
 
         @Override
         public boolean isFinished() {

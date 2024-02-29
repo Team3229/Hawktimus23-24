@@ -20,6 +20,9 @@ public class SequentialGroup {
         if(commands[index].isFinished()){
             commands[index].end(false);
             index++;
+            if(index < commands.length){
+                commands[index].initialize();
+            }
         }
     }
 

@@ -2,12 +2,12 @@ package frc.robot.Utils;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class ParallelCommandGroup extends Command {
+public class ParallelGroup extends Command {
 
     private Command[] commands;
     private boolean done = false;
 
-    public ParallelCommandGroup(Command... commands){
+    public ParallelGroup(Command... commands){
         this.commands = commands;
     }
 
