@@ -1,12 +1,13 @@
 package frc.robot.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RunCommand {
     
-    private static List<Command> commandList;
+    private static List<Command> commandList = new ArrayList<>();
     public static boolean manualOverride = false;
 
     /**
@@ -16,8 +17,7 @@ public class RunCommand {
         
         if(manualOverride) commandList.removeAll(commandList);
 
-        int size = commandList.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < commandList.size(); i++) {
             Command command = commandList.get(i);
             command.execute();
             if (command.isFinished()) {

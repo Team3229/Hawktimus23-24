@@ -210,8 +210,5 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Manip Manual Control", RunControls.manipManualControl);
 		SmartDashboard.putBoolean("Auto Override", RunCommand.manualOverride);
 		SmartDashboard.putBoolean("Intake Active", Intake.state == IntakeStates.intaking);
-
-		SmartDashboard.putNumber("Shooter RPM", Shooter.encoder.getPosition());
-
 	}
 }

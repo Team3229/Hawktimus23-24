@@ -16,7 +16,7 @@ import frc.robot.Subsystems.Intake.Intake;
 public class Shooter {
 
     private static CANSparkMax outtake;
-    private static final int OUTTAKE_ID = 8;
+    private static final int OUTTAKE_ID = 9;
     public static final double AMP_SPEED = .1;
     public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;
@@ -24,9 +24,9 @@ public class Shooter {
     public static boolean atSpeed = false;
     public static final double RPM_DEADBAND = 10;
     
-    private static final int SHOOT_P = 0;
-    private static final int SHOOT_I = 0;
-    private static final int SHOOT_D = 0;
+    private static final double SHOOT_P = 0.1;
+    private static final double SHOOT_I = 0;
+    private static final double SHOOT_D = 0;
 
     public static SparkPIDController pid;
     public static RelativeEncoder encoder;
@@ -58,12 +58,12 @@ public class Shooter {
     }
 
     private static void spinningUp(){
-        if(Intake.hasNote){
+       // if(Intake.hasNote){
             pid.setReference(targetSpeed,ControlType.kVelocity);
             atSpeed = Math.abs(encoder.getPosition()) <= RPM_DEADBAND;
-        } else {
-            stop();
-        }
+       // } else {
+       //     stop();
+      //  }
     }
 
     public static void spinUp(double speed){

@@ -54,7 +54,7 @@ public class PathPlannerShootSpeaker {
                 Angular.targetAngle = shootingAngle;
                 Subsystems.targetRotation = Rotation2d.fromDegrees(rotDegrees);
             }
-            sequence.addCommands(
+            sequence = new SequentialCommandGroup(
                 new ParallelCommandGroup(
                     ArmCommands.speakerPosition,
                     DrivetrainCommands.lineUpSpeaker

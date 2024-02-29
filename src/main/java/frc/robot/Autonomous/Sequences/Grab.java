@@ -1,10 +1,10 @@
 package frc.robot.Autonomous.Sequences;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
+import frc.robot.Utils.ParallelCommandGroup;
+import frc.robot.Utils.SequentialGroup;
 /*
 Grabbing note
 -unstow
@@ -13,12 +13,12 @@ Grabbing note
  */
 public class Grab {
     
-    private static SequentialCommandGroup sequence;
+    private static SequentialGroup sequence;
 
     public static Command command = new Command() {
         @Override
         public void initialize() {
-            sequence.addCommands(
+            sequence = new SequentialGroup(
                 new ParallelCommandGroup(
                     ArmCommands.raise,
                     ArmCommands.forwardRail
@@ -40,9 +40,7 @@ public class Grab {
         }
 
         @Override
-        public void end(boolean interrupted) {
-            sequence.end(interrupted);
-        }
+        public void end(boolean interrupted) {}
 
         @Override
         public boolean isFinished() {

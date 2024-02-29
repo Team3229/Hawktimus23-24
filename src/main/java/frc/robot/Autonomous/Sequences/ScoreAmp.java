@@ -22,7 +22,7 @@ public class ScoreAmp {
     public static Command command = new Command() {
         @Override
         public void initialize() {
-            sequence.addCommands(
+            sequence = new SequentialCommandGroup(
 
                 DrivetrainCommands.lineUpAmp,
                 ArmCommands.ampPosition,

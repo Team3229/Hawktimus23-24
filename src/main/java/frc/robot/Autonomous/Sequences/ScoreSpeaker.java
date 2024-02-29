@@ -24,7 +24,7 @@ public class ScoreSpeaker {
     public static Command command = new Command() {
         @Override
         public void initialize() {
-            sequence.addCommands(
+            sequence = new SequentialCommandGroup(
                 new ParallelCommandGroup(
                     ShooterCommands.shootSpeaker,
                     ArmCommands.speakerPosition,
