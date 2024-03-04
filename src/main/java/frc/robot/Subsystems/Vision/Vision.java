@@ -26,8 +26,8 @@ public class Vision {
     private static Pose2d output = new Pose2d();
     private static Pose3d output2 = new Pose3d();
 
-    public static void initialize() {
-        camera = new PhotonCamera("photonvision");
+    public static void init() {
+        camera = new PhotonCamera("Camera_Module_v1");
 
         aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
@@ -38,7 +38,7 @@ public class Vision {
         visionData = new PhotonPipelineResult();
     }
 
-    public static void periodic() {
+    public static void execute() {
         visionData = camera.getLatestResult();
     }
 

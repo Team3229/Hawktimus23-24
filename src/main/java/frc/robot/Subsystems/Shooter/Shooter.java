@@ -1,87 +1,68 @@
 package frc.robot.Subsystems.Shooter;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Subsystems.Intake.Intake;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Utils.Deadband;
 
-/*
--Spin up (to given RPM)
--Request intake to send note forward
- */
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+
 public class Shooter {
 
-    private static CANSparkMax outtake;
-    private static final int OUTTAKE_ID = 9;
-    public static final double AMP_SPEED = .1;
-    public static ShooterStates state = ShooterStates.idle;
-    public static double targetSpeed = 0;
-    public static boolean ampIntent = false;
-    public static boolean atSpeed = false;
-    public static final double RPM_DEADBAND = 10;
+    private static CANSparkMax shooter;
+    private static RelativeEncoder encoder;
+
+    private static double lastVel = 0;
+    private static boolean atSpeed = false;
+
+    private static final double SHOOTER_SPEED = 1;
     
-    private static final double SHOOT_P = 0.1;
-    private static final double SHOOT_I = 0;
-    private static final double SHOOT_D = 0;
-
-    public static SparkPIDController pid;
-    public static RelativeEncoder encoder;
-    public static enum ShooterStates {
-        idle,
-        spinningUp
+    public static void init() {
+        shooter = new CANSparkMax(9, MotorType.kBrushless);
+        shooter.setInverted(true);
+        encoder = shooter.getEncoder();
     }
 
-    public static void init(){
-        outtake = new CANSparkMax(OUTTAKE_ID, MotorType.kBrushless);
-        pid = outtake.getPIDController();
-        pid.setP(SHOOT_P);
-        pid.setI(SHOOT_I);
-        pid.setD(SHOOT_D);
-        encoder = outtake.getEncoder();
+    public static void runShooter() {
+        shooter.set(SHOOTER_SPEED);
     }
 
-    public static void update(){
-        SmartDashboard.putNumber("Shooter setpoint", targetSpeed);
-        SmartDashboard.putNumber("Shooter getpoint", encoder.getVelocity());
-        switch(state){
-            case idle:
-                stop();
-                break;
-            case spinningUp:
-                spinningUp();
-                break;
+    public static void stopShooter() {
+        shooter.stopMotor();
+    }
+
+    public static Command spinUp = new Command() {
+        @Override
+        public void initialize() {
+            shooter.set(SHOOTER_SPEED);
         }
-    }
 
-    private static void spinningUp(){
-       if(Intake.hasNote){
-            pid.setReference(targetSpeed,ControlType.kVelocity);
-            atSpeed = Math.abs(encoder.getVelocity()) <= RPM_DEADBAND;
-       } else {
-           stop();
-       }
-    }
+        @Override
+        public void execute() {
+            atSpeed = Deadband.tolerance(encoder.getVelocity(), lastVel, 10);
+            lastVel = encoder.getVelocity();
+        }
 
-    public static void spinUp(double speed){
-        targetSpeed = speed;
-        state = ShooterStates.spinningUp;
-    }
-    
-    public static void spinUp(){
-        state = ShooterStates.spinningUp;
-    }
+        @Override
+        public void end(boolean isInterruped) {}
 
-    public static void stop(){
-        targetSpeed = 0;
-        state = ShooterStates.idle;
-        outtake.stopMotor();
-    }
+        @Override
+        public boolean isFinished() {
+            return atSpeed;
+        }
+    };
 
-    public static void toggleAmpIntent(){
-        ampIntent = !ampIntent;
-    }
+    public static Command slowDown = new Command() {
+        @Override
+        public void initialize() {
+            shooter.stopMotor();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return true;
+        }
+    };
+
 }
