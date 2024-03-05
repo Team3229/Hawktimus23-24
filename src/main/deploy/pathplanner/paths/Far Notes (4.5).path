@@ -1,0 +1,291 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.290597959227301,
+        "y": 6.9679477447399965
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.290597959227301,
+        "y": 6.9679477447399965
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.2977299021645106,
+        "y": 6.9679477447399965
+      },
+      "prevControl": {
+        "x": 1.2977299021645106,
+        "y": 6.9679477447399965
+      },
+      "nextControl": {
+        "x": 3.2977299021645106,
+        "y": 6.9679477447399965
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.591028020857753,
+        "y": 7.366116187296568
+      },
+      "prevControl": {
+        "x": 8.085172602584866,
+        "y": 7.3544053507507865
+      },
+      "nextControl": {
+        "x": 7.096883439130641,
+        "y": 7.37782702384235
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.2137282020641065,
+        "y": 6.499514282908736
+      },
+      "prevControl": {
+        "x": 5.101242511106633,
+        "y": 6.9090275983690335
+      },
+      "nextControl": {
+        "x": 5.32621389302158,
+        "y": 6.0900009674484386
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.591028020857753,
+        "y": 5.738309907432939
+      },
+      "prevControl": {
+        "x": 7.367377403085761,
+        "y": 5.74416532570583
+      },
+      "nextControl": {
+        "x": 7.814678638629746,
+        "y": 5.732454489160047
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.2137282020641065,
+        "y": 6.499514282908736
+      },
+      "prevControl": {
+        "x": 5.366541438860338,
+        "y": 6.490731155499399
+      },
+      "nextControl": {
+        "x": 5.060914965267875,
+        "y": 6.508297410318073
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.591028020857753,
+        "y": 4.133925300660873
+      },
+      "prevControl": {
+        "x": 7.765861967489646,
+        "y": 4.425315211729864
+      },
+      "nextControl": {
+        "x": 7.485630491948545,
+        "y": 3.9582627524693104
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.6210544318406472,
+        "y": 5.3986956476004355
+      },
+      "prevControl": {
+        "x": 4.452523826591134,
+        "y": 3.8762868966488395
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot 1st Note",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Grab + Shoot 2nd Note",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Grab 3rd Note",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Grab 4th Note",
+      "waypointRelativePos": 4.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot 4th Note",
+      "waypointRelativePos": 5.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Grab 5th Note",
+      "waypointRelativePos": 6.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Grab"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot 5th Note",
+      "waypointRelativePos": 7.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot 3rd Note",
+      "waypointRelativePos": 3.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

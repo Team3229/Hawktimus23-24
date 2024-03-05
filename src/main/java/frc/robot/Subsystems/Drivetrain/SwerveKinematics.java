@@ -13,6 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Vision.Vision;
 
 public class SwerveKinematics {
 
@@ -34,7 +36,7 @@ public class SwerveKinematics {
 
     public static Rotation2d gyroOffset = Rotation2d.fromDegrees(0);
     /**
-     * Robot relative mode uses the c urrent rotation of the robot as forward, instead of the default
+     * Robot relative mode uses the current rotation of the robot as forward, instead of the default
      * field-relative mode. This is useful for picking up objects or lining up with a game piece.
      */
     public static boolean relativeMode;
@@ -56,11 +58,11 @@ public class SwerveKinematics {
     /**The maximum speed (in meters/sec) that a singular swerve module can reach. */
     public static final double maxModuleSpeed = 20;
     /**The maximum linear speed (in meters/sec) the chassis should move at. (Automatically set for SDS MK4 L1 modules) */
-    private static final double chassisSpeed = 20;
+    private static final double chassisSpeed = 12.5;
     /**The percentage of the Chassis Speed of which the bot runs at. */
     private static final double chassisSpeedPercentage = 1;
     /**The maximum angular speed (in radians/sec) that the chassis can rotate at. */
-    public static double maxChassisRotationSpeed = 20;
+    public static double maxChassisRotationSpeed = 5;
     /**Whether or not to run the drive motors in brake mode. */
     private static final boolean brakeMode = true;
 
@@ -71,7 +73,7 @@ public class SwerveKinematics {
     public SwerveKinematics() {}
 
     /**Initializes the drivetrain. */
-    public static void init() {
+    public static void initialize() {
 
         // Replace the CAN IDs to suit your needs.
         frontLeftModule = new SwerveModule(14, 15, 18, new Translation2d((robotWidth/2), (robotWidth/2)));
@@ -129,6 +131,8 @@ public class SwerveKinematics {
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
 
         // Set each module state
+        SmartDashboard.putNumber("FL setpoint", moduleStates[0].speedMetersPerSecond);
+        SmartDashboard.putNumber("FL getpoint", frontLeftModule.driveEncoder.getPosition());
         frontLeftModule.setModuleState(moduleStates[0]);
         frontRightModule.setModuleState(moduleStates[1]);
         backLeftModule.setModuleState(moduleStates[2]);
@@ -159,6 +163,10 @@ public class SwerveKinematics {
         robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(gyroOffset.getDegrees()-navxGyro.getYaw(), 0, 360));
 
         chassisState = speeds;
+
+        chassisState.omegaRadiansPerSecond *= -1;
+        chassisState.vxMetersPerSecond *= -1;
+        chassisState.vyMetersPerSecond *= -1;
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
@@ -186,11 +194,11 @@ public class SwerveKinematics {
     }
 
     public static void goToPosition(Pose2d position) {
-        // drive(
-        //     linearXMovement.calculate(Vision.getPose().getX(), position.getX()),
-        //     linearYMovement.calculate(Vision.getPose().getY(), position.getY()),
-        //     angularMovement.calculate(Vision.getPose().getRotation().getDegrees(),position.getRotation().getDegrees())
-        // );
+        drive(
+            linearXMovement.calculate(Vision.getPose().getX(), position.getX()),
+            linearYMovement.calculate(Vision.getPose().getY(), position.getY()),
+            angularMovement.calculate(Vision.getPose().getRotation().getDegrees(),position.getRotation().getDegrees())
+        );
     }
 
     public static ChassisSpeeds getSpeeds() {

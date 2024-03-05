@@ -3,51 +3,84 @@ package frc.robot.Subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ArmCommands {
-    public static Command intakePos = new Command() {
-
-        double timePassed = 0;
-
+    
+    public static Command stow = new Command() {
         @Override
         public void initialize() {
-            Positions.intakePos();
+            Angular.stow();
         }
-
-        @Override
-        public void execute() {
-            timePassed += 0.02;
-        }
-
-        @Override
-        public void end(boolean interrupted) {}
 
         @Override
         public boolean isFinished() {
-            return timePassed > 2;
+            return Angular.atTarget;
         }
-
     };
 
-    public static Command shootPos = new Command() {
-
-        double timePassed = 0;
-
+    public static Command intakePos = new Command() {
         @Override
         public void initialize() {
-            Positions.shootPos();
+            Angular.unstow();
         }
-
-        @Override
-        public void execute() {
-            timePassed += 0.02;
-        }
-
-        @Override
-        public void end(boolean interrupted) {}
 
         @Override
         public boolean isFinished() {
-            return timePassed > 2;
+            return Angular.atTarget;
+        }
+    };
+    
+    public static Command raise = new Command() {
+        @Override
+        public void initialize() {
+            Angular.raise();
         }
 
+        @Override
+        public boolean isFinished() {
+            return Angular.atTarget;
+        }
+    };
+    
+    public static Command ampPosition = new Command() {
+        @Override
+        public void initialize() {
+            Angular.amp();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return Angular.atTarget;
+        }
+    };
+
+    public static Command forwardRail = new Command() {
+        @Override
+        public void initialize() {
+            Linear.front();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return Linear.atTarget;
+        }
+    };
+
+    public static Command backwardRail = new Command() {
+        @Override
+        public void initialize() {
+            Linear.back();
+        }
+
+        @Override
+        public boolean isFinished() {
+            return Linear.atTarget;
+        }
+    };
+
+    public static Command speakerPosition = new Command() {
+        @Override
+        public boolean isFinished() {
+            //The arm is constantly trying to move to its target, thus this needs nothing more.
+            return Angular.atTarget;
+        }
     };
 }

@@ -7,20 +7,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class RunCommand {
     
-    private static List<Command> commandList;
+    private static List<Command> commandList = new ArrayList<>();
     public static boolean manualOverride = false;
-
-    public static void init() {
-        commandList = new ArrayList<Command>();
-    }
 
     /**
      * Periodic function of {@link #RunCommand}; needs to be run every 20ms
      */
-    public static void execute() {
+    public static void periodic() {
+        
+        if(manualOverride) commandList.removeAll(commandList);
 
         for (int i = 0; i < commandList.size(); i++) {
-            
             Command command = commandList.get(i);
             command.execute();
             if (command.isFinished()) {
@@ -36,10 +33,10 @@ public class RunCommand {
      * @param command Command to run
      */
     public static void run(Command command) {
-        // if (!isActive(command)) {
+        if (!commandList.contains(command)) {
             commandList.add(command);
             command.initialize();
-        // }
+        }
     }
 
     /**
@@ -57,7 +54,7 @@ public class RunCommand {
      * @return true if command is running
      */
     public static boolean isActive(Command command) {
-        return /*commandList.contains(command)*/false;
+        return commandList.contains(command);
     }
 
 }

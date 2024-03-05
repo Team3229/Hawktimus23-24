@@ -4,50 +4,32 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class ShooterCommands {
     
-    public static Command spinUp = new Command() {
-
-        double timePassed = 0;
-
+    public static Command shootAmp = new Command() {
         @Override
         public void initialize() {
-            Shooter.runShooter();
-        }
-
-        @Override
-        public void execute() {
-            timePassed += 0.02;
+            Shooter.spinUp(Shooter.AMP_SPEED);
         }
 
         @Override
         public void end(boolean interrupted) {
-            
+            Shooter.ampIntent = false;
         }
 
         @Override
         public boolean isFinished() {
-            return timePassed > 3;
+            return Shooter.atSpeed;
         }
     };
 
-    public static Command stopShooter = new Command() {
-
+    public static Command shootSpeaker = new Command() {
         @Override
         public void initialize() {
-            Shooter.stopShooter();
-        }
-
-        @Override
-        public void execute() {}
-
-        @Override
-        public void end(boolean interrupted) {
-            
+            Shooter.spinUp();
         }
 
         @Override
         public boolean isFinished() {
-            return true;
+            return Shooter.atSpeed;
         }
     };
-
 }

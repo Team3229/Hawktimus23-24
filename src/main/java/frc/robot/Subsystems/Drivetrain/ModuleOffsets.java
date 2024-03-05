@@ -27,7 +27,7 @@ public class ModuleOffsets {
 		}
     }
     /** Adds a boolean to reset the offsets or not within SmartDashboard, Implemented in Robot.java */
-    public static void init() {
+    public static void initialize() {
         SmartDashboard.putBoolean("resetAngleOffsets", false);
         
         // create files if they don't exist

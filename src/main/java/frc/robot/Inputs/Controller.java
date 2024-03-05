@@ -13,7 +13,7 @@ public class Controller {
     Map<Object, Object> inputs;
     private final double STICK_DEADBAND = 0.125;
 
-    private final double JOYSTICK_GAIN = 0.25;
+    private final double JOYSTICK_GAIN = 0;
 
     public Controller(ControllerType type, int id) {
         this.controllerType = type;
