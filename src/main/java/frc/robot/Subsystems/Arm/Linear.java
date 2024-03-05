@@ -10,8 +10,6 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Linear {
 
     private static CANSparkMax linearRail;
@@ -21,27 +19,25 @@ public class Linear {
     private static RelativeEncoder encoder;
     public static boolean atTarget = false;
     private static double LINEAR_DEADBAND = 1;
-    private static double DISTANCE = 8;
     public static boolean goingBackwards = false;
-
-    private static final int LINEAR_P = 0;
-    private static final int LINEAR_I = 0;
-    private static final int LINEAR_D = 0;
 
     public static void init(){
         linearRail = new CANSparkMax(RAIL_ID, MotorType.kBrushless);
+
+        encoder = linearRail.getAlternateEncoder(8192);
+        encoder.setPositionConversionFactor(1/2.0968017578125);
+        encoder.setInverted(true);
+
+        encoder.setPosition(1);
+
         pid = linearRail.getPIDController();
-        encoder = linearRail.getEncoder();
-        encoder.setPositionConversionFactor(Math.PI * 1.375 * 36 * DISTANCE);
-        pid.setP(LINEAR_P);
-        pid.setI(LINEAR_I);
-        pid.setD(LINEAR_D);
+        pid.setFeedbackDevice(encoder);
+        pid.setP(1.5);
+        pid.setOutputRange(-1, 1);
     }
 
     public static void update(){
         atTarget = Math.abs(encoder.getPosition()) <= LINEAR_DEADBAND;
-        SmartDashboard.putNumber("Linear setpoint", goingBackwards == false ? 1 : 0);
-        SmartDashboard.putNumber("Linear getpoint", encoder.getPosition());
     }
 
     public static void front(){

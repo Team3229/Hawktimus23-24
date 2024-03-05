@@ -27,10 +27,10 @@ import frc.robot.Subsystems.Intake.Intake.IntakeStates;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.FieldConstants;
-import frc.robot.Utils.RunCommand;
 import frc.robot.Autonomous.PathPlanner;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
+import frc.robot.CommandsV2.CommandScheduler;
 	
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -206,9 +206,9 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putBoolean("Amp Intent", Shooter.ampIntent);
 		SmartDashboard.putBoolean("Has Note", Intake.hasNote);
-		SmartDashboard.putBoolean("Auto Control", RunCommand.isActive(ScoreSpeaker.command) | RunCommand.isActive(ScoreAmp.command));
+		SmartDashboard.putBoolean("Auto Control", CommandScheduler.isActive(ScoreSpeaker.command) | CommandScheduler.isActive(ScoreAmp.command));
 		SmartDashboard.putBoolean("Manip Manual Control", RunControls.manipManualControl);
-		SmartDashboard.putBoolean("Auto Override", RunCommand.manualOverride);
+		SmartDashboard.putBoolean("Auto Override", CommandScheduler.terminated);
 		SmartDashboard.putBoolean("Intake Active", Intake.state == IntakeStates.intaking);
 	}
 }

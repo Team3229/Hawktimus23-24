@@ -1,41 +1,40 @@
-package frc.robot.Utils;
+package frc.robot.CommandsV2;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import edu.wpi.first.wpilibj2.command.Command;
-
-public class RunCommand {
+public class CommandScheduler {
     
-    private static List<Command> commandList = new ArrayList<>();
-    public static boolean manualOverride = false;
+    private static ArrayList<Command> commandList;
+    public static boolean terminated = false;
+
+    public static void init() {
+        commandList = new ArrayList<Command>();
+    }
 
     /**
      * Periodic function of {@link #RunCommand}; needs to be run every 20ms
      */
     public static void periodic() {
-        
-        if(manualOverride) commandList.removeAll(commandList);
-
+        if(terminated) commandList = new ArrayList<Command>();
         for (int i = 0; i < commandList.size(); i++) {
             Command command = commandList.get(i);
-            command.execute();
-            if (command.isFinished()) {
-                command.end(false);
+            command.periodic();
+            if (command.isDone()) {
+                command.end();
                 commandList.remove(i);
             }
         }
-
     }
 
     /**
      * Will only schedule if not already scheduled.
      * @param command Command to run
      */
-    public static void run(Command command) {
-        if (!commandList.contains(command)) {
+    public static void activate(Command command) {
+        if(terminated) return;
+        if (!isActive(command)) {
             commandList.add(command);
-            command.initialize();
+            command.init();
         }
     }
 
@@ -43,8 +42,8 @@ public class RunCommand {
      * Stops the command given and removes the schedule
      * @param command Command to interrupt
      */
-    public static void interrupt(Command command) {
-        commandList.get(commandList.indexOf(command)).end(true);
+    public static void deactivate(Command command) {
+        commandList.get(commandList.indexOf(command)).end();
         commandList.remove(commandList.indexOf(command));
     }
 

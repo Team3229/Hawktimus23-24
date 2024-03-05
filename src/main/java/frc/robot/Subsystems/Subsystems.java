@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
+import frc.robot.CommandsV2.CommandScheduler;
 import frc.robot.Inputs.RunControls;
 import frc.robot.Subsystems.Arm.Angular;
 import frc.robot.Subsystems.Arm.Linear;
@@ -12,7 +13,6 @@ import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Utils.FieldConstants;
-import frc.robot.Utils.RunCommand;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -35,7 +35,7 @@ public class Subsystems {
 		Shooter.update();
         Angular.update();
 
-        if(RunCommand.manualOverride | RunControls.manipManualControl) return;
+        if(CommandScheduler.terminated | RunControls.manipManualControl) return;
 
         if(Intake.hasNote){
             if(Shooter.ampIntent){
@@ -83,7 +83,7 @@ public class Subsystems {
                         Shooter.targetSpeed = speaker.distance(bot) * 1200;
                         Angular.targetAngle = shootingAngle;
                         targetRotation = Rotation2d.fromDegrees(rotDegrees);;
-                        RunCommand.run(ScoreSpeaker.command);
+                        CommandScheduler.activate(ScoreSpeaker.command);
                         return;
                     }
                 }
@@ -112,7 +112,7 @@ public class Subsystems {
                         Shooter.targetSpeed = speaker.distance(bot) * 1200;
                         Angular.targetAngle = shootingAngle;
                         targetRotation = Rotation2d.fromDegrees(rotDegrees);;
-                        RunCommand.run(ScoreSpeaker.command);
+                        CommandScheduler.activate(ScoreSpeaker.command);
                         return;
                     }
                 }
@@ -128,13 +128,13 @@ public class Subsystems {
             //Blue team
             if(Math.pow((pose.getX() - FieldConstants.BLUE_AMP[0]),2) + Math.pow((pose.getY() - FieldConstants.BLUE_AMP[1]),2) < Math.pow(AMP_RADIUS, 2)){
                 //Within range to score amp
-                RunCommand.run(ScoreAmp.command);
+                CommandScheduler.activate(ScoreAmp.command);
             }
         } else {
             //Red team
             if(Math.pow((pose.getX() - FieldConstants.RED_AMP[0]),2) + Math.pow((pose.getY() - FieldConstants.RED_AMP[1]),2) < Math.pow(AMP_RADIUS, 2)){
                 //Within range to score amp
-                RunCommand.run(ScoreAmp.command);
+                CommandScheduler.activate(ScoreAmp.command);
             }
         }
         

@@ -3,6 +3,7 @@ package frc.robot.Inputs;
 import frc.robot.Autonomous.Sequences.Grab;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
+import frc.robot.CommandsV2.CommandScheduler;
 import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
 import frc.robot.Subsystems.Arm.Angular;
@@ -12,7 +13,6 @@ import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Intake.Intake.IntakeStates;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.Shooter.ShooterStates;
-import frc.robot.Utils.RunCommand;
 
 public class RunControls {
 
@@ -36,12 +36,8 @@ public class RunControls {
         update();
 
         //Those commands take driving control, only allow the override to be ran.  Everything else is fully auto.
-        if(RunCommand.isActive(ScoreAmp.command) | RunCommand.isActive(ScoreSpeaker.command)){
-            if((boolean) driveStick.get(Controls.FlightStick.Button5Toggle) | (boolean) manipStick.get(Controls.FlightStick.Button5Toggle)){
-                RunCommand.manualOverride = !RunCommand.manualOverride;
-            }
-            return;
-        }
+        if((boolean) driveStick.get(Controls.FlightStick.Button5Toggle) | (boolean) manipStick.get(Controls.FlightStick.Button5Toggle)) CommandScheduler.terminated = !CommandScheduler.terminated;
+        if(CommandScheduler.isActive(ScoreAmp.command) | CommandScheduler.isActive(ScoreSpeaker.command)) return;
 
         runDriver();
         runManip();
@@ -124,7 +120,7 @@ public class RunControls {
                 Shooter.ampIntent = !Shooter.ampIntent;
             }
             if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
-                RunCommand.run(Grab.command);
+                CommandScheduler.activate(Grab.command);
             }
         }
 

@@ -1,45 +1,45 @@
 package frc.robot.Subsystems.Intake;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.CommandsV2.Command;
 
 public class IntakeCommands {
     
     public static Command intakeNote = new Command() {
         @Override
-        public void initialize() {
+        public void init() {
             Intake.intake();
         }
 
         @Override
-        public void execute() {}
+        public void periodic() {}
 
         @Override
-        public void end(boolean interrupted) {
+        public void end() {
             Intake.stop();
         }
 
         @Override
-        public boolean isFinished() {
+        public boolean isDone() {
             return Intake.hasNote;
         }
     };
 
     public static Command feed = new Command() {
         @Override
-        public void initialize() {
+        public void init() {
             Intake.feed();
         }
 
         @Override
-        public void execute() {}
+        public void periodic() {}
 
         @Override
-        public void end(boolean interrupted) {
+        public void end() {
             Intake.stop();
         }
 
         @Override
-        public boolean isFinished() {
+        public boolean isDone() {
             return !Intake.hasNote;
         }
     };

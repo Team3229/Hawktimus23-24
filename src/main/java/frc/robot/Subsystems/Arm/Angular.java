@@ -5,11 +5,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
 
 
 /*
@@ -18,44 +15,35 @@ Controls the arm
  */
 public class Angular {
 
-    public static CANSparkMax arm;
-    private static CANSparkMax arm2;
-    private static final int ARM_ID = 16;
-    private static final int ARM2_ID = 17;
+    public static CANSparkMax left;
+    private static CANSparkMax right;
+    private static final int LEFT_ID = 16;
+    private static final int RIGHT_ID = 17;
 
     public static double targetAngle = 0;
 
     public static boolean atTarget = false;
     private static double ARM_DEADBAND = 5;
 
-    private static double STOWED_ANGLE = 90;
-    private static double UNSTOWED_ANGLE = 108;
-    private static double RAISING_ANGLE = 85;
+    private static double STOWED_ANGLE = 96;
+    private static double GRAB_ANGLE = 110;
     private static double AMP_ANGLE = 0;
 
     private static RelativeEncoder encoder;
-
-    private static final int ARM_P = 0;
-    private static final int ARM_I = 0;
-    private static final int ARM_D = 0;
+;
     private static SparkPIDController pidController;
 
     public static void update(){
         goToAngle();
-        SmartDashboard.putNumber("Arm setpoint", targetAngle);
-        SmartDashboard.putNumber("Arm gotpoint", encoder.getPosition());
     }
 
     public static void stow(){
         targetAngle = STOWED_ANGLE;
     }
     
-    public static void raise(){
-        targetAngle = RAISING_ANGLE;
-    }
 
     public static void unstow(){
-        targetAngle = UNSTOWED_ANGLE;
+        targetAngle = GRAB_ANGLE;
     }
 
     public static void amp(){
@@ -68,18 +56,22 @@ public class Angular {
     }
 
     public static void init(){
-        arm = new CANSparkMax(ARM_ID, MotorType.kBrushless);
-        arm2 = new CANSparkMax(ARM2_ID,MotorType.kBrushless);
-        arm2.follow(arm,  true);
-        arm.setIdleMode(IdleMode.kBrake);
-        arm2.setIdleMode(IdleMode.kBrake);
-        pidController = arm.getPIDController();
-        pidController.setP(ARM_P);
-        pidController.setI(ARM_I);
-        pidController.setD(ARM_D);
-        encoder = arm.getAlternateEncoder(8192);
-        encoder.setPositionConversionFactor(60 * 360);
-        pidController.setOutputRange(AMP_ANGLE, UNSTOWED_ANGLE);
+        left = new CANSparkMax(LEFT_ID, MotorType.kBrushless);
+        right = new CANSparkMax(RIGHT_ID, MotorType.kBrushless);
+
+        encoder = left.getAlternateEncoder(8192);
+        encoder.setPositionConversionFactor(360);
+
+        encoder.setPosition(0);
+
+        right.follow(left, true);
+
+        pidController = left.getPIDController();
+
+        pidController.setFeedbackDevice(encoder);
+        pidController.setP(0.02);
+
+        pidController.setOutputRange(-0.5, 0.5);
     }
     
 }

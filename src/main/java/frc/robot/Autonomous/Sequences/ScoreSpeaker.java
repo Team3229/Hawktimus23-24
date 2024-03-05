@@ -1,12 +1,12 @@
 package frc.robot.Autonomous.Sequences;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.CommandsV2.Command;
+import frc.robot.CommandsV2.ParallelCompile;
+import frc.robot.CommandsV2.SequentialCompile;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.DrivetrainCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Subsystems.Shooter.ShooterCommands;
-import frc.robot.Utils.ParallelGroup;
-import frc.robot.Utils.SequentialGroup;
 
 /*
 Shooting note
@@ -20,33 +20,14 @@ Shooting note
  */
 public class ScoreSpeaker {
     
-    private static SequentialGroup sequence;
-    public static Command command = new Command() {
-        @Override
-        public void initialize() {
-            sequence = new SequentialGroup(
-                new ParallelGroup(
-                    ShooterCommands.shootSpeaker,
-                    ArmCommands.speakerPosition,
-                    DrivetrainCommands.lineUpSpeaker
-                ),
-                IntakeCommands.feed,
-                ArmCommands.stow
-            );
-            sequence.initialize();
-        }
-
-        @Override
-        public void execute() {
-            sequence.execute();
-        }
-
-        @Override
-        public void end(boolean interrupted) {}
-
-        @Override
-        public boolean isFinished() {
-            return sequence.isFinished();
-        }
-    };
+    public static Command command = new SequentialCompile(
+        new ParallelCompile(
+            ShooterCommands.shootSpeaker,
+            ArmCommands.speakerPosition,
+            DrivetrainCommands.lineUpSpeaker
+        ),
+        IntakeCommands.feed,
+        ArmCommands.stow
+    );
+    
 }

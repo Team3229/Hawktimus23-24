@@ -6,7 +6,6 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Intake.Intake;
 
 /*
@@ -23,10 +22,6 @@ public class Shooter {
     public static boolean ampIntent = false;
     public static boolean atSpeed = false;
     public static final double RPM_DEADBAND = 10;
-    
-    private static final double SHOOT_P = 0.1;
-    private static final double SHOOT_I = 0;
-    private static final double SHOOT_D = 0;
 
     public static SparkPIDController pid;
     public static RelativeEncoder encoder;
@@ -38,15 +33,10 @@ public class Shooter {
     public static void init(){
         outtake = new CANSparkMax(OUTTAKE_ID, MotorType.kBrushless);
         pid = outtake.getPIDController();
-        pid.setP(SHOOT_P);
-        pid.setI(SHOOT_I);
-        pid.setD(SHOOT_D);
         encoder = outtake.getEncoder();
     }
 
     public static void update(){
-        SmartDashboard.putNumber("Shooter setpoint", targetSpeed);
-        SmartDashboard.putNumber("Shooter getpoint", encoder.getVelocity());
         switch(state){
             case idle:
                 stop();

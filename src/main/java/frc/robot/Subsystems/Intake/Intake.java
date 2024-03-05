@@ -17,7 +17,6 @@ public class Intake {
     public static boolean hasNote = false;
     private static CANSparkMax intake;
     private static final int INTAKE_ID = 8;
-    private static final double INTAKE_SPEED = 1;
     private static DigitalInput sensor;
     private static final int SENSOR_CHANNEL = 0;
     public static IntakeStates state = IntakeStates.idle;
@@ -53,7 +52,7 @@ public class Intake {
 
     private static void ejecting(){
         if(hasNote){
-            intake.set(-INTAKE_SPEED);
+            intake.set(-0.2);
         } else {
             stop();
         }
@@ -61,7 +60,7 @@ public class Intake {
 
     private static void intaking(){
         if(!hasNote){
-            intake.set(INTAKE_SPEED);
+            intake.set(1);
         } else {
             stop();
         }
@@ -69,7 +68,7 @@ public class Intake {
 
     private static void feeding(){
         if(hasNote){
-            intake.set(INTAKE_SPEED);
+            intake.set(1);
         } else {
             stop();
         }
