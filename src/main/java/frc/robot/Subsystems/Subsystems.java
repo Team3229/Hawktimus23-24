@@ -3,6 +3,7 @@ package frc.robot.Subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
 import frc.robot.CommandsV2.CommandScheduler;
@@ -44,7 +45,6 @@ public class Subsystems {
                 shootAttempt();
             }
         }
-
     }
 
     private static void shootAttempt(){
@@ -79,11 +79,12 @@ public class Subsystems {
                     double shootingAngle = Math.atan(2/speaker.distance(bot));
                     if(60 <= shootingAngle & shootingAngle <= 90){
                         //We can shoot!
-                        double rotDegrees = Math.atan((myLine.getX2()-myLine.getX1())/(myLine.getY2()-myLine.getY1())) * 180/Math.PI;
-                        Shooter.targetSpeed = speaker.distance(bot) * 1200;
-                        Angular.targetAngle = shootingAngle;
-                        targetRotation = Rotation2d.fromDegrees(rotDegrees);;
-                        CommandScheduler.activate(ScoreSpeaker.command);
+                        SmartDashboard.putBoolean("Would have shot", true);
+                        // double rotDegrees = Math.atan((myLine.getX2()-myLine.getX1())/(myLine.getY2()-myLine.getY1())) * 180/Math.PI;
+                        // Shooter.targetSpeed = speaker.distance(bot) * 1200;
+                        // Angular.targetAngle = shootingAngle;
+                        // targetRotation = Rotation2d.fromDegrees(rotDegrees);;
+                        // CommandScheduler.activate(ScoreSpeaker.command);
                         return;
                     }
                 }
@@ -118,6 +119,7 @@ public class Subsystems {
                 }
             }
         }
+        SmartDashboard.putBoolean("Would have shot", false);
     }
 
     private static void ampAttempt(){
