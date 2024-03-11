@@ -36,15 +36,15 @@ public class Subsystems {
 		Shooter.update();
         Angular.update();
 
-        if(CommandScheduler.terminated | RunControls.manipManualControl) return;
+        // if(CommandScheduler.terminated | RunControls.manipManualControl) return;
 
-        if(Intake.hasNote){
-            if(Shooter.ampIntent){
-                ampAttempt();
-            } else {
-                shootAttempt();
-            }
-        }
+        // if(Intake.hasNote){
+        //     if(Shooter.ampIntent){
+        //         ampAttempt();
+        //     } else {
+        //         shootAttempt();
+        //     }
+        // }
     }
 
     private static void shootAttempt(){

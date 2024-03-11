@@ -19,7 +19,7 @@ public class ArmCommands {
     public static Command intakePos = new Command() {
         @Override
         public void init() {
-            Angular.unstow();
+            Angular.grab();
         }
 
         @Override

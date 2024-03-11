@@ -70,13 +70,22 @@ public class RunControls {
     private static void runManip(){
         if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
             manipManualControl = !manipManualControl;
+            if(!manipManualControl){
+                Angular.stow();
+            }
         }
 
         if(manipManualControl){
-            //Manual control scheme
-            double nextAngle = Math.round(Angular.targetAngle + (double) manipStick.get(Controls.FlightStick.AxisY));
-            if(nextAngle > 0 & nextAngle < 120){
-                Angular.targetAngle = nextAngle;
+            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
+                Angular.amp();
+            }else
+            if((boolean) manipStick.get(Controls.FlightStick.Button6Toggle)){
+                Angular.grab();
+            }else
+            if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle)){
+                Angular.subwoofShoot(); 
+            }else if((int) manipStick.get(Controls.FlightStick.DPad) != -1){
+                Angular.runManual(-(double) manipStick.get(Controls.FlightStick.AxisY)/3);
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.HazardToggle)){
@@ -101,6 +110,10 @@ public class RunControls {
                 } else {
                     Shooter.spinUp(5000 * (((double) manipStick.get(Controls.FlightStick.Throttle)/2) + 0.5));
                 }
+            }
+
+            if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
+                Intake.eject();
             }
             
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){

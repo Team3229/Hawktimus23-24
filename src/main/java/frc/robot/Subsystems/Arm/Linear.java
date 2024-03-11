@@ -18,7 +18,7 @@ public class Linear {
 
     private static RelativeEncoder encoder;
     public static boolean atTarget = false;
-    private static double LINEAR_DEADBAND = 1;
+    private static double LINEAR_DEADBAND = 0.05;
     public static boolean goingBackwards = false;
 
     public static void init(){

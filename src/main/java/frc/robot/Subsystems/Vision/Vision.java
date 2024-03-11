@@ -26,8 +26,8 @@ public class Vision {
     private static Pose2d output = new Pose2d();
     private static Pose3d output2 = new Pose3d();
 
-    public static void initialize() {
-        camera = new PhotonCamera("photonvision");
+    public static void init() {
+        camera = new PhotonCamera("Shooter_Cam");
 
         aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
@@ -38,11 +38,9 @@ public class Vision {
         visionData = new PhotonPipelineResult();
     }
 
-    public static void periodic() {
-        visionData = camera.getLatestResult();
-    }
-
     public static Pose2d getPose() {
+        visionData = camera.getLatestResult();
+        photonPoseEstimator.setLastPose(output);
         photonPoseEstimator.update().ifPresent(
             (EstimatedRobotPose pose) -> {
                 output = pose.estimatedPose.toPose2d();
@@ -60,10 +58,6 @@ public class Vision {
 
     public static double getDistance(Pose3d object) {
         return new Transform3d(robotPose(), object).getTranslation().getDistance(new Translation3d());
-    }
-
-    public static double getLatency() {
-        return visionData.getLatencyMillis() / 1000;
     }
 
     public static boolean isValid() {

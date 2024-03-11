@@ -14,8 +14,8 @@ import frc.robot.Subsystems.Intake.Intake;
  */
 public class Shooter {
 
-    private static CANSparkMax outtake;
-    private static final int OUTTAKE_ID = 9;
+    private static CANSparkMax shooter;
+    private static final int SHOOTER_ID = 9;
     public static final double AMP_SPEED = .1;
     public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;
@@ -31,9 +31,12 @@ public class Shooter {
     }
 
     public static void init(){
-        outtake = new CANSparkMax(OUTTAKE_ID, MotorType.kBrushless);
-        pid = outtake.getPIDController();
-        encoder = outtake.getEncoder();
+        shooter = new CANSparkMax(SHOOTER_ID, MotorType.kBrushless);
+        shooter.setInverted(true);
+        pid = shooter.getPIDController();
+        pid.setP(0.001);
+        pid.setD(0.01);
+        encoder = shooter.getEncoder();
     }
 
     public static void update(){
@@ -68,7 +71,7 @@ public class Shooter {
     public static void stop(){
         targetSpeed = 0;
         state = ShooterStates.idle;
-        outtake.stopMotor();
+        shooter.stopMotor();
     }
 
     public static void toggleAmpIntent(){

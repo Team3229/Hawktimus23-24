@@ -60,7 +60,7 @@ public class Intake {
 
     private static void intaking(){
         if(!hasNote){
-            intake.set(1);
+            intake.set(0.75);
         } else {
             stop();
         }

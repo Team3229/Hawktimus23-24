@@ -25,9 +25,11 @@ public class Angular {
     public static boolean atTarget = false;
     private static double ARM_DEADBAND = 5;
 
-    private static double STOWED_ANGLE = 96;
+    private static double STOWED_ANGLE = 92;
     private static double GRAB_ANGLE = 110;
-    private static double AMP_ANGLE = 0;
+    private static double AMP_ANGLE = 7.8;
+    private static double SUBWOOF_SHOOT = 75;
+    private static boolean manual = false;
 
     private static RelativeEncoder encoder;
 ;
@@ -37,22 +39,39 @@ public class Angular {
         goToAngle();
     }
 
+    public static void runManual(double speed){
+        manual = true;
+        targetAngle = speed;
+    }
+
     public static void stow(){
+        manual = false;
         targetAngle = STOWED_ANGLE;
     }
     
 
-    public static void unstow(){
+    public static void grab(){
+        manual = false;
         targetAngle = GRAB_ANGLE;
     }
 
     public static void amp(){
+        manual = false;
         targetAngle = AMP_ANGLE;
     }
 
+    public static void subwoofShoot(){
+        manual = false;
+        targetAngle = SUBWOOF_SHOOT;
+    }
+
     private static void goToAngle(){
-        pidController.setReference(targetAngle,ControlType.kPosition);
-        atTarget = Math.abs(encoder.getPosition()) <= ARM_DEADBAND;
+        if(manual){
+            pidController.setReference(targetAngle,ControlType.kDutyCycle);
+        } else {
+            pidController.setReference(targetAngle,ControlType.kPosition);
+            atTarget = Math.abs(encoder.getPosition()) <= ARM_DEADBAND;
+        }
     }
 
     public static void init(){

@@ -54,19 +54,21 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
-		ModuleOffsets.initialize();
+		ModuleOffsets.init();
 
 		RunControls.init();
 
 		Subsystems.init();
 
+		CommandScheduler.init();
+
 		autoManager = new PathPlanner();
 
-		Vision.initialize();
+		Vision.init();
 
 		SwerveKinematics.initialize();
 
-		SwerveOdometry.initialize(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
+		SwerveOdometry.init(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
 
 	}
 
@@ -141,7 +143,7 @@ public class Robot extends TimedRobot {
 		// Remove for Comp
 		SwerveKinematics.zeroGyro();
 
-		SwerveOdometry.initialize(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
+		SwerveOdometry.init(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
 
 		RunControls.nullControls();
 
