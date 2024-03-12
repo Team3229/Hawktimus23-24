@@ -13,9 +13,11 @@ Grabbing note
 public class Grab {
     
     public static final Command command = new SequentialCompile(
+        ArmCommands.raise,
         ArmCommands.forwardRail,
         ArmCommands.intakePos,
         IntakeCommands.intakeNote,
+        ArmCommands.raise,
         ArmCommands.stow,
         ArmCommands.backwardRail
     );

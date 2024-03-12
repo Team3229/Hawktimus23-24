@@ -16,6 +16,17 @@ public class ArmCommands {
         }
     };
 
+    public static Command raise = new Command(){
+        @Override
+        public void init(){
+            Angular.raise();
+        }
+        @Override
+        public boolean isDone() {
+            return Angular.atTarget;
+        }
+    };
+
     public static Command intakePos = new Command() {
         @Override
         public void init() {

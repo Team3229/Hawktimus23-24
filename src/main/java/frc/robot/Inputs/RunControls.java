@@ -71,21 +71,24 @@ public class RunControls {
         if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
             manipManualControl = !manipManualControl;
             if(!manipManualControl){
-                Angular.stow();
+                Angular.manual = false;
             }
         }
 
         if(manipManualControl){
-            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
+            double movement = -(double) manipStick.get(Controls.FlightStick.AxisY)/3;
+            if(movement != 0){
+                Angular.runManual(movement);
+            }else if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle) & !Linear.goingBackwards){
                 Angular.amp();
-            }else
-            if((boolean) manipStick.get(Controls.FlightStick.Button6Toggle)){
+            }
+            else if((boolean) manipStick.get(Controls.FlightStick.Button6Toggle) & Linear.goingBackwards){
                 Angular.grab();
-            }else
-            if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle)){
-                Angular.subwoofShoot(); 
-            }else if((int) manipStick.get(Controls.FlightStick.DPad) != -1){
-                Angular.runManual(-(double) manipStick.get(Controls.FlightStick.AxisY)/3);
+            }
+            else if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle) & !Linear.goingBackwards){
+                Angular.subwoofShoot();
+            } else {
+                Angular.manual = false;
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.HazardToggle)){

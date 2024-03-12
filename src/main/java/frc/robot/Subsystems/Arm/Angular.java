@@ -29,7 +29,8 @@ public class Angular {
     private static double GRAB_ANGLE = 110;
     private static double AMP_ANGLE = 7.8;
     private static double SUBWOOF_SHOOT = 75;
-    private static boolean manual = false;
+    private static double RAISED = 80;//???
+    public static boolean manual = false;
 
     private static RelativeEncoder encoder;
 ;
@@ -63,6 +64,11 @@ public class Angular {
     public static void subwoofShoot(){
         manual = false;
         targetAngle = SUBWOOF_SHOOT;
+    }
+
+    public static void raise(){
+        manual = false;
+        targetAngle = RAISED;
     }
 
     private static void goToAngle(){
