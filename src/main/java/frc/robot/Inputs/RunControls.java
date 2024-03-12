@@ -61,8 +61,8 @@ public class RunControls {
 						(double) driveStick.get(Controls.FlightStick.AxisZ)
 					);
 
-		if((boolean) driveStick.get(Controls.FlightStick.Button10)){
-			SwerveKinematics.navxGyro.zeroYaw();
+		if((boolean) driveStick.get(Controls.FlightStick.Button10Toggle)){
+			SwerveKinematics.zeroGyro();
 		}
 
     }
@@ -70,6 +70,7 @@ public class RunControls {
     private static void runManip(){
         if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
             manipManualControl = !manipManualControl;
+            CommandScheduler.terminated = manipManualControl;
             if(!manipManualControl){
                 Angular.manual = false;
             }
@@ -79,13 +80,13 @@ public class RunControls {
             
             Angular.runManual(-(double) manipStick.get(Controls.FlightStick.AxisY)/3);
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle) & !Linear.goingBackwards){
+            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle) & Linear.goingBackwards){
                 Angular.amp();
             }
-            else if((boolean) manipStick.get(Controls.FlightStick.Button6Toggle) & Linear.goingBackwards){
+            else if((boolean) manipStick.get(Controls.FlightStick.Button6Toggle) & !Linear.goingBackwards){
                 Angular.grab();
             }
-            else if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle) & !Linear.goingBackwards){
+            else if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle) & Linear.goingBackwards){
                 Angular.subwoofShoot();
             }
 

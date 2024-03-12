@@ -37,7 +37,7 @@ public class Linear {
     }
 
     public static void update(){
-        atTarget = Math.abs(encoder.getPosition()) <= LINEAR_DEADBAND;
+        atTarget = Math.abs(encoder.getPosition() - (goingBackwards ? 0 : 1)) <= LINEAR_DEADBAND;
     }
 
     public static void front(){

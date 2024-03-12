@@ -165,12 +165,15 @@ public class Robot extends TimedRobot {
 
 		Subsystems.update();
 
+		CommandScheduler.periodic();
+
 	}
 
 	/** This function is called once when the robot is disabled. */
 	@Override
 	public void disabledInit() {
 		SwerveKinematics.stop();
+		CommandScheduler.emptyTrashCan();
 	}
 
 	/** This function is called periodically when disabled. */

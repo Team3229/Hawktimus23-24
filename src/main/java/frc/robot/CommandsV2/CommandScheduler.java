@@ -56,4 +56,8 @@ public class CommandScheduler {
         return commandList.contains(command);
     }
 
+    public static void emptyTrashCan() {
+        commandList = new ArrayList<Command>();
+    }
+
 }

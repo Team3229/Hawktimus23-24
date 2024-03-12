@@ -119,7 +119,7 @@ public class SwerveKinematics {
 
         // If we are in robot relative mode, override the chassis rotation to 180 degrees.
         if (relativeMode) {
-            robotRotation = Rotation2d.fromDegrees(180);
+            robotRotation = Rotation2d.fromDegrees(0);
         } else {
             robotRotation = Rotation2d.fromDegrees(MathUtil.inputModulus(gyroOffset.getDegrees()-navxGyro.getYaw(), 0, 360));
         }

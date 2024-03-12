@@ -31,7 +31,7 @@ public class Vision {
 
         aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
-        robotToCam = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+        robotToCam = new Transform3d(new Translation3d(-0.2032,0.3175,0.38735), new Rotation3d(0,0,180));
 
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, robotToCam);
     
