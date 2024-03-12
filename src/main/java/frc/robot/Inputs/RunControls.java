@@ -76,10 +76,10 @@ public class RunControls {
         }
 
         if(manipManualControl){
-            double movement = -(double) manipStick.get(Controls.FlightStick.AxisY)/3;
-            if(movement != 0){
-                Angular.runManual(movement);
-            }else if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle) & !Linear.goingBackwards){
+            
+            Angular.runManual(-(double) manipStick.get(Controls.FlightStick.AxisY)/3);
+
+            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle) & !Linear.goingBackwards){
                 Angular.amp();
             }
             else if((boolean) manipStick.get(Controls.FlightStick.Button6Toggle) & Linear.goingBackwards){
@@ -87,8 +87,6 @@ public class RunControls {
             }
             else if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle) & !Linear.goingBackwards){
                 Angular.subwoofShoot();
-            } else {
-                Angular.manual = false;
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.HazardToggle)){

@@ -31,6 +31,7 @@ public class Angular {
     private static double SUBWOOF_SHOOT = 75;
     private static double RAISED = 80;//???
     public static boolean manual = false;
+    private static boolean lastManual = false;
 
     private static RelativeEncoder encoder;
 ;
@@ -41,15 +42,22 @@ public class Angular {
     }
 
     public static void runManual(double speed){
-        manual = true;
-        targetAngle = speed;
+        if (speed == 0) {
+            if (manual) {
+                targetAngle = encoder.getPosition();
+            }
+            manual = false;
+        } else {
+            manual = true;
+            targetAngle = speed;
+        }
+        lastManual = manual;
     }
 
     public static void stow(){
         manual = false;
         targetAngle = STOWED_ANGLE;
     }
-    
 
     public static void grab(){
         manual = false;

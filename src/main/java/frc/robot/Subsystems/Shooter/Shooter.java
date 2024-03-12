@@ -53,7 +53,7 @@ public class Shooter {
     private static void spinningUp(){
        if(Intake.hasNote){
             pid.setReference(targetSpeed,ControlType.kVelocity);
-            atSpeed = Math.abs(encoder.getVelocity()) <= RPM_DEADBAND;
+            atSpeed = Math.abs(targetSpeed - encoder.getVelocity()) <= RPM_DEADBAND;
        } else {
            stop();
        }
