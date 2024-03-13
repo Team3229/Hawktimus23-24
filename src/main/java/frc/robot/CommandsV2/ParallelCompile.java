@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 public class ParallelCompile extends Command{
 
+    private ArrayList<Command> _commands;
     private ArrayList<Command> commands;
 
     public ParallelCompile(Command... commands){
         this.commands = new ArrayList<Command>();
+        this._commands = new ArrayList<Command>();
         for(int i = 0; i < commands.length; i++){
             this.commands.add(commands[i]);
+            this._commands.add(commands[i]);
         }
     }
 
@@ -36,5 +39,7 @@ public class ParallelCompile extends Command{
     }
 
     @Override
-    public void end(){}
+    public void end(){
+        this.commands = this._commands;
+    }
 }

@@ -40,7 +40,7 @@ public class Subsystems {
 
         // if(Intake.hasNote){
         //     if(Shooter.ampIntent){
-        //         ampAttempt();
+        //         // ampAttempt();
         //     } else {
         //         shootAttempt();
         //     }

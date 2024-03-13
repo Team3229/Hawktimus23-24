@@ -29,7 +29,7 @@ public class Angular {
     private static double GRAB_ANGLE = 108;
     private static double AMP_ANGLE = 0;
     private static double SUBWOOF_SHOOT = 75;
-    private static double RAISED = 80;//???
+    private static double RAISED = 78;
     public static boolean manual = false;
 
     private static RelativeEncoder encoder;
@@ -102,7 +102,11 @@ public class Angular {
         pidController.setFeedbackDevice(encoder);
         pidController.setP(0.02);
 
+        pidController.setPositionPIDWrappingEnabled(false);
+        
         pidController.setOutputRange(-0.3, 0.3);
+
+        
     }
     
 }

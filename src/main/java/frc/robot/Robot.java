@@ -197,7 +197,6 @@ public class Robot extends TimedRobot {
 	public void simulationPeriodic() {}
 
 	public void logging() {
-
 		SmartDashboard.putNumberArray("odometry", new double[] {
 			SwerveOdometry.getPose().getX(),
 			SwerveOdometry.getPose().getY(),

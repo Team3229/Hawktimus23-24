@@ -70,7 +70,7 @@ public class RunControls {
     private static void runManip(){
         if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
             manipManualControl = !manipManualControl;
-            CommandScheduler.terminated = manipManualControl;
+            CommandScheduler.emptyTrashCan();
             if(!manipManualControl){
                 Angular.manual = false;
             }
@@ -134,7 +134,7 @@ public class RunControls {
             if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
                 Shooter.ampIntent = !Shooter.ampIntent;
             }
-            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle) && !CommandScheduler.isActive(Grab.command)){
                 CommandScheduler.activate(Grab.command);
             }
         }

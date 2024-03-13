@@ -1,6 +1,7 @@
 package frc.robot.Autonomous.Sequences;
 
 import frc.robot.CommandsV2.Command;
+import frc.robot.CommandsV2.ParallelCompile;
 import frc.robot.CommandsV2.SequentialCompile;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
@@ -14,12 +15,16 @@ public class Grab {
     
     public static final Command command = new SequentialCompile(
         ArmCommands.raise,
-        ArmCommands.forwardRail,
-        ArmCommands.intakePos,
+        new ParallelCompile(
+            ArmCommands.forwardRail,
+            ArmCommands.intakePos
+        ),
         IntakeCommands.intakeNote,
         ArmCommands.raise,
-        ArmCommands.stow,
-        ArmCommands.backwardRail
+        new ParallelCompile(
+            ArmCommands.backwardRail,
+            ArmCommands.stow
+        )
     );
 
 }
