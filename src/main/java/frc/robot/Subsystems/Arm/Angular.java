@@ -109,6 +109,7 @@ public class Angular {
 
         encoder = left.getAbsoluteEncoder();
         encoder.setPositionConversionFactor(360);
+        encoder.setZeroOffset(0);
 
         right.follow(left, true);
 
