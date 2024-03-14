@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
@@ -54,6 +56,7 @@ public class Angular {
                 targetAngle = 0;
             }
         }
+        SmartDashboard.putNumber("targetA", targetAngle);
         goToAngle();
     }
 
@@ -109,8 +112,8 @@ public class Angular {
 
         encoder = left.getAbsoluteEncoder();
         encoder.setPositionConversionFactor(360);
-        encoder.setZeroOffset(0);
-
+        encoder.setZeroOffset(58.64289093017578);
+        left.setInverted(false);
         right.follow(left, true);
 
         pidController = left.getPIDController();
@@ -118,7 +121,9 @@ public class Angular {
         pidController.setFeedbackDevice(encoder);
         pidController.setP(0.02);
 
-        pidController.setPositionPIDWrappingEnabled(false);
+        pidController.setPositionPIDWrappingEnabled(true);
+        pidController.setPositionPIDWrappingMinInput(0);
+        pidController.setPositionPIDWrappingMinInput(360);
         
         pidController.setOutputRange(-0.3, 0.3);
 

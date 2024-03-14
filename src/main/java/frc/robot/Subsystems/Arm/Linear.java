@@ -33,7 +33,7 @@ public class Linear {
         pid = linearRail.getPIDController();
         pid.setFeedbackDevice(encoder);
         pid.setP(1.5);
-        pid.setOutputRange(-1, 1);
+        pid.setOutputRange(-.125, .125);
     }
 
     public static void update(){
