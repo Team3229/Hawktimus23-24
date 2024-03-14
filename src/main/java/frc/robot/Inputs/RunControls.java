@@ -51,7 +51,7 @@ public class RunControls {
     
     private static void runDriver(){
 
-        if((boolean) driveStick.get(Controls.FlightStick.Hazard)){
+        if((boolean) driveStick.get(Controls.FlightStick.Trigger)){
             SwerveKinematics.relativeMode = true;
         } else {
             SwerveKinematics.relativeMode = false;
