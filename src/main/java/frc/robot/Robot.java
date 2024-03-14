@@ -203,6 +203,7 @@ public class Robot extends TimedRobot {
 			SwerveOdometry.getPose().getRotation().getDegrees()
 		});
 		
+		SmartDashboard.putNumber("ArmA", Angular.encoder.getPosition());
 		SmartDashboard.putNumber("frontLeft", SwerveKinematics.frontLeftModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("frontRight", SwerveKinematics.frontRightModule.getAbsolutePosition().getDegrees());
 		SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());

@@ -1,6 +1,7 @@
 //BIG RAT
 package frc.robot.Subsystems.Arm;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -32,11 +33,27 @@ public class Angular {
     private static double RAISED = 78;
     public static boolean manual = false;
 
-    private static RelativeEncoder encoder;
+    public static AbsoluteEncoder encoder;
 ;
     private static SparkPIDController pidController;
 
     public static void update(){
+        if(!manual){
+            if(Linear.goingBackwards & ((targetAngle > STOWED_ANGLE) | encoder.getPosition() > STOWED_ANGLE+1)){
+                targetAngle = STOWED_ANGLE;
+            } else if(!Linear.goingBackwards & ((targetAngle > GRAB_ANGLE) | encoder.getPosition() > GRAB_ANGLE+1)){
+                targetAngle = GRAB_ANGLE;
+            }
+        } else {
+            if(targetAngle > 0.3) {
+                targetAngle = 0.3;
+            }
+            if(Linear.goingBackwards & ((targetAngle > STOWED_ANGLE) | encoder.getPosition() > STOWED_ANGLE+1)){
+                targetAngle = 0;
+            } else if(!Linear.goingBackwards & ((targetAngle > GRAB_ANGLE) | encoder.getPosition() > GRAB_ANGLE+1)){
+                targetAngle = 0;
+            }
+        }
         goToAngle();
     }
 
@@ -90,10 +107,8 @@ public class Angular {
         left = new CANSparkMax(LEFT_ID, MotorType.kBrushless);
         right = new CANSparkMax(RIGHT_ID, MotorType.kBrushless);
 
-        encoder = left.getAlternateEncoder(8192);
+        encoder = left.getAbsoluteEncoder();
         encoder.setPositionConversionFactor(360);
-
-        encoder.setPosition(0);
 
         right.follow(left, true);
 
