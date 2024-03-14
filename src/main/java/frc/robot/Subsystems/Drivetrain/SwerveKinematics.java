@@ -201,6 +201,14 @@ public class SwerveKinematics {
         );
     }
 
+    public static void driveWithRotation(double X, double Y, Rotation2d rotation) {
+        drive(
+            X,
+            Y,
+            angularMovement.calculate(Vision.getPose().getRotation().getDegrees(),SwerveOdometry.getPose().getRotation().getDegrees())
+        );
+    }
+
     public static ChassisSpeeds getSpeeds() {
         return chassisState;
     }

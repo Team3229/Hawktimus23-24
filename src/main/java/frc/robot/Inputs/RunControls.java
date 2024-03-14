@@ -1,5 +1,7 @@
 package frc.robot.Inputs;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Autonomous.Sequences.Grab;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
@@ -9,10 +11,13 @@ import frc.robot.Inputs.Controller.Controls;
 import frc.robot.Subsystems.Arm.Angular;
 import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
+import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Intake.Intake.IntakeStates;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.Shooter.ShooterStates;
+import frc.robot.Utils.FieldConstants;
+import frc.robot.Utils.Utils;
 
 public class RunControls {
 
@@ -51,15 +56,32 @@ public class RunControls {
         } else {
             SwerveKinematics.relativeMode = false;
         }
-
-                                                                                            //Conversion from 0-1 to 0.5-1
-        SwerveKinematics.maxChassisRotationSpeed = 10 * ((double) driveStick.get(Controls.FlightStick.Throttle)/2) + 0.5;
-
-        SwerveKinematics.drive(
+    
+        if ((boolean) driveStick.get(Controls.FlightStick.Hazard)) {
+            if (Utils.getAlliance() == Alliance.Blue) {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						Rotation2d.fromRadians(Math.atan2(
+                            SwerveOdometry.getPose().getX() - FieldConstants.BLUE_SPEAKER[0],
+                            SwerveOdometry.getPose().getY() - FieldConstants.BLUE_SPEAKER[1]))
+					);
+            } else {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						Rotation2d.fromRadians(Math.atan2(
+                            SwerveOdometry.getPose().getX() - FieldConstants.RED_SPEAKER[0],
+                            SwerveOdometry.getPose().getY() - FieldConstants.RED_SPEAKER[1]))
+					);
+            }
+        } else {
+            SwerveKinematics.drive(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
 						(double) driveStick.get(Controls.FlightStick.AxisZ)
 					);
+        }
 
 		if((boolean) driveStick.get(Controls.FlightStick.Button10Toggle)){
 			SwerveKinematics.zeroGyro();
