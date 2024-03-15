@@ -68,7 +68,7 @@ public class SwerveKinematics {
 
     public static PIDController linearXMovement = new PIDController(40, 0.0, 0.5);
     public static PIDController linearYMovement = new PIDController(40, 0.0, 0.5);
-    public static PIDController angularMovement = new PIDController(5, 0, 0);
+    public static PIDController angularMovement = new PIDController(0.08, 0, 0);
 
     public SwerveKinematics() {}
 
