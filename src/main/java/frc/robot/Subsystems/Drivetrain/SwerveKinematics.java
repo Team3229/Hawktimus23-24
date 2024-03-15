@@ -95,6 +95,8 @@ public class SwerveKinematics {
         modulePositions[3] = new SwerveModulePosition();
 
         chassisState = new ChassisSpeeds();
+
+        angularMovement.enableContinuousInput(0, 360);
     }
 
     public static void configureDrivetrain() {
@@ -205,7 +207,7 @@ public class SwerveKinematics {
         drive(
             X,
             Y,
-            angularMovement.calculate(Vision.getPose().getRotation().getDegrees(),SwerveOdometry.getPose().getRotation().getDegrees())
+            angularMovement.calculate(SwerveOdometry.getPose().getRotation().getDegrees(), rotation.getDegrees())
         );
     }
 

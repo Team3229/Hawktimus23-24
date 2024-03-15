@@ -62,17 +62,17 @@ public class RunControls {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromRadians(Math.atan2(
+						new Rotation2d(
                             SwerveOdometry.getPose().getX() - FieldConstants.BLUE_SPEAKER[0],
-                            SwerveOdometry.getPose().getY() - FieldConstants.BLUE_SPEAKER[1]))
+                            SwerveOdometry.getPose().getY() - FieldConstants.BLUE_SPEAKER[1])
 					);
             } else {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromRadians(Math.atan2(
+						new Rotation2d(
                             SwerveOdometry.getPose().getX() - FieldConstants.RED_SPEAKER[0],
-                            SwerveOdometry.getPose().getY() - FieldConstants.RED_SPEAKER[1]))
+                            SwerveOdometry.getPose().getY() - FieldConstants.RED_SPEAKER[1])
 					);
             }
         } else {
