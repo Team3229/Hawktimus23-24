@@ -6,7 +6,10 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Utils.FieldConstants;
 
 /*
 -Spin up (to given RPM)
@@ -31,11 +34,11 @@ public class Shooter {
     }
 
     public static void init(){
+        SmartDashboard.putNumber("targetRPM", 0);
         shooter = new CANSparkMax(SHOOTER_ID, MotorType.kBrushless);
         shooter.setInverted(true);
         pid = shooter.getPIDController();
         pid.setP(0.001);
-        pid.setD(0.01);
         encoder = shooter.getEncoder();
     }
 
@@ -51,9 +54,20 @@ public class Shooter {
     }
 
     private static void spinningUp(){
+
+        // if (Intake.hasNote) {
+            double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
+
+        //     pid.setReference(distance * 1000, ControlType.kVelocity);
+        // } else {
+        //     stop();
+        // }
+
+        SmartDashboard.putNumber("distance", distance);
+
        if(Intake.hasNote){
-            pid.setReference(targetSpeed,ControlType.kVelocity);
-            atSpeed = Math.abs(targetSpeed - encoder.getVelocity()) <= RPM_DEADBAND;
+            pid.setReference(SmartDashboard.getNumber("targetRPM", 0),ControlType.kVelocity);
+            atSpeed = Math.abs(SmartDashboard.getNumber("targetRPM", 0) - encoder.getVelocity()) <= RPM_DEADBAND;
        } else {
            stop();
        }

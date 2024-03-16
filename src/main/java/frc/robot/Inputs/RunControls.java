@@ -123,7 +123,7 @@ public class RunControls {
             if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
                 if(Intake.state == IntakeStates.feed){
                     Intake.stop();
-                } else {
+                } else  {
                     Intake.feed();
                 }
             }

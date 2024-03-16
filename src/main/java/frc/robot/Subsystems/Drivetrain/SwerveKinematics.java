@@ -68,7 +68,7 @@ public class SwerveKinematics {
 
     public static PIDController linearXMovement = new PIDController(40, 0.0, 0.5);
     public static PIDController linearYMovement = new PIDController(40, 0.0, 0.5);
-    public static PIDController angularMovement = new PIDController(0.08, 0, 0);
+    public static PIDController angularMovement = new PIDController(0.003, 0, 0);
 
     public SwerveKinematics() {}
 
@@ -207,7 +207,7 @@ public class SwerveKinematics {
         drive(
             X,
             Y,
-            angularMovement.calculate(SwerveOdometry.getPose().getRotation().getDegrees(), rotation.getDegrees())
+            -angularMovement.calculate(-SwerveOdometry.getPose().getRotation().getDegrees(), rotation.getDegrees())
         );
     }
 

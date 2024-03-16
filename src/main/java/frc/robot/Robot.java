@@ -27,6 +27,7 @@ import frc.robot.Subsystems.Intake.Intake.IntakeStates;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.FieldConstants;
+import frc.robot.Utils.Logging;
 import frc.robot.Autonomous.PathPlanner;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
@@ -70,6 +71,8 @@ public class Robot extends TimedRobot {
 
 		SwerveOdometry.init(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
 
+		Logging.init();
+
 	}
 
 	/**
@@ -81,7 +84,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		logging();
+		Logging.log();
 	}
 
 	/** This function is called once when autonomous is enabled. */
@@ -195,25 +198,4 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically whilst in simulation. */
 	@Override
 	public void simulationPeriodic() {}
-
-	public void logging() {
-		SmartDashboard.putNumberArray("odometry", new double[] {
-			SwerveOdometry.getPose().getX(),
-			SwerveOdometry.getPose().getY(),
-			SwerveOdometry.getPose().getRotation().getDegrees()
-		});
-		
-		SmartDashboard.putNumber("ArmA", Angular.encoder.getPosition());
-		SmartDashboard.putNumber("frontLeft", SwerveKinematics.frontLeftModule.getAbsolutePosition().getDegrees());
-		SmartDashboard.putNumber("frontRight", SwerveKinematics.frontRightModule.getAbsolutePosition().getDegrees());
-		SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());
-		SmartDashboard.putNumber("backRight", SwerveKinematics.backRightModule.getAbsolutePosition().getDegrees());
-
-		SmartDashboard.putBoolean("Amp Intent", Shooter.ampIntent);
-		SmartDashboard.putBoolean("Has Note", Intake.hasNote);
-		SmartDashboard.putBoolean("Auto Control", CommandScheduler.isActive(ScoreSpeaker.command) | CommandScheduler.isActive(ScoreAmp.command));
-		SmartDashboard.putBoolean("Manip Manual Control", RunControls.manipManualControl);
-		SmartDashboard.putBoolean("Auto Override", CommandScheduler.terminated);
-		SmartDashboard.putBoolean("Intake Active", Intake.state == IntakeStates.intaking);
-	}
 }
