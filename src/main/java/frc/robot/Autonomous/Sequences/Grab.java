@@ -13,8 +13,7 @@ Grabbing note
  */
 public class Grab {
 
-    public static Command command() {
-        return new SequentialCompile(
+    public static Command command = new SequentialCompile(
         ArmCommands.raise,
         ArmCommands.forwardRail,
         new ParallelCompile(
@@ -27,6 +26,5 @@ public class Grab {
             ArmCommands.stow
         )
     );
-    }
 
 }

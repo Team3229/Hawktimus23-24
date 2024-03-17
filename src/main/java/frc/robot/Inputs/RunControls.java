@@ -7,14 +7,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Autonomous.Sequences.CancelGrab;
 import frc.robot.Autonomous.Sequences.Grab;
-import frc.robot.Autonomous.Sequences.ScoreAmp;
-import frc.robot.Autonomous.Sequences.ScoreSpeaker;
+import frc.robot.Autonomous.Sequences.Stow;
 import frc.robot.CommandsV2.CommandScheduler;
-import frc.robot.CommandsV2.SequentialCompile;
 import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
 import frc.robot.Subsystems.Arm.Angular;
-import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -32,8 +29,6 @@ public class RunControls {
 
     public static boolean manipManualControl = true;
 
-    private static boolean wasShooting = false;
-
     public static void init(){
         driveStick = new Controller(ControllerType.FlightStick, 0);
         manipStick = new Controller(ControllerType.FlightStick, 1);
@@ -47,10 +42,6 @@ public class RunControls {
     public static void run(){
         nullControls();
         update();
-
-        //Those commands take driving control, only allow the override to be ran.  Everything else is fully auto.
-        if((boolean) driveStick.get(Controls.FlightStick.Button5Toggle) | (boolean) manipStick.get(Controls.FlightStick.Button5Toggle)) CommandScheduler.terminated = !CommandScheduler.terminated;
-        if(CommandScheduler.isActive(ScoreAmp.command) | CommandScheduler.isActive(ScoreSpeaker.command)) return;
 
         runDriver();
         runManip();
@@ -131,16 +122,6 @@ public class RunControls {
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
-                if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
-                    Shooter.stop();
-                    Angular.isShooting = false;
-                } else {
-                    Shooter.spinUp();
-                    Angular.isShooting = true;
-                }
-            }
-
             if((boolean) manipStick.get(Controls.FlightStick.Button11)){
                 Intake.run(-0.2);
             } else {
@@ -164,40 +145,36 @@ public class RunControls {
 
         } else {
             //Auto control scheme
+            
+            if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle)){
+                Shooter.ampIntent = !Shooter.ampIntent;
+            }
+
             if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
                 Intake.eject();
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
-                if(!CommandScheduler.isActive(Grab.command())){
-                    CommandScheduler.activate(Grab.command());
+                if(!CommandScheduler.isActive(Grab.command)){
+                    CommandScheduler.activate(Grab.command);
                 } else {
-                    CommandScheduler.deactivate(Grab.command());
-                    CommandScheduler.activate(CancelGrab.command());
+                    CommandScheduler.deactivate(Grab.command);
+                    CommandScheduler.activate(CancelGrab.command);
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
-                if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
-                    Shooter.stop();
-                    Angular.isShooting = false;
-                } else {
-                    Shooter.spinUp();
-                    Angular.isShooting = true;
+            if(!Intake.hasNote & !CommandScheduler.isActive(Grab.command)) {
+                CommandScheduler.activate(Stow.command);
+            }
+
+            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+                if (Angular.targetAngle == Angular.AMP_ANGLE) {
+                    if(Shooter.state == ShooterStates.spinningUp){
+                        Shooter.stop();
+                    } else {
+                        Shooter.feed();
+                    }
                 }
-            }
-
-            if (wasShooting == true & Angular.isShooting == false) {
-                //stow
-                CommandScheduler.activate( new SequentialCompile(
-                    ArmCommands.raise,
-                    ArmCommands.backwardRail,
-                    ArmCommands.stow
-                )
-                );
-            }
-
-            if ((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
                 if(Intake.state == IntakeStates.feed){
                     Intake.stop();
                 } else {
@@ -205,28 +182,11 @@ public class RunControls {
                 }
             }
 
-            if ((boolean) manipStick.get(Controls.FlightStick.Trigger) & Angular.targetAngle == Angular.AMP_ANGLE) {
-                Intake.feed();
-                Shooter.feed();
-            } else if (Angular.targetAngle == Angular.AMP_ANGLE) {
-                Intake.stop();
-                Shooter.stop();
-            }
-
-            if (Angular.targetAngle == Angular.AMP_ANGLE & !Intake.hasNote) {
-                CommandScheduler.activate( new SequentialCompile(
-                    ArmCommands.raise,
-                    ArmCommands.backwardRail,
-                    ArmCommands.stow
-                ));
-            }
-
             if ((boolean) manipStick.get(Controls.FlightStick.Button9Toggle)) {
                 Angular.amp();
             }
+            
         }
-
-        wasShooting = Angular.isShooting;
 
     }
     private static void update(){

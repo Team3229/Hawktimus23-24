@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class CommandScheduler {
     
     private static ArrayList<Command> commandList;
-    public static boolean terminated = false;
 
     public static void init() {
         commandList = new ArrayList<Command>();
@@ -15,7 +14,6 @@ public class CommandScheduler {
      * Periodic function of {@link #RunCommand}; needs to be run every 20ms
      */
     public static void periodic() {
-        if(terminated) commandList = new ArrayList<Command>();
         for (int i = 0; i < commandList.size(); i++) {
             Command command = commandList.get(i);
             command.periodic();
@@ -31,7 +29,6 @@ public class CommandScheduler {
      * @param command Command to run
      */
     public static void activate(Command command) {
-        if(terminated) return;
         if (!isActive(command)) {
             commandList.add(command);
             command.init();

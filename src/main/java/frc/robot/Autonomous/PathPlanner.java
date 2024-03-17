@@ -7,14 +7,12 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Autonomous.Sequences.Grab;
-import frc.robot.Autonomous.Sequences.PathPlannerShootSpeaker;
-import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Utils.Utils;
 
 public class PathPlanner extends SubsystemBase {
@@ -32,9 +30,8 @@ public class PathPlanner extends SubsystemBase {
     
     public PathPlanner() {
 
-        NamedCommands.registerCommand("Speaker", PathPlannerShootSpeaker.command);
-        NamedCommands.registerCommand("Amp", ScoreAmp.command);
-        NamedCommands.registerCommand("Grab", Grab.command());
+        NamedCommands.registerCommand("Speaker", IntakeCommands.feed);
+        NamedCommands.registerCommand("Grab", Grab.command);
         
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
