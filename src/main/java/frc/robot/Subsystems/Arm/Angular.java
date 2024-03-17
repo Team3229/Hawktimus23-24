@@ -3,10 +3,11 @@ package frc.robot.Subsystems.Arm;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Utils.FieldConstants;
 
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -26,41 +27,39 @@ public class Angular {
     public static double targetAngle = 0;
 
     public static boolean atTarget = false;
-    private static double ARM_DEADBAND = 5;
+    private static double ARM_DEADBAND = 10;
 
-    private static double STOWED_ANGLE = 92;
-    private static double GRAB_ANGLE = 108;
-    private static double AMP_ANGLE = 0;
+    private static double STOWED_ANGLE = 90;
+    private static double GRAB_ANGLE = 110;
+    public static double AMP_ANGLE = 0;
     private static double SUBWOOF_SHOOT = 75;
-    private static double RAISED = 78;
+    private static double RAISED = 83;
     public static boolean manual = false;
 
     public static AbsoluteEncoder encoder;
 ;
     private static SparkPIDController pidController;
 
+    public static boolean isShooting = false;
+
     public static void update(){
-        if(!manual){
-            if(Linear.goingBackwards & ((targetAngle > STOWED_ANGLE) | encoder.getPosition() > STOWED_ANGLE+1)){
-                targetAngle = STOWED_ANGLE;
-            } else if(!Linear.goingBackwards & ((targetAngle > GRAB_ANGLE) | encoder.getPosition() > GRAB_ANGLE+1)){
-                targetAngle = GRAB_ANGLE;
-            }
-        } else {
-            if(targetAngle > 0.3) {
-                targetAngle = 0.3;
-            }
-            if(Linear.goingBackwards & ((targetAngle > STOWED_ANGLE) | encoder.getPosition() > STOWED_ANGLE+1)){
-                targetAngle = 0;
-            } else if(!Linear.goingBackwards & ((targetAngle > GRAB_ANGLE) | encoder.getPosition() > GRAB_ANGLE+1)){
-                targetAngle = 0;
-            }
-        }
-        SmartDashboard.putNumber("targetA", targetAngle);
         goToAngle();
     }
 
     public static void runManual(double speed){
+
+        if (speed < 0 & (encoder.getPosition() < 0 | encoder.getPosition() > 180)) {
+            speed = 0;
+        }
+
+        if (speed > 0 & (encoder.getPosition() >= 109.25 & encoder.getPosition() < 180) & !Linear.goingBackwards) {
+            speed = 0;
+        }
+
+        if (speed > 0 & (encoder.getPosition() >= STOWED_ANGLE & encoder.getPosition() < 180) & Linear.goingBackwards) {
+            speed = 0;
+        }
+
         if (speed == 0) {
             if (manual) {
                 targetAngle = encoder.getPosition();
@@ -68,42 +67,67 @@ public class Angular {
             manual = false;
         } else {
             manual = true;
+            isShooting = false;
             targetAngle = speed;
         }
     }
 
     public static void stow(){
+        isShooting = false;
         manual = false;
         targetAngle = STOWED_ANGLE;
     }
 
     public static void grab(){
+        isShooting = false;
         manual = false;
         targetAngle = GRAB_ANGLE;
     }
 
     public static void amp(){
+        isShooting = false;
         manual = false;
         targetAngle = AMP_ANGLE;
     }
 
     public static void subwoofShoot(){
+        isShooting = false;
         manual = false;
         targetAngle = SUBWOOF_SHOOT;
     }
 
     public static void raise(){
+        isShooting = false;
         manual = false;
         targetAngle = RAISED;
     }
 
+    public static void shoot() {
+        double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
+        distance *= 39.3701;
+        targetAngle = (-0.00042167 * (Math.pow(distance, 2))) + (-0.137302 * distance) + 82.8691;
+    }
+
     private static void goToAngle(){
+
+        if(isShooting & !manual) {
+            if (!Intake.hasNote) {isShooting = false;}
+            shoot();
+            System.out.println("running shoot...");
+        }
+
         if(manual){
-            pidController.setReference(targetAngle,ControlType.kDutyCycle);
+            if (Math.abs(targetAngle) <= 1) {
+                pidController.setReference(targetAngle,ControlType.kDutyCycle);
+            }
         } else {
             pidController.setReference(targetAngle,ControlType.kPosition);
-            atTarget = Math.abs(encoder.getPosition()-targetAngle) <= ARM_DEADBAND;
         }
+        atTarget = checkTarget();
+    }
+
+    public static boolean checkTarget() {
+        return Math.abs(encoder.getPosition()-targetAngle) <= ARM_DEADBAND;
     }
 
     public static void init(){
@@ -119,14 +143,15 @@ public class Angular {
         pidController = left.getPIDController();
 
         pidController.setFeedbackDevice(encoder);
-        pidController.setP(0.02);
+        pidController.setP(0.03);
 
         pidController.setPositionPIDWrappingEnabled(true);
         pidController.setPositionPIDWrappingMinInput(0);
         pidController.setPositionPIDWrappingMinInput(360);
         
-        pidController.setOutputRange(-0.3, 0.3);
+        pidController.setOutputRange(-0.4, 0.4);
 
+        targetAngle = encoder.getPosition();
         
     }
     

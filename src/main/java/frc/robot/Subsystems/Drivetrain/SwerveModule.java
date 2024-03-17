@@ -141,7 +141,7 @@ public class SwerveModule {
     }
 
     public void updateModulePosition() {
-        this.currentPosition = new SwerveModulePosition(-driveEncoder.getPosition(), getPosition());
+        this.currentPosition = new SwerveModulePosition(driveEncoder.getPosition(), getPosition());
     }
 
     /**

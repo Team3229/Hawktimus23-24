@@ -22,8 +22,8 @@ public class PathPlanner extends SubsystemBase {
     private HolonomicPathFollowerConfig autoConfig = 
         new HolonomicPathFollowerConfig(
 
-            new PIDConstants(40, 0.0, 0.5), // Translation PID constants
-            new PIDConstants(5, 0.0, 0.0), // Rotation PID constants
+            new PIDConstants(5, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(0.04, 0.0, 0.0), // Rotation PID constants
             SwerveKinematics.maxModuleSpeed, // Max module speed, in m/s
             Math.sqrt(2 * (Math.pow(SwerveKinematics.robotWidth/2 - SwerveKinematics.moduleEdgeOffset, 2))), // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -34,7 +34,7 @@ public class PathPlanner extends SubsystemBase {
 
         NamedCommands.registerCommand("Speaker", PathPlannerShootSpeaker.command);
         NamedCommands.registerCommand("Amp", ScoreAmp.command);
-        NamedCommands.registerCommand("Grab", Grab.command);
+        NamedCommands.registerCommand("Grab", Grab.command());
         
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -52,8 +52,6 @@ public class PathPlanner extends SubsystemBase {
                 },
                 this // Reference to this subsystem to set requirements
         );
-
-		SmartDashboard.putData("Choose Auto", this.getDropdown());
     }
 
     public SendableChooser<Command> getDropdown() {

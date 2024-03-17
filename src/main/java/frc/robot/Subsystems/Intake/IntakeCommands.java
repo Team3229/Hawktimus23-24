@@ -24,6 +24,18 @@ public class IntakeCommands {
         }
     };
 
+    public static Command stop = new Command() {
+        @Override
+        public void init() {
+            Intake.stop();
+        }
+
+        @Override
+        public boolean isDone() {
+            return true;
+        }
+    };
+
     public static Command feed = new Command() {
         @Override
         public void init() {

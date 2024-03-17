@@ -28,6 +28,10 @@ public class SwerveOdometry {
     }
 
     public static void setPose(Pose2d position) {
+        // odometry.resetPosition(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, position);
+    }
+
+    public static void resetPose(Pose2d position) {
         odometry.resetPosition(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, position);
     }
 
@@ -38,7 +42,12 @@ public class SwerveOdometry {
     }
 
     public static void update(Rotation2d rotation, SwerveModulePosition[] swervePositions) {
-        addSensorData(Vision.getPose(), 0, Vision.isValid());
+        Pose2d position = Vision.getPose();
+        boolean valid = Vision.isValid();
+        if (position.getTranslation().getDistance(odometry.getEstimatedPosition().getTranslation()) > 0.5) {
+            // valid = false;
+        }
+        addSensorData(Vision.getPose(), 0, valid);
         odometry.update(rotation, swervePositions);
     }
 

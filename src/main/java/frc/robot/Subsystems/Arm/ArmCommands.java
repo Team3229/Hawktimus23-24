@@ -12,7 +12,7 @@ public class ArmCommands {
 
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.checkTarget();
         }
     };
 
@@ -23,7 +23,7 @@ public class ArmCommands {
         }
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.checkTarget();
         }
     };
 
@@ -35,7 +35,7 @@ public class ArmCommands {
 
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.checkTarget();
         }
     };
     
@@ -47,7 +47,7 @@ public class ArmCommands {
 
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.checkTarget();
         }
     };
 
@@ -79,7 +79,7 @@ public class ArmCommands {
         @Override
         public boolean isDone() {
             //The arm is constantly trying to move to its target, thus this needs nothing more.
-            return Angular.atTarget;
+            return Angular.checkTarget();
         }
     };
 }

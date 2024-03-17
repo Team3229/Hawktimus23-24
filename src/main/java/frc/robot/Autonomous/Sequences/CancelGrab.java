@@ -11,22 +11,15 @@ Grabbing note
 -Slow speed intake
 -Once grabbed, stow
  */
-public class Grab {
+public class CancelGrab {
 
     public static Command command() {
         return new SequentialCompile(
-        ArmCommands.raise,
-        ArmCommands.forwardRail,
-        new ParallelCompile(
-            ArmCommands.intakePos,
-            IntakeCommands.intakeNote
-        ),
-        ArmCommands.raise,
-        new ParallelCompile(
+            IntakeCommands.stop,
+            ArmCommands.raise,
             ArmCommands.backwardRail,
             ArmCommands.stow
-        )
-    );
+        );
     }
 
 }

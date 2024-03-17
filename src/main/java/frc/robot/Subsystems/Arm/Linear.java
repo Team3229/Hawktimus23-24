@@ -12,13 +12,13 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class Linear {
 
-    private static CANSparkMax linearRail;
+    public static CANSparkMax linearRail;
     private static final int RAIL_ID = 7;
-    private static SparkPIDController pid;
+    public static SparkPIDController pid;
 
     private static RelativeEncoder encoder;
     public static boolean atTarget = false;
-    private static double LINEAR_DEADBAND = 0.05;
+    private static double LINEAR_DEADBAND = 0.25;
     public static boolean goingBackwards = false;
 
     public static void init(){
@@ -32,7 +32,7 @@ public class Linear {
 
         pid = linearRail.getPIDController();
         pid.setFeedbackDevice(encoder);
-        pid.setP(1.5);
+        pid.setP(2);
         pid.setOutputRange(-1, 1);
     }
 

@@ -1,14 +1,20 @@
 package frc.robot.Inputs;
 
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Autonomous.Sequences.CancelGrab;
 import frc.robot.Autonomous.Sequences.Grab;
 import frc.robot.Autonomous.Sequences.ScoreAmp;
 import frc.robot.Autonomous.Sequences.ScoreSpeaker;
 import frc.robot.CommandsV2.CommandScheduler;
+import frc.robot.CommandsV2.SequentialCompile;
 import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
 import frc.robot.Subsystems.Arm.Angular;
+import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -25,6 +31,8 @@ public class RunControls {
     private static Controller manipStick;
 
     public static boolean manipManualControl = true;
+
+    private static boolean wasShooting = false;
 
     public static void init(){
         driveStick = new Controller(ControllerType.FlightStick, 0);
@@ -63,16 +71,16 @@ public class RunControls {
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
 						new Rotation2d(
-                            SwerveOdometry.getPose().getX() - FieldConstants.BLUE_SPEAKER[0],
-                            SwerveOdometry.getPose().getY() - FieldConstants.BLUE_SPEAKER[1])
+                            FieldConstants.BLUE_SPEAKER[0] - SwerveOdometry.getPose().getX(),
+                            FieldConstants.BLUE_SPEAKER[1] - SwerveOdometry.getPose().getY())
 					);
             } else {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
 						new Rotation2d(
-                            SwerveOdometry.getPose().getX() - FieldConstants.RED_SPEAKER[0],
-                            SwerveOdometry.getPose().getY() - FieldConstants.RED_SPEAKER[1])
+                            FieldConstants.RED_SPEAKER[0] - SwerveOdometry.getPose().getX(),
+                            FieldConstants.RED_SPEAKER[1] - SwerveOdometry.getPose().getY())
 					);
             }
         } else {
@@ -111,6 +119,9 @@ public class RunControls {
             else if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle) & Linear.goingBackwards){
                 Angular.subwoofShoot();
             }
+            else if((boolean) manipStick.get(Controls.FlightStick.Button9Toggle) & Linear.goingBackwards) {
+                Angular.stow();
+            }
 
             if((boolean) manipStick.get(Controls.FlightStick.HazardToggle)){
                 if(Linear.goingBackwards){
@@ -120,24 +131,20 @@ public class RunControls {
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
-                if(Intake.state == IntakeStates.feed){
-                    Intake.stop();
-                } else  {
-                    Intake.feed();
-                }
-            }
-
             if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
-                if(Shooter.state == ShooterStates.spinningUp){
+                if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
                     Shooter.stop();
+                    Angular.isShooting = false;
                 } else {
-                    Shooter.spinUp(5000 * (((double) manipStick.get(Controls.FlightStick.Throttle)/2) + 0.5));
+                    Shooter.spinUp();
+                    Angular.isShooting = true;
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
-                Intake.eject();
+            if((boolean) manipStick.get(Controls.FlightStick.Button11)){
+                Intake.run(-0.2);
+            } else {
+                Intake.stop();
             }
             
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
@@ -148,18 +155,78 @@ public class RunControls {
                 }
             }
 
+            if ((boolean) manipStick.get(Controls.FlightStick.Button12)) {
+                Linear.linearRail.setIdleMode(IdleMode.kCoast);
+                Linear.pid.setReference(0, ControlType.kDutyCycle);
+            } else {
+                Linear.linearRail.setIdleMode(IdleMode.kBrake);
+            }
+
         } else {
             //Auto control scheme
             if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
                 Intake.eject();
             }
-            if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
-                Shooter.ampIntent = !Shooter.ampIntent;
+
+            if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
+                if(!CommandScheduler.isActive(Grab.command())){
+                    CommandScheduler.activate(Grab.command());
+                } else {
+                    CommandScheduler.deactivate(Grab.command());
+                    CommandScheduler.activate(CancelGrab.command());
+                }
             }
-            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle) && !CommandScheduler.isActive(Grab.command)){
-                CommandScheduler.activate(Grab.command);
+
+            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
+                if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
+                    Shooter.stop();
+                    Angular.isShooting = false;
+                } else {
+                    Shooter.spinUp();
+                    Angular.isShooting = true;
+                }
+            }
+
+            if (wasShooting == true & Angular.isShooting == false) {
+                //stow
+                CommandScheduler.activate( new SequentialCompile(
+                    ArmCommands.raise,
+                    ArmCommands.backwardRail,
+                    ArmCommands.stow
+                )
+                );
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+                if(Intake.state == IntakeStates.feed){
+                    Intake.stop();
+                } else {
+                    Intake.feed();
+                }
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Trigger) & Angular.targetAngle == Angular.AMP_ANGLE) {
+                Intake.feed();
+                Shooter.feed();
+            } else if (Angular.targetAngle == Angular.AMP_ANGLE) {
+                Intake.stop();
+                Shooter.stop();
+            }
+
+            if (Angular.targetAngle == Angular.AMP_ANGLE & !Intake.hasNote) {
+                CommandScheduler.activate( new SequentialCompile(
+                    ArmCommands.raise,
+                    ArmCommands.backwardRail,
+                    ArmCommands.stow
+                ));
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Button9Toggle)) {
+                Angular.amp();
             }
         }
+
+        wasShooting = Angular.isShooting;
 
     }
     private static void update(){

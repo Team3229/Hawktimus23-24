@@ -69,9 +69,13 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.initialize();
 
-		SwerveOdometry.init(new Pose2d(1, 3.5, SwerveKinematics.robotRotation));
+		SwerveOdometry.init(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
 
 		Logging.init();
+
+		autoChooser = autoManager.getDropdown();
+
+		SmartDashboard.putData("Choose Auto", autoChooser);
 
 	}
 
@@ -91,13 +95,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		SwerveKinematics.zeroGyro();
-
 		SwerveKinematics.configureDrivetrain();
 		SwerveKinematics.configOffsets(ModuleOffsets.read());
         SwerveKinematics.chassisState = new ChassisSpeeds();
 
 		autoCommand = autoChooser.getSelected();
+
+		SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
 
 		autoCommand.initialize();
 		
@@ -108,24 +112,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 
 
-		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
-
-		Pose2d pose = SwerveOdometry.getPose();
-        
-		if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
-			//Make a line from the robot towards the speaker
-			Point2D speaker = new Point2D.Double(FieldConstants.BLUE_SPEAKER[0], FieldConstants.BLUE_SPEAKER[1]);
-			Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
-			Shooter.targetSpeed = speaker.distance(bot) * 1200;
-		} else {
-			//Red team, same deal as before.
-			Point2D speaker = new Point2D.Double(FieldConstants.RED_SPEAKER[0], FieldConstants.RED_SPEAKER[1]);
-			Point2D bot = new Point2D.Double(pose.getX(),pose.getY());
-			Shooter.targetSpeed = speaker.distance(bot) * 1200;
-		}
-
-		Shooter.pid.setReference(Shooter.targetSpeed,ControlType.kVelocity);
-        Shooter.atSpeed = Math.abs(Shooter.encoder.getPosition()) <= Shooter.RPM_DEADBAND;
+		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);        
 		
 		if (!autoCommand.isFinished()) {
 			autoCommand.execute();
@@ -133,9 +120,7 @@ public class Robot extends TimedRobot {
 			SwerveKinematics.stop();
 		}
 
-		Intake.update();
-		Angular.update();
-		Linear.update();
+		Subsystems.update();
 
 	}
 

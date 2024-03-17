@@ -74,6 +74,10 @@ public class Intake {
         }
     }
 
+    public static void run(double speed) {
+        intake.set(speed);
+    }
+
     private static boolean detectNote(){
         hasNote = !sensor.get();
         return hasNote;
