@@ -28,6 +28,7 @@ public class SequentialCompile extends Command{
 
     @Override
     public void end(){
+        commands[index].end();
         index = 0;
     }
 
