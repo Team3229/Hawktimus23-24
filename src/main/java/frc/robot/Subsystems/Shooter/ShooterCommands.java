@@ -4,14 +4,32 @@ import frc.robot.CommandsV2.Command;
 
 public class ShooterCommands {
     
-    public static Command stop = new Command(){
+    public static Command shootAmp = new Command() {
+        @Override
         public void init() {
-            Shooter.stop();
-        };
+            Shooter.spinUp(Shooter.AMP_SPEED);
+        }
 
-        public boolean isDone(){
-            return true;
-        };
+        @Override
+        public void end() {
+            Shooter.ampIntent = false;
+        }
+
+        @Override
+        public boolean isDone() {
+            return Shooter.atSpeed;
+        }
     };
 
+    public static Command shootSpeaker = new Command() {
+        @Override
+        public void init() {
+            Shooter.spinUp();
+        }
+
+        @Override
+        public boolean isDone() {
+            return Shooter.atSpeed;
+        }
+    };
 }

@@ -58,6 +58,7 @@ public class Shooter {
         if (Intake.hasNote) {
             double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
             distance *= 39.3701;
+
             targetSpeed = (0.0785384 * (Math.pow(distance, 2))) + (-1.35582 * distance) + 3800;
             targetSpeed = (targetSpeed > 5200) ? 5200 : targetSpeed;
             pid.setReference(targetSpeed, ControlType.kVelocity);

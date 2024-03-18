@@ -1,7 +1,9 @@
 package frc.robot.Autonomous.Sequences;
 
 import frc.robot.CommandsV2.Command;
+import frc.robot.CommandsV2.ParallelCompile;
 import frc.robot.CommandsV2.SequentialCompile;
+import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Intake.IntakeCommands;
 /*
 Grabbing note
@@ -11,9 +13,13 @@ Grabbing note
  */
 public class CancelGrab {
 
-    public static Command command = new SequentialCompile(
-        IntakeCommands.stop,
-        Stow.command
-    );
-    
+    public static Command command() {
+        return new SequentialCompile(
+            IntakeCommands.stop,
+            ArmCommands.raise,
+            ArmCommands.backwardRail,
+            ArmCommands.stow
+        );
+    }
+
 }

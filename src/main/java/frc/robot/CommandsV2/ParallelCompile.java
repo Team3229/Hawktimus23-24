@@ -40,6 +40,6 @@ public class ParallelCompile extends Command{
 
     @Override
     public void end(){
-        this.commands.addAll(_commands);
+        this.commands = this._commands;
     }
 }
