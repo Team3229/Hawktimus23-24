@@ -28,7 +28,6 @@ public class ParallelCompile extends Command{
         for(int i = 0; i < commands.size(); i++) {
             commands.get(i).periodic();
             if(commands.get(i).isDone()){
-                commands.get(i).end();
                 commands.remove(i);
             }
         }
