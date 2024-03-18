@@ -20,16 +20,8 @@ public class PathPlanner extends SubsystemBase {
     private HolonomicPathFollowerConfig autoConfig = 
         new HolonomicPathFollowerConfig(
 
-            new PIDConstants(
-                SwerveKinematics.linearXMovement.getP(),
-                SwerveKinematics.linearXMovement.getI(),
-                SwerveKinematics.linearXMovement.getD()
-            ), // Translation PID constants
-            new PIDConstants(
-                SwerveKinematics.angularMovement.getP(),
-                SwerveKinematics.angularMovement.getI(),
-                SwerveKinematics.angularMovement.getD()
-            ), // Rotation PID constants
+            new PIDConstants(5, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(0.04, 0.0, 0.0), // Rotation PID constants
             SwerveKinematics.maxModuleSpeed, // Max module speed, in m/s
             Math.sqrt(2 * (Math.pow(SwerveKinematics.robotWidth/2 - SwerveKinematics.moduleEdgeOffset, 2))), // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here

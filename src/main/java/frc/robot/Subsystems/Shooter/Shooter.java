@@ -9,8 +9,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Utils.FieldConstants;
-import frc.robot.Utils.Utils;
-import frc.robot.Utils.Utils.RobotStates;
 
 /*
 -Spin up (to given RPM)
@@ -57,7 +55,7 @@ public class Shooter {
 
     private static void spinningUp(){
 
-        if (Intake.hasNote | Utils.getRobotState() == RobotStates.Autonomous) {
+        if (Intake.hasNote) {
             double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
             distance *= 39.3701;
             targetSpeed = (0.0785384 * (Math.pow(distance, 2))) + (-1.35582 * distance) + 3800;
