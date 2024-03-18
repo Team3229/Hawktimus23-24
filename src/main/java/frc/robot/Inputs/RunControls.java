@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autonomous.Sequences.CancelGrab;
 import frc.robot.Autonomous.Sequences.Grab;
 import frc.robot.Autonomous.Sequences.Stow;
@@ -122,10 +123,14 @@ public class RunControls {
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button11)){
-                Intake.run(-0.2);
+            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+                Intake.feed();
             } else {
                 Intake.stop();
+            }
+            
+            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
+                Shooter.spinUp(4250);
             }
             
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
@@ -146,25 +151,25 @@ public class RunControls {
         } else {
             //Auto control scheme
             
-            if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle)){
+            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
                 Shooter.ampIntent = !Shooter.ampIntent;
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
+            if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle)){
                 Intake.eject();
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
-                if(!CommandScheduler.isActive(Grab.command)){
-                    CommandScheduler.activate(Grab.command);
+                if(!CommandScheduler.isActive(Grab.command())){
+                    CommandScheduler.activate(Grab.command());
                 } else {
-                    CommandScheduler.deactivate(Grab.command);
-                    CommandScheduler.activate(CancelGrab.command);
+                    CommandScheduler.deactivate(Grab.command());
+                    CommandScheduler.activate(CancelGrab.command());
                 }
             }
 
-            if(!Intake.hasNote & !CommandScheduler.isActive(Grab.command)) {
-                CommandScheduler.activate(Stow.command);
+            if(!Intake.hasNote & !CommandScheduler.isActive(Grab.command()) & !CommandScheduler.isActive(Stow.command())) {
+                CommandScheduler.activate(Stow.command());
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
@@ -190,6 +195,8 @@ public class RunControls {
 
     }
     private static void update(){
+        SmartDashboard.putBoolean("grabActive", CommandScheduler.isActive(Grab.command()));
+        SmartDashboard.putBoolean("Stow Active", CommandScheduler.isActive(Grab.command()));
         driveStick.update();
         manipStick.update();
     }

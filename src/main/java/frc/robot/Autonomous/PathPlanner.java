@@ -39,7 +39,7 @@ public class PathPlanner extends SubsystemBase {
     public PathPlanner() {
 
         NamedCommands.registerCommand("Speaker", IntakeCommands.feed);
-        NamedCommands.registerCommand("Grab", Grab.command);
+        NamedCommands.registerCommand("Grab", Grab.command());
         
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(

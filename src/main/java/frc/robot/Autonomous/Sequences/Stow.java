@@ -8,12 +8,15 @@ import frc.robot.Subsystems.Shooter.ShooterCommands;
 
 public class Stow {
     
-    public static Command command = new SequentialCompile(
-        ShooterCommands.stop,
-        IntakeCommands.stop,
-        ArmCommands.raise,
-        ArmCommands.backwardRail,
-        ArmCommands.stow
-    );
+    public static Command command(){
+        return new SequentialCompile(
+            "Stow",
+            ShooterCommands.stop,
+            IntakeCommands.stop,
+            ArmCommands.raise,
+            ArmCommands.backwardRail,
+            ArmCommands.stow
+        );
+    }
 
 }
