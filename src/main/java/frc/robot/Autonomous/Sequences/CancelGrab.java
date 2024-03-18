@@ -11,11 +11,9 @@ Grabbing note
  */
 public class CancelGrab {
 
-    public static Command command() {
-        return new SequentialCompile(
-            "CancelGrab",
-            IntakeCommands.stop,
-            Stow.command()
-        );
-    }
+    public static Command command = new SequentialCompile(
+        IntakeCommands.stop,
+        Stow.command
+    );
+    
 }

@@ -50,12 +50,7 @@ public class CommandScheduler {
      * @return true if command is running
      */
     public static boolean isActive(Command command) {
-        for(int i = 0; i < commandList.size(); i++){
-            if(commandList.get(i).getName() == command.getName()){
-                return true;
-            }
-        }
-        return false;
+        return commandList.contains(command);
     }
 
     public static void emptyTrashCan() {

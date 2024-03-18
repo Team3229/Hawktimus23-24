@@ -28,8 +28,7 @@ public class Subsystems {
 		Shooter.update();
         Angular.update();
 
-
-        if(RunControls.manipManualControl | Shooter.ampIntent | !Intake.hasNote | CommandScheduler.isActive(Grab.command())) return;
+        if(RunControls.manipManualControl | Shooter.ampIntent | !Intake.hasNote | CommandScheduler.isActive(Grab.command)) return;
 
         //Auto arm angle + shooter rpm if in range.
         Pose2d pose = SwerveOdometry.getPose();

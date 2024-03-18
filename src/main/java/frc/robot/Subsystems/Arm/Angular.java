@@ -5,7 +5,6 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Utils.FieldConstants;
@@ -27,6 +26,7 @@ public class Angular {
 
     public static double targetAngle = 0;
 
+    public static boolean atTarget = false;
     private static double ARM_DEADBAND = 10;
 
     private static double STOWED_ANGLE = 90;
@@ -43,8 +43,6 @@ public class Angular {
     public static boolean isShooting = false;
 
     public static void update(){
-        SmartDashboard.putNumber("targetA", targetAngle);
-        SmartDashboard.putNumber("armA", encoder.getPosition());
         goToAngle();
     }
 
@@ -72,7 +70,6 @@ public class Angular {
             isShooting = false;
             targetAngle = speed;
         }
-        
     }
 
     public static void stow(){
@@ -109,9 +106,6 @@ public class Angular {
         double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
         distance *= 39.3701;
         targetAngle = (-0.00042167 * (Math.pow(distance, 2))) + (-0.137302 * distance) + 82.8691;
-        if(targetAngle > STOWED_ANGLE){
-            targetAngle = STOWED_ANGLE;
-        }
     }
 
     private static void goToAngle(){
@@ -129,11 +123,10 @@ public class Angular {
         } else {
             pidController.setReference(targetAngle,ControlType.kPosition);
         }
-        
+        atTarget = checkTarget();
     }
 
     public static boolean checkTarget() {
-        SmartDashboard.putBoolean("atTarget", Math.abs(encoder.getPosition()-targetAngle) <= ARM_DEADBAND);
         return Math.abs(encoder.getPosition()-targetAngle) <= ARM_DEADBAND;
     }
 

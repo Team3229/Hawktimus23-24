@@ -4,9 +4,8 @@ public class SequentialCompile extends Command{
     
     private Command[] commands;
     private int index = 0;
-    private String name = "";
 
-    public SequentialCompile(String name, Command... commands){
+    public SequentialCompile(Command... commands){
         this.commands = commands;
     }
 
@@ -29,7 +28,7 @@ public class SequentialCompile extends Command{
 
     @Override
     public void end(){
-        commands[index == commands.length ? index-1 : index].end();
+        commands[index].end();
         index = 0;
     }
 
@@ -38,7 +37,4 @@ public class SequentialCompile extends Command{
         return index == commands.length;
     }
 
-    public String getName(){
-        return this.name;
-    }
 }
