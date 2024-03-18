@@ -22,17 +22,17 @@ public class Logging {
         
         SmartDashboard.putData("Odometry", field);
 
-        SmartDashboard.putNumberArray("odometry", new double[] {
-			SwerveOdometry.getPose().getX(),
-			SwerveOdometry.getPose().getY(),
-			SwerveOdometry.getPose().getRotation().getDegrees()
-		});
+        // SmartDashboard.putNumberArray("odometry", new double[] {
+		// 	SwerveOdometry.getPose().getX(),
+		// 	SwerveOdometry.getPose().getY(),
+		// 	SwerveOdometry.getPose().getRotation().getDegrees()
+		// });
 		
-		SmartDashboard.putNumber("ArmA", Angular.encoder.getPosition());
-		SmartDashboard.putNumber("frontLeft", SwerveKinematics.frontLeftModule.getAbsolutePosition().getDegrees());
-		SmartDashboard.putNumber("frontRight", SwerveKinematics.frontRightModule.getAbsolutePosition().getDegrees());
-		SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());
-		SmartDashboard.putNumber("backRight", SwerveKinematics.backRightModule.getAbsolutePosition().getDegrees());
+		// SmartDashboard.putNumber("ArmA", Angular.encoder.getPosition());
+		// SmartDashboard.putNumber("frontLeft", SwerveKinematics.frontLeftModule.getAbsolutePosition().getDegrees());
+		// SmartDashboard.putNumber("frontRight", SwerveKinematics.frontRightModule.getAbsolutePosition().getDegrees());
+		// SmartDashboard.putNumber("backLeft", SwerveKinematics.backLeftModule.getAbsolutePosition().getDegrees());
+		// SmartDashboard.putNumber("backRight", SwerveKinematics.backRightModule.getAbsolutePosition().getDegrees());
 
 		SmartDashboard.putBoolean("Amp Intent", Shooter.ampIntent);
 		SmartDashboard.putBoolean("Has Note", Intake.hasNote);
