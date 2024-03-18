@@ -9,6 +9,7 @@ import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Utils.FieldConstants;
+import frc.robot.Autonomous.Sequences.Grab;
 
 public class Subsystems {
     
@@ -25,7 +26,7 @@ public class Subsystems {
 		Shooter.update();
         Angular.update();
 
-        if(RunControls.manipManualControl | Shooter.ampIntent | !Intake.hasNote) return;
+        if(RunControls.manipManualControl | Shooter.ampIntent | !Intake.hasNote | CommandScheduler.isActive(Grab.command)) return;
 
         //Auto arm angle + shooter rpm if in range.
         Pose2d pose = SwerveOdometry.getPose();
