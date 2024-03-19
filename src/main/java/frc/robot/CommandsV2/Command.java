@@ -10,6 +10,8 @@ public class Command extends edu.wpi.first.wpilibj2.command.Command{
 
     public void end(){}
 
+    public String getID(){return "";}
+
     @Override
     public void initialize(){
         init();

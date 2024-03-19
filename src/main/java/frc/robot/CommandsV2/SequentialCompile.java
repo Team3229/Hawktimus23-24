@@ -4,8 +4,10 @@ public class SequentialCompile extends Command{
     
     private Command[] commands;
     private int index = 0;
+    private String commandID = "ERROR";
 
-    public SequentialCompile(Command... commands){
+    public SequentialCompile(String commandID, Command... commands){
+        this.commandID = commandID;
         this.commands = commands;
     }
 
@@ -34,6 +36,11 @@ public class SequentialCompile extends Command{
     @Override
     public boolean isDone() {
         return index == commands.length;
+    }
+
+    @Override
+    public String getID() {
+        return commandID;
     }
 
 }

@@ -7,8 +7,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Autonomous.Sequences.CancelGrab;
 import frc.robot.Autonomous.Sequences.Grab;
-import frc.robot.Autonomous.Sequences.ScoreAmp;
-import frc.robot.Autonomous.Sequences.ScoreSpeaker;
 import frc.robot.CommandsV2.CommandScheduler;
 import frc.robot.CommandsV2.SequentialCompile;
 import frc.robot.Inputs.Controller.ControllerType;
@@ -50,7 +48,6 @@ public class RunControls {
 
         //Those commands take driving control, only allow the override to be ran.  Everything else is fully auto.
         if((boolean) driveStick.get(Controls.FlightStick.Button5Toggle) | (boolean) manipStick.get(Controls.FlightStick.Button5Toggle)) CommandScheduler.terminated = !CommandScheduler.terminated;
-        if(CommandScheduler.isActive(ScoreAmp.command) | CommandScheduler.isActive(ScoreSpeaker.command)) return;
 
         runDriver();
         runManip();
@@ -189,11 +186,13 @@ public class RunControls {
 
             if (wasShooting == true & Angular.isShooting == false) {
                 //stow
-                CommandScheduler.activate( new SequentialCompile(
-                    ArmCommands.raise,
-                    ArmCommands.backwardRail,
-                    ArmCommands.stow
-                )
+                CommandScheduler.activate(
+                    new SequentialCompile(
+                        "Stow1",
+                        ArmCommands.raise,
+                        ArmCommands.backwardRail,
+                        ArmCommands.stow
+                    )
                 );
             }
 
@@ -214,11 +213,14 @@ public class RunControls {
             }
 
             if (Angular.targetAngle == Angular.AMP_ANGLE & !Intake.hasNote) {
-                CommandScheduler.activate( new SequentialCompile(
-                    ArmCommands.raise,
-                    ArmCommands.backwardRail,
-                    ArmCommands.stow
-                ));
+                CommandScheduler.activate(
+                    new SequentialCompile(
+                        "Stow2",
+                        ArmCommands.raise,
+                        ArmCommands.backwardRail,
+                        ArmCommands.stow
+                    )
+                );
             }
 
             if ((boolean) manipStick.get(Controls.FlightStick.Button9Toggle)) {

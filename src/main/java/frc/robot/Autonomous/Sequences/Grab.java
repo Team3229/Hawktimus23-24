@@ -15,18 +15,21 @@ public class Grab {
 
     public static Command command() {
         return new SequentialCompile(
-        ArmCommands.raise,
-        ArmCommands.forwardRail,
-        new ParallelCompile(
-            ArmCommands.intakePos,
-            IntakeCommands.intakeNote
-        ),
-        ArmCommands.raise,
-        new ParallelCompile(
-            ArmCommands.backwardRail,
-            ArmCommands.stow
-        )
-    );
+            "Grab",
+            ArmCommands.raise,
+            ArmCommands.forwardRail,
+            new ParallelCompile(
+                "Grab_Intake",
+                ArmCommands.intakePos,
+                IntakeCommands.intakeNote
+            ),
+            ArmCommands.raise,
+            new ParallelCompile(
+                "Grab_Stow",
+                ArmCommands.backwardRail,
+                ArmCommands.stow
+            )
+        );
     }
 
 }
