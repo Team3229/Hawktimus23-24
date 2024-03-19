@@ -76,6 +76,17 @@ public class ArmCommands {
     };
 
     public static Command speakerPosition = new Command() {
+
+        @Override
+        public void init() {
+            Angular.isShooting = true;
+        }
+
+        @Override
+        public void periodic() {
+            Angular.shoot();
+        }
+
         @Override
         public boolean isDone() {
             //The arm is constantly trying to move to its target, thus this needs nothing more.

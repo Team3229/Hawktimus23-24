@@ -24,7 +24,9 @@ public class ShooterCommands {
     public static Command shootSpeaker = new Command() {
         @Override
         public void init() {
+            
             Shooter.spinUp();
+            
         }
 
         @Override

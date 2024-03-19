@@ -83,21 +83,24 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 
 		SwerveKinematics.configureDrivetrain();
-		SwerveKinematics.configOffsets(ModuleOffsets.read());
         SwerveKinematics.chassisState = new ChassisSpeeds();
-
-		autoCommand = autoChooser.getSelected();
 
 		SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
 
+		RunControls.nullControls();
+
+		ModuleOffsets.checkBoolean();
+
+		autoCommand = autoChooser.getSelected();
+
 		autoCommand.initialize();
+
 		
 	}
 
 	/** This function is called periodically during autonomous. */
 	@Override 
 	public void autonomousPeriodic() {
-
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);        
 		
@@ -114,9 +117,6 @@ public class Robot extends TimedRobot {
 	/** This function is called once when teleop is enabled. */
 	@Override
 	public void teleopInit() {
-
-		// Remove for Comp
-		SwerveKinematics.zeroGyro();
 
 		SwerveOdometry.init(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
 

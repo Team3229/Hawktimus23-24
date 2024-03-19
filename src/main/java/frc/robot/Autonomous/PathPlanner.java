@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Autonomous.Sequences.Grab;
+import frc.robot.Autonomous.Sequences.Speaker;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Utils.Utils;
@@ -30,6 +31,7 @@ public class PathPlanner extends SubsystemBase {
     public PathPlanner() {
 
         NamedCommands.registerCommand("Grab", Grab.command());
+        NamedCommands.registerCommand("Speaker", Speaker.command());
         
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
