@@ -28,7 +28,7 @@ public class SwerveOdometry {
     }
 
     public static void setPose(Pose2d position) {
-        // odometry.resetPosition(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, position);
+        odometry.resetPosition(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions, position);
     }
 
     public static void resetPose(Pose2d position) {

@@ -15,6 +15,7 @@ import frc.robot.Subsystems.Subsystems;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.Logging;
 import frc.robot.Autonomous.PathPlanner;
@@ -64,6 +65,8 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putData("Choose Auto", autoChooser);
 
+		SmartDashboard.putBoolean("shooterTarget", false);
+
 	}
 
 	/**
@@ -106,8 +109,6 @@ public class Robot extends TimedRobot {
 		
 		if (!autoCommand.isFinished()) {
 			autoCommand.execute();
-		} else {
-			SwerveKinematics.stop();
 		}
 
 		Subsystems.update();

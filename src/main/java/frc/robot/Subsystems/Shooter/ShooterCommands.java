@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.CommandsV2.Command;
 
 public class ShooterCommands {
@@ -17,7 +18,7 @@ public class ShooterCommands {
 
         @Override
         public boolean isDone() {
-            return Shooter.atSpeed;
+            return Shooter.atTarget();
         }
 
         @Override
@@ -27,6 +28,9 @@ public class ShooterCommands {
     };
 
     public static Command shootSpeaker = new Command() {
+
+        double timePassed = 0;
+
         @Override
         public void init() {
             
@@ -35,8 +39,17 @@ public class ShooterCommands {
         }
 
         @Override
+        public void periodic() {
+            timePassed += 0.05;
+        }
+
+        @Override
         public boolean isDone() {
-            return Shooter.atSpeed;
+            if (timePassed >= 5) {
+                timePassed = 0;
+                return true;
+            }
+            return false;
         }
 
         @Override

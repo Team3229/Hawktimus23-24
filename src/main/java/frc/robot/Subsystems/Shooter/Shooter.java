@@ -22,8 +22,7 @@ public class Shooter {
     public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;
     public static boolean ampIntent = false;
-    public static boolean atSpeed = false;
-    public static final double RPM_DEADBAND = 10;
+    public static final double RPM_DEADBAND = 5;
 
     public static SparkPIDController pid;
     public static RelativeEncoder encoder;
@@ -89,6 +88,10 @@ public class Shooter {
         targetSpeed = 0;
         state = ShooterStates.idle;
         pid.setReference(0, ControlType.kDutyCycle);
+    }
+
+    public static boolean atTarget() {
+        return Math.abs(encoder.getVelocity() - targetSpeed) < RPM_DEADBAND;
     }
 
     public static void toggleAmpIntent(){
