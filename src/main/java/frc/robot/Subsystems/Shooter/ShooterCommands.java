@@ -19,6 +19,11 @@ public class ShooterCommands {
         public boolean isDone() {
             return Shooter.atSpeed;
         }
+
+        @Override
+        public String getID() {
+            return "shootAmp";
+        }
     };
 
     public static Command shootSpeaker = new Command() {
@@ -32,6 +37,11 @@ public class ShooterCommands {
         @Override
         public boolean isDone() {
             return Shooter.atSpeed;
+        }
+
+        @Override
+        public String getID() {
+            return "shootSpeaker";
         }
     };
 }

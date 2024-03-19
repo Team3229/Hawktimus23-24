@@ -14,6 +14,11 @@ public class ArmCommands {
         public boolean isDone() {
             return Angular.checkTarget();
         }
+
+        @Override
+        public String getID() {
+            return "stow";
+        }
     };
 
     public static Command raise = new Command(){
@@ -23,7 +28,17 @@ public class ArmCommands {
         }
         @Override
         public boolean isDone() {
-            return Angular.checkTarget();
+            return Angular.encoder.getPosition() < Angular.RAISED;
+        }
+
+        @Override
+        public void end() {
+            Angular.runManual(0);
+        }
+
+        @Override
+        public String getID() {
+            return "raise";
         }
     };
 
@@ -37,6 +52,11 @@ public class ArmCommands {
         public boolean isDone() {
             return Angular.checkTarget();
         }
+
+        @Override
+        public String getID() {
+            return "intakePos";
+        }
     };
     
     public static Command ampPosition = new Command() {
@@ -48,6 +68,11 @@ public class ArmCommands {
         @Override
         public boolean isDone() {
             return Angular.checkTarget();
+        }
+
+        @Override
+        public String getID() {
+            return "ampPos";
         }
     };
 
@@ -61,6 +86,11 @@ public class ArmCommands {
         public boolean isDone() {
             return Linear.atTarget;
         }
+
+        @Override
+        public String getID() {
+            return "forwardRail";
+        }
     };
 
     public static Command backwardRail = new Command() {
@@ -72,6 +102,11 @@ public class ArmCommands {
         @Override
         public boolean isDone() {
             return Linear.atTarget;
+        }
+
+        @Override
+        public String getID() {
+            return "backwardRail";
         }
     };
 
@@ -91,6 +126,11 @@ public class ArmCommands {
         public boolean isDone() {
             //The arm is constantly trying to move to its target, thus this needs nothing more.
             return Angular.checkTarget();
+        }
+
+        @Override
+        public String getID() {
+            return "speakerPos";
         }
     };
 }

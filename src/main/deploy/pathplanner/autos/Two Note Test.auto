@@ -26,19 +26,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "To Left Note"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Grab"
+            "pathName": "L_Travel"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Grab"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L_Pickup"
           }
         },
         {

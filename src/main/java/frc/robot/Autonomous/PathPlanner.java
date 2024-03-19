@@ -13,6 +13,7 @@ import frc.robot.Autonomous.Sequences.Grab;
 import frc.robot.Autonomous.Sequences.Speaker;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Intake.IntakeCommands;
 import frc.robot.Utils.Utils;
 
 public class PathPlanner extends SubsystemBase {
@@ -32,6 +33,7 @@ public class PathPlanner extends SubsystemBase {
 
         NamedCommands.registerCommand("Grab", Grab.command());
         NamedCommands.registerCommand("Speaker", Speaker.command());
+        NamedCommands.registerCommand("Shoot", IntakeCommands.feed);
         
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(

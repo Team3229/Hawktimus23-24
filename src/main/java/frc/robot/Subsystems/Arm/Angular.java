@@ -33,7 +33,7 @@ public class Angular {
     private static double GRAB_ANGLE = 110;
     public static double AMP_ANGLE = 0;
     private static double SUBWOOF_SHOOT = 75;
-    private static double RAISED = 83;
+    public static double RAISED = 83;
     public static boolean manual = false;
 
     public static AbsoluteEncoder encoder;
