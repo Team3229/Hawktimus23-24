@@ -28,7 +28,7 @@ public class ArmCommands {
         }
         @Override
         public boolean isDone() {
-            return Angular.encoder.getPosition() < Angular.RAISED;
+            return Angular.encoder.getPosition() <= Angular.RAISED+2;
         }
 
         @Override

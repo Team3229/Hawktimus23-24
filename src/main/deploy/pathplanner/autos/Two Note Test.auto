@@ -24,21 +24,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "L_Travel"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Grab"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L_Pickup"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L_Travel"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Grab"
+                }
+              }
+            ]
           }
         },
         {
