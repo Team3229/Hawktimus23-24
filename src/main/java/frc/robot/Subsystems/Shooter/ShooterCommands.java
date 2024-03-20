@@ -53,6 +53,11 @@ public class ShooterCommands {
         }
 
         @Override
+        public void end() {
+            Shooter.stop();
+        }
+
+        @Override
         public String getID() {
             return "shootSpeaker";
         }

@@ -61,7 +61,7 @@ public class Vision {
     }
 
     public static boolean isValid() {
-        return visionData.hasTargets();
+        return /**visionData.hasTargets();**/ false;
     }
 
 }

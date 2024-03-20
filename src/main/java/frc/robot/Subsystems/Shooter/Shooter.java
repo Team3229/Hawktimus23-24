@@ -6,6 +6,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Utils.FieldConstants;
@@ -58,16 +59,12 @@ public class Shooter {
             double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
             distance *= 39.3701;
 
-            targetSpeed = (0.0785384 * (Math.pow(distance, 2))) + (-1.35582 * distance) + 3800;
+            targetSpeed = (0.0785384 * (Math.pow(distance, 2))) + (-1.35582 * distance) + 2700;
             targetSpeed = (targetSpeed > 5200) ? 5200 : targetSpeed;
             pid.setReference(targetSpeed, ControlType.kVelocity);
         } else {
             stop();
         }
-    }
-
-    public static void run(double speed) {
-        pid.setReference(speed, ControlType.kDutyCycle);
     }
 
     public static void spinUp(double speed){

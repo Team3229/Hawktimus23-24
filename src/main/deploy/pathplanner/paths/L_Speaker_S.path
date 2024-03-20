@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5131038535971493,
-        "y": 5.539225686154654
+        "x": 2.59,
+        "y": 6.99
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9112722961537205,
-        "y": 5.539225686154654
+        "x": 2.176284084893418,
+        "y": 6.465562571267796
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.77,
+        "x": 1.5131038535971493,
         "y": 5.539225686154654
       },
       "prevControl": {
-        "x": 2.3718315574434286,
-        "y": 5.6094907054293435
+        "x": 1.5248053327011288,
+        "y": 5.831762663754131
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Grab",
-      "waypointRelativePos": 0.0,
+      "name": "Shoot",
+      "waypointRelativePos": 1.0,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +41,24 @@
             {
               "type": "named",
               "data": {
-                "name": "Grab"
+                "name": "Shoot"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Speaker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Speaker"
               }
             }
           ]

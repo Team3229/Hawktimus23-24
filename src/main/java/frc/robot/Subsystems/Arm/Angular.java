@@ -113,7 +113,6 @@ public class Angular {
         if(isShooting & !manual) {
             if (!Intake.hasNote) {isShooting = false;}
             shoot();
-            System.out.println("running shoot...");
         }
 
         if(manual){
