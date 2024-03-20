@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.77,
-        "y": 6.86
+        "x": 2.59,
+        "y": 6.99
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.356284084893418,
-        "y": 6.335562571267796
+        "x": 2.176284084893418,
+        "y": 6.465562571267796
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0400914981573175,
-        "y": 6.042791657623258
+        "x": 1.7707422576043426,
+        "y": 5.691466561249813
       },
       "prevControl": {
-        "x": 2.051792977261297,
-        "y": 6.335328635222735
+        "x": 1.7824437367083221,
+        "y": 5.98400353884929
       },
       "nextControl": {
-        "x": 2.0283806616115356,
-        "y": 5.7500207439787205
+        "x": 1.7590314210585607,
+        "y": 5.398695647605275
       },
       "isLocked": false,
       "linkedName": null
@@ -48,7 +48,7 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Shoot",
+      "name": "Shoot then Grab",
       "waypointRelativePos": 1.05,
       "command": {
         "type": "sequential",
@@ -72,8 +72,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 0.1,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -85,7 +85,7 @@
   "reversed": false,
   "folder": "Left Note",
   "previewStartingState": {
-    "rotation": 41.36670522923386,
+    "rotation": 1.1224812463617009,
     "velocity": 0
   },
   "useDefaultConstraints": true

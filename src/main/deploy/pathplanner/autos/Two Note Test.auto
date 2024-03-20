@@ -24,28 +24,21 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "L_Travel"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Grab"
-                }
-              }
-            ]
+            "pathName": "L_Travel"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Speaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L_Speaker"
           }
         },
         {
