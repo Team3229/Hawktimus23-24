@@ -19,7 +19,7 @@ public class Shooter {
 
     private static CANSparkMax shooter;
     private static final int SHOOTER_ID = 9;
-    public static final double AMP_SPEED = .1;
+    public static final double AMP_SPEED = 0.5;
     public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;
     public static boolean ampIntent = false;
@@ -55,13 +55,15 @@ public class Shooter {
 
     private static void spinningUp(){
 
-        if (Intake.hasNote) {
+        if (Intake.hasNote & targetSpeed != AMP_SPEED) {
             double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
             distance *= 39.3701;
 
             targetSpeed = (0.0785384 * (Math.pow(distance, 2))) + (-1.35582 * distance) + 2700;
             targetSpeed = (targetSpeed > 5200) ? 5200 : targetSpeed;
             pid.setReference(targetSpeed, ControlType.kVelocity);
+
+            SmartDashboard.putNumber("shootoutput", shooter.get());
         } else {
             stop();
         }
@@ -77,7 +79,7 @@ public class Shooter {
     }
 
     public static void feed(){
-        targetSpeed = 0.5;
+        targetSpeed = AMP_SPEED;
         state = ShooterStates.spinningUp;
     }
 

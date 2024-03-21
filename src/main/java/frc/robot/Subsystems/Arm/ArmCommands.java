@@ -8,6 +8,7 @@ public class ArmCommands {
         @Override
         public void init() {
             Angular.stow();
+            Angular.isShooting = false;
         }
 
         @Override
@@ -25,6 +26,7 @@ public class ArmCommands {
         @Override
         public void init(){
             Angular.raise();
+            Angular.isShooting = false;
         }
         @Override
         public boolean isDone() {
@@ -46,6 +48,7 @@ public class ArmCommands {
         @Override
         public void init() {
             Angular.grab();
+            Angular.isShooting = false;
         }
 
         @Override
@@ -63,6 +66,7 @@ public class ArmCommands {
         @Override
         public void init() {
             Angular.amp();
+            Angular.isShooting = false;
         }
 
         @Override
@@ -115,12 +119,11 @@ public class ArmCommands {
         @Override
         public void init() {
             Angular.isShooting = true;
+            Angular.shoot();
         }
 
         @Override
-        public void periodic() {
-            Angular.shoot();
-        }
+        public void periodic() {}
 
         @Override
         public boolean isDone() {

@@ -1,6 +1,5 @@
 package frc.robot.Subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.CommandsV2.Command;
 
 public class ShooterCommands {

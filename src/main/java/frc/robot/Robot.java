@@ -15,7 +15,6 @@ import frc.robot.Subsystems.Subsystems;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
-import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.Logging;
 import frc.robot.Autonomous.PathPlanner;

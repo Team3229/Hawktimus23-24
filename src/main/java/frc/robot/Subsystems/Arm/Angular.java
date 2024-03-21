@@ -111,7 +111,7 @@ public class Angular {
     private static void goToAngle(){
 
         if(isShooting & !manual) {
-            if (!Intake.hasNote) {isShooting = false;}
+            if (!Intake.hasNote) isShooting = false;
             shoot();
         }
 

@@ -13,6 +13,8 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Utils.Utils;
+import frc.robot.Utils.Utils.RobotStates;
 
 public class Vision {
 
@@ -61,7 +63,12 @@ public class Vision {
     }
 
     public static boolean isValid() {
-        return /**visionData.hasTargets();**/ false;
+
+        if (Utils.getRobotState() == RobotStates.Autonomous) {
+            return false;
+        }
+
+        return visionData.hasTargets();
     }
 
 }
