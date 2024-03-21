@@ -36,6 +36,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Grab"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L_Speaker_M"

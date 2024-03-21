@@ -64,6 +64,8 @@ public class Shooter {
             pid.setReference(targetSpeed, ControlType.kVelocity);
 
             SmartDashboard.putNumber("shootoutput", shooter.get());
+        } else if (targetSpeed == AMP_SPEED) {
+            pid.setReference(targetSpeed, ControlType.kDutyCycle);
         } else {
             stop();
         }
@@ -91,9 +93,5 @@ public class Shooter {
 
     public static boolean atTarget() {
         return Math.abs(encoder.getVelocity() - targetSpeed) < RPM_DEADBAND;
-    }
-
-    public static void toggleAmpIntent(){
-        ampIntent = !ampIntent;
     }
 }
