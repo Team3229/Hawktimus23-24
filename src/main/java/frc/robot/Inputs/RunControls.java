@@ -131,24 +131,20 @@ public class RunControls {
             if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
                 if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
                     Shooter.stop();
-                    Angular.isShooting = false;
                 } else {
                     Shooter.spinUp();
-                    Angular.isShooting = true;
                 }
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.Button11)){
                 Intake.run(-0.2);
-            } else {
-                Intake.stop();
             }
             
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
-                if(Intake.state == IntakeStates.intaking){
+                if(Intake.state == IntakeStates.feed){
                     Intake.stop();
                 } else {
-                    Intake.intake();
+                    Intake.feed();
                 }
             }
 

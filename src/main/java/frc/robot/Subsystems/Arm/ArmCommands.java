@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Arm;
 
 import frc.robot.CommandsV2.Command;
+import frc.robot.Subsystems.Shooter.Shooter;
 
 public class ArmCommands {
     
@@ -25,18 +26,20 @@ public class ArmCommands {
     public static Command raise = new Command(){
         @Override
         public void init(){
-            Angular.raise();
             Angular.isShooting = false;
-        }
-        @Override
-        public boolean isDone() {
-            return Angular.encoder.getPosition() <= Angular.RAISED+2;
+            Angular.raise();
         }
 
         @Override
-        public void end() {
-            Angular.runManual(0);
+        public void periodic() {}
+
+        @Override
+        public boolean isDone() {
+            return Angular.encoder.getPosition() <= 90;
         }
+
+        @Override
+        public void end() {}
 
         @Override
         public String getID() {
@@ -120,6 +123,7 @@ public class ArmCommands {
         public void init() {
             Angular.isShooting = true;
             Angular.shoot();
+            System.out.println("startSpeaker");
         }
 
         @Override
@@ -128,7 +132,7 @@ public class ArmCommands {
         @Override
         public boolean isDone() {
             //The arm is constantly trying to move to its target, thus this needs nothing more.
-            return Angular.checkTarget();
+            return Angular.checkTarget() & Shooter.atTarget();
         }
 
         @Override

@@ -4,20 +4,26 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.simulation.PowerDistributionDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.RunControls;
 import frc.robot.Subsystems.Subsystems;
+import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterCommands;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.Logging;
 import frc.robot.Autonomous.PathPlanner;
+import frc.robot.Autonomous.Sequences.Grab;
 import frc.robot.CommandsV2.CommandScheduler;
 	
 /**
@@ -66,6 +72,10 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putBoolean("shooterTarget", false);
 
+		DriverStation.silenceJoystickConnectionWarning(true);
+
+		PowerDistributionDataJNI.setVoltage(0, kDefaultPeriod);
+
 	}
 
 	/**
@@ -97,6 +107,9 @@ public class Robot extends TimedRobot {
 
 		autoCommand.initialize();
 
+		CommandScheduler.activate(ArmCommands.backwardRail);
+
+		Shooter.spinUp();
 		
 	}
 
@@ -127,6 +140,8 @@ public class Robot extends TimedRobot {
 		ModuleOffsets.checkBoolean();
 
         SwerveKinematics.chassisState = new ChassisSpeeds();
+
+		Shooter.stop();
 
 	}
 

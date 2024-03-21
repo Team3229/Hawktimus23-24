@@ -14,7 +14,7 @@ Controls intaking a note
 -Eject note
  */
 public class Intake {
-    public static boolean hasNote = false;
+    public static boolean hasNote = true;
     private static CANSparkMax intake;
     private static final int INTAKE_ID = 8;
     private static DigitalInput sensor;

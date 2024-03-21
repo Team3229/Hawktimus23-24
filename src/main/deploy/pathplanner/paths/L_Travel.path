@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Grab",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.2,
       "command": {
         "type": "parallel",
         "data": {

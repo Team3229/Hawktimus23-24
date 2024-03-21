@@ -28,32 +28,14 @@ public class ShooterCommands {
 
     public static Command shootSpeaker = new Command() {
 
-        double timePassed = 0;
-
-        @Override
-        public void init() {
-            
-            Shooter.spinUp();
-            
-        }
-
         @Override
         public void periodic() {
-            timePassed += 0.05;
+            Shooter.spinUp();
         }
 
         @Override
         public boolean isDone() {
-            if (timePassed >= 5) {
-                timePassed = 0;
-                return true;
-            }
             return false;
-        }
-
-        @Override
-        public void end() {
-            Shooter.stop();
         }
 
         @Override

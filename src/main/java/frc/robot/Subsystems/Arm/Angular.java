@@ -105,7 +105,8 @@ public class Angular {
     public static void shoot() {
         double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
         distance *= 39.3701;
-        targetAngle = (-0.00042167 * (Math.pow(distance, 2))) + (-0.137302 * distance) + 82.8691;
+        distance -= 34/2;
+        targetAngle = (411.464*Math.pow(distance, -0.632142)) + 37.4285;
     }
 
     private static void goToAngle(){
