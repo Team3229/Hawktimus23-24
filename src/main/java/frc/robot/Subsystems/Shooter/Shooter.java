@@ -6,11 +6,13 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Utils.FieldConstants;
+import frc.robot.Utils.Utils;
 
 /*
 -Spin up (to given RPM)
@@ -60,8 +62,13 @@ public class Shooter {
 
     private static void spinningUp(){
 
-        if (/**Intake.hasNote & */targetSpeed != AMP_SPEED) {
-            double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
+        if (Intake.hasNote & targetSpeed != AMP_SPEED) {
+            double distance = 0;
+            if (Utils.getAlliance() == Alliance.Blue) {
+                distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
+            } else {
+                distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.RED_SPEAKER_P);
+            }
             distance *= 39.3701;
 
             distance -= 34/2;

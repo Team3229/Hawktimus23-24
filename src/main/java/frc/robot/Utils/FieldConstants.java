@@ -16,5 +16,6 @@ public class FieldConstants {
     public static final double[][] RED_STAGE = {{13.7,4.3},{10.5,5.8},{10.5,2.8}};
 
     public static final Translation2d BLUE_SPEAKER_P = new Translation2d(BLUE_SPEAKER[0], BLUE_SPEAKER[1]);
+    public static final Translation2d RED_SPEAKER_P = new Translation2d(RED_SPEAKER[0], RED_SPEAKER[1]);
 
 }

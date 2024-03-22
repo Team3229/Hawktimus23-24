@@ -5,9 +5,11 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Utils.FieldConstants;
+import frc.robot.Utils.Utils;
 
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -103,7 +105,12 @@ public class Angular {
     }
 
     public static void shoot() {
-        double distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
+        double distance = 0;
+        if (Utils.getAlliance() == Alliance.Blue) {
+            distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
+        } else {
+            distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.RED_SPEAKER_P);
+        }
         distance *= 39.3701;
         distance -= 34/2;
         targetAngle = (411.464*Math.pow(distance, -0.632142)) + 37.4285;
