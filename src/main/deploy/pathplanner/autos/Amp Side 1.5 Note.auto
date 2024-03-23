@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.35,
-      "y": 5.55
+      "x": 0.73,
+      "y": 6.63
     },
-    "rotation": 0
+    "rotation": 60.63
   },
   "command": {
     "type": "sequential",
@@ -26,37 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L_Travel"
+            "pathName": "A_Travel"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L_Speaker_S"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Grab"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L_Speaker_M"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Speaker"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "A_Speaker"
           }
         }
       ]

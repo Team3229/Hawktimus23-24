@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.hal.simulation.PowerDistributionDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -18,6 +19,7 @@ import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Subsystems.LEDs.LEDs;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.Logging;
@@ -86,6 +88,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		Logging.log();
+		LEDs.periodic();
 	}
 
 	/** This function is called once when autonomous is enabled. */
@@ -94,6 +97,10 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.configureDrivetrain();
         SwerveKinematics.chassisState = new ChassisSpeeds();
+
+		if (autoChooser.getSelected().getName() == "Mid 1.5 Note") SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
+		if (autoChooser.getSelected().getName() == "Amp Side 1.5 Note") SwerveOdometry.resetPose(new Pose2d(0.73, 6.63, Rotation2d.fromDegrees(60.63)));
+		if (autoChooser.getSelected().getName() == "Source Side 1.5 Note") SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, Rotation2d.fromDegrees(-60.63)));
 
 		SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
 

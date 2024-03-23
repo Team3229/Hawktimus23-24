@@ -19,12 +19,6 @@ public class Logging {
         field.setRobotPose(SwerveOdometry.getPose());
         
         SmartDashboard.putData("Odometry", field);
-
-        SmartDashboard.putNumberArray("odometry", new double[] {
-			SwerveOdometry.getPose().getX(),
-			SwerveOdometry.getPose().getY(),
-			SwerveOdometry.getPose().getRotation().getDegrees()
-		});
 		
 		SmartDashboard.putNumber("ArmA", Angular.encoder.getPosition());
 

@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.35,
-        "y": 5.551187918118234
+        "x": 0.73,
+        "y": 6.653947657670629
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.571658036326057,
-        "y": 6.0076591479859145
+        "x": 1.7607636758771275,
+        "y": 6.782793117155269
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.59,
-        "y": 6.991369417831561
+        "x": 2.4169913810706483,
+        "y": 6.295021020534844
       },
       "prevControl": {
-        "x": 0.7982420084954289,
-        "y": 7.003080254377342
+        "x": 2.1400721364069226,
+        "y": 5.9315645119061955
+      },
+      "nextControl": {
+        "x": 2.564243334764697,
+        "y": 6.488289209762276
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.89,
+        "y": 6.9852645534882765
+      },
+      "prevControl": {
+        "x": 2.6930887942493382,
+        "y": 6.699963893201328
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "Grab",
-      "waypointRelativePos": 0.2,
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "parallel",
         "data": {
@@ -57,13 +73,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 1.1233027140753788,
+    "rotation": 59.774550275046565,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Left Note",
+  "folder": "Amp Side",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 59.82647997035569,
     "velocity": 0
   },
   "useDefaultConstraints": true
