@@ -28,7 +28,6 @@ public class Angular {
 
     public static double targetAngle = 0;
 
-    public static boolean atTarget = false;
     private static double ARM_DEADBAND = 10;
 
     private static double STOWED_ANGLE = 90;
@@ -130,7 +129,6 @@ public class Angular {
         } else {
             pidController.setReference(targetAngle,ControlType.kPosition);
         }
-        atTarget = checkTarget();
     }
 
     public static boolean checkTarget() {

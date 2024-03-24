@@ -5,7 +5,7 @@
       "x": 1.35,
       "y": 5.551187918118234
     },
-    "rotation": -0.6957103517098455
+    "rotation": -0.11807779215469841
   },
   "command": {
     "type": "sequential",
@@ -46,6 +46,12 @@
           "type": "path",
           "data": {
             "pathName": "M_Speaker_L"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
           }
         },
         {

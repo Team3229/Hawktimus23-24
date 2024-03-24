@@ -41,6 +41,8 @@ public class Robot extends TimedRobot {
 	double[] desiredSwerveState = {0,0,0,0,0,0,0,0};
 	double[] measuredSwerveState = {0,0,0,0,0,0,0,0};
 
+	double timeOffset = 0;
+
 	/**
 	 * This function is run when the robot is first started up and should be used for any
 	 * initialization code.
@@ -99,7 +101,9 @@ public class Robot extends TimedRobot {
         SwerveKinematics.chassisState = new ChassisSpeeds();
 
 		if (autoChooser.getSelected().getName() == "Mid 1.5 Note") SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
+		if (autoChooser.getSelected().getName() == "Amp Side 1 Note") SwerveOdometry.resetPose(new Pose2d(0.73, 6.63, Rotation2d.fromDegrees(60.63)));
 		if (autoChooser.getSelected().getName() == "Amp Side 1.5 Note") SwerveOdometry.resetPose(new Pose2d(0.73, 6.63, Rotation2d.fromDegrees(60.63)));
+		if (autoChooser.getSelected().getName() == "Amp Side 2 Note") SwerveOdometry.resetPose(new Pose2d(0.73, 6.63, Rotation2d.fromDegrees(60.63)));
 		if (autoChooser.getSelected().getName() == "Source Side 1.5 Note") SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, Rotation2d.fromDegrees(-60.63)));
 
 		SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
@@ -126,6 +130,8 @@ public class Robot extends TimedRobot {
 		
 		if (!autoCommand.isFinished()) {
 			autoCommand.execute();
+		} else {
+			Shooter.stop();
 		}
 
 		Subsystems.update();
@@ -135,6 +141,8 @@ public class Robot extends TimedRobot {
 	/** This function is called once when teleop is enabled. */
 	@Override
 	public void teleopInit() {
+
+		LEDs.matchTime = 135;
 
 		SwerveOdometry.init(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
 
@@ -147,6 +155,8 @@ public class Robot extends TimedRobot {
         SwerveKinematics.chassisState = new ChassisSpeeds();
 
 		Shooter.stop();
+
+		timeOffset = (System.currentTimeMillis() / 1000);
 
 	}
 
@@ -161,6 +171,8 @@ public class Robot extends TimedRobot {
 		Subsystems.update();
 
 		CommandScheduler.periodic();
+
+		LEDs.matchTime = (int) (135-((System.currentTimeMillis()/1000)-timeOffset));
 
 	}
 

@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.81,
-        "y": 0.71
+        "x": 0.73,
+        "y": 6.653947657670629
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.319073968820584,
-        "y": 1.5382922395441194
+        "x": 0.7518994781213513,
+        "y": 6.745441850370149
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.027559624625977,
-        "y": 1.831446174103111
+        "x": 0.73,
+        "y": 6.885971888919526
       },
       "prevControl": {
-        "x": 5.189224267978126,
-        "y": 1.3207143050397776
-      },
-      "nextControl": {
-        "x": 2.9599829603207817,
-        "y": 2.30081177651622
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 0.8616426201423436,
-        "y": 4.215087174573743
-      },
-      "prevControl": {
-        "x": 1.6347153770501905,
-        "y": 3.598469618468675
+        "x": 0.7636103146671328,
+        "y": 6.792285196553275
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -60.23181936726413,
+    "rotation": 59.774550275046565,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Side",
+  "folder": "Amp Side",
   "previewStartingState": {
-    "rotation": -59.88626684901755,
+    "rotation": 59.82647997035569,
     "velocity": 0
   },
   "useDefaultConstraints": true

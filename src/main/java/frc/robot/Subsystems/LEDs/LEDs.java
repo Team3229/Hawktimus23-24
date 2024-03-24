@@ -1,7 +1,7 @@
 package frc.robot.Subsystems.LEDs;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.Shooter.ShooterStates;
 
@@ -17,11 +17,16 @@ public class LEDs {
 
     private static boolean endgameShootColor;
 
+    public static int matchTime = 135;
+
     public static void init() {
-        blinkin = new PWMSparkMax(0);
+        blinkin = new PWMSparkMax(2);
+        SmartDashboard.putNumber("Match Time", 0);
     }
 
     public static void periodic() {
+
+        SmartDashboard.putNumber("Match Time", matchTime);
 
         setLED = RAINBOW;
         endgameShootColor = false;
@@ -29,17 +34,17 @@ public class LEDs {
         if (Shooter.state == ShooterStates.spinningUp) {
             setLED = HEARTBEAT_GOLD;
         }
+
+        if (matchTime <= 25) {
+            endgameShootColor = !endgameShootColor;
+            setLED = STROBE_RED;
+        }
         
-        if (Shooter.atTarget()) {
+        if (Shooter.atTarget() & Shooter.targetSpeed != 0) {
+            setLED = AQUA;
             if (endgameShootColor) {
                 setLED = STROBE_RED;
-            } else {
-                setLED = AQUA;
             }
-        }
-
-        if (DriverStation.getMatchTime() <= 20) {
-            endgameShootColor = !endgameShootColor;
         }
 
         blinkin.set(setLED);

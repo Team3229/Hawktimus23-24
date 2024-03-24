@@ -43,8 +43,12 @@ public class CommandScheduler {
      * @param command Command to interrupt
      */
     public static void deactivate(Command command) {
-        commandList.get(commandList.indexOf(command)).end();
-        commandList.remove(commandList.indexOf(command));
+        for (int i = 0; i < commandList.size(); i++) {
+            Command iter = commandList.get(i);
+            if (iter.getID() == command.getID()) {
+                commandList.remove(i);
+            }
+        }
     }
 
     /**

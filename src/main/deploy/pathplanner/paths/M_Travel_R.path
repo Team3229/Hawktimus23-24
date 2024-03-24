@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.72,
-        "y": 4.426761858008021
+        "x": 2.8955602305823454,
+        "y": 5.549558004945607
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7507636758771277,
-        "y": 4.555607317492662
+        "x": 1.5058699175694323,
+        "y": 5.521948263627469
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.7238524701264657,
-        "y": 2.208779305450987
+        "x": 2.518227099234468,
+        "y": 4.095444962190373
       },
       "prevControl": {
-        "x": 2.1224874736744996,
-        "y": 3.073884533419292
-      },
-      "nextControl": {
-        "x": 6.164714285937959,
-        "y": 0.8901528072539713
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.81,
-        "y": 0.7143610292926715
-      },
-      "prevControl": {
-        "x": 7.865100453396342,
-        "y": 2.2458154824640477
+        "x": 1.6887664017838722,
+        "y": 4.028527771748839
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Grab",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.2,
       "command": {
         "type": "parallel",
         "data": {
@@ -66,20 +50,20 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.16216805531274,
+    "rotation": 1.1233027140753788,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Source Side",
+  "folder": "Mid",
   "previewStartingState": {
-    "rotation": -60.10109816138545,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false

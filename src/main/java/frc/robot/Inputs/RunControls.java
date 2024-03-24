@@ -56,6 +56,8 @@ public class RunControls {
     
     private static void runDriver(){
 
+        SwerveKinematics.maxChassisRotationSpeed = 10 * (double) driveStick.get(Controls.FlightStick.Throttle);
+
         if((boolean) driveStick.get(Controls.FlightStick.Trigger)){
             SwerveKinematics.relativeMode = true;
         } else {
@@ -91,6 +93,12 @@ public class RunControls {
 		if((boolean) driveStick.get(Controls.FlightStick.Button10Toggle)){
 			SwerveKinematics.zeroGyro();
 		}
+
+        if ((boolean) driveStick.get(Controls.FlightStick.Trigger)) {
+            SwerveKinematics.relativeMode = true;
+        } else {
+            SwerveKinematics.relativeMode = false;
+        }
 
     }
 
@@ -157,6 +165,20 @@ public class RunControls {
 
         } else {
             //Auto control scheme
+
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Button8)) {
+                Intake.forceeject();
+                Shooter.feed();
+            } else {
+                if (Shooter.targetSpeed == Shooter.AMP_SPEED & !Intake.hasNote) {
+                    Shooter.stop();
+                }
+                if (Intake.state == IntakeStates.forceeject) {
+                    Intake.stop();
+                }
+            }
+
             if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
                 Intake.eject();
             }
@@ -221,6 +243,17 @@ public class RunControls {
 
             if ((boolean) manipStick.get(Controls.FlightStick.Button9Toggle)) {
                 Angular.amp();
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Button6Toggle)) {
+                CommandScheduler.activate(
+                    new SequentialCompile(
+                        "Stow2",
+                        ArmCommands.raise,
+                        ArmCommands.backwardRail,
+                        ArmCommands.stow
+                    )
+                );
             }
         }
 

@@ -24,7 +24,8 @@ public class Intake {
         intaking,
         feed,
         ejecting,
-        idle
+        idle,
+        forceeject
     }
 
     public static void init(){
@@ -47,6 +48,9 @@ public class Intake {
             case feed:
                 feeding();
                 break;
+            case forceeject:
+                run(0.35);
+                break;
         }
     }
 
@@ -60,7 +64,7 @@ public class Intake {
 
     private static void intaking(){
         if(!hasNote){
-            intake.set(0.75);
+            intake.set(0.5);
         } else {
             stop();
         }
@@ -76,6 +80,11 @@ public class Intake {
 
     public static void run(double speed) {
         intake.set(speed);
+
+    }
+
+    public static void forceeject() {
+        state = IntakeStates.forceeject;
     }
 
     private static boolean detectNote(){
