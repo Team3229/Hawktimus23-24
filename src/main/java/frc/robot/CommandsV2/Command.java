@@ -30,6 +30,7 @@ public class Command extends edu.wpi.first.wpilibj2.command.Command{
     @Override
     public void end(boolean interrupted){
         end();
+        if (interrupted) System.out.println("INTERRUPTED " + getID());
     }
 
 }

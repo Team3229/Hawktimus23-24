@@ -14,6 +14,7 @@ public class SequentialCompile extends Command{
     @Override
     public void init(){
         commands[index].init();
+        System.out.println(commands[index].getID() + " started now");
     }
 
     @Override
@@ -31,6 +32,7 @@ public class SequentialCompile extends Command{
     @Override
     public void end(){
         index = 0;
+        System.out.println(getID() + " ended");
     }
 
     @Override

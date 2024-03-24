@@ -167,7 +167,7 @@ public class RunControls {
             //Auto control scheme
 
 
-            if ((boolean) manipStick.get(Controls.FlightStick.Button8)) {
+            if ((boolean) manipStick.get(Controls.FlightStick.Button7)) {
                 Intake.forceeject();
                 Shooter.feed();
             } else {
@@ -177,10 +177,6 @@ public class RunControls {
                 if (Intake.state == IntakeStates.forceeject) {
                     Intake.stop();
                 }
-            }
-
-            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
-                Intake.eject();
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){

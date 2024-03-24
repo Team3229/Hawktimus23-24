@@ -75,13 +75,6 @@ public class Shooter {
                 targetSpeed = (1.6966e-10*Math.pow(distance, 5.59732)) + 4492.38;
                 targetSpeed = (targetSpeed > 5200) ? 5200 : targetSpeed;
                 pid.setReference(targetSpeed, ControlType.kVelocity);
-
-            } else if (targetSpeed == AMP_SPEED) {
-                pid.setReference(targetSpeed, ControlType.kDutyCycle);
-            } else if (targetSpeed == -AMP_SPEED) {
-                pid.setReference(targetSpeed, ControlType.kDutyCycle);
-            } else {
-                stop();
             }
         } else {
             if (Intake.hasNote & targetSpeed != AMP_SPEED & targetSpeed != -AMP_SPEED) {

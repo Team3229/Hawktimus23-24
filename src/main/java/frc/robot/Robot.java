@@ -136,6 +136,8 @@ public class Robot extends TimedRobot {
 
 		Subsystems.update();
 
+		CommandScheduler.periodic();
+
 	}
 
 	/** This function is called once when teleop is enabled. */
