@@ -13,23 +13,20 @@ Grabbing note
  */
 public class Grab {
 
-    public static Command command() {
-        return new SequentialCompile(
-            "Grab",
-            ArmCommands.raise,
-            ArmCommands.forwardRail,
-            new ParallelCompile(
-                "Grab_Intake",
-                ArmCommands.intakePos,
-                IntakeCommands.intakeNote
-            ),
-            ArmCommands.raise,
-            new ParallelCompile(
-                "Grab_Stow",
-                ArmCommands.backwardRail,
-                ArmCommands.stow
-            )
-        );
-    }
-
+    public static Command command = new SequentialCompile(
+        "Grab",
+        ArmCommands.raise,
+        ArmCommands.forwardRail,
+        new ParallelCompile(
+            "Grab_Intake",
+            ArmCommands.intakePos,
+            IntakeCommands.intakeNote
+        ),
+        ArmCommands.raise,
+        new ParallelCompile(
+            "Grab_Stow",
+            ArmCommands.backwardRail,
+            ArmCommands.stow
+        )
+    );
 }

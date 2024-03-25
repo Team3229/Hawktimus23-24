@@ -117,33 +117,30 @@ public class ArmCommands {
         }
     };
 
-    public static Command speakerPosition() {
-        
-        return new Command() {
-            @Override
-            public void init() {
-                Angular.isShooting = true;
-                System.out.println("startSpeaker");
-            }
+    public static Command speakerPosition = new Command() {
+        @Override
+        public void init() {
+            Angular.isShooting = true;
+            System.out.println("startSpeaker");
+        }
 
-            @Override
-            public void periodic() {}
+        @Override
+        public void periodic() {}
 
-            @Override
-            public boolean isDone() {
-                //The arm is constantly trying to move to its target, thus this needs nothing more.
-                return Angular.checkTarget() & Shooter.atTarget();
-            }
+        @Override
+        public boolean isDone() {
+            //The arm is constantly trying to move to its target, thus this needs nothing more.
+            return Angular.checkTarget() & Shooter.atTarget();
+        }
 
-            @Override
-            public void end() {
-                Angular.isShooting = false;
-            }
+        @Override
+        public void end() {
+            Angular.isShooting = false;
+        }
 
-            @Override
-            public String getID() {
-                return "speakerPos";
-            }
-        };
-    }
+        @Override
+        public String getID() {
+            return "speakerPos";
+        }
+    };
 }

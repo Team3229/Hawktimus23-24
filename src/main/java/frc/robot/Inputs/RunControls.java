@@ -180,11 +180,11 @@ public class RunControls {
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
-                if(!CommandScheduler.isActive(Grab.command())){
-                    CommandScheduler.activate(Grab.command());
+                if(!CommandScheduler.isActive(Grab.command)){
+                    CommandScheduler.activate(Grab.command);
                 } else {
-                    CommandScheduler.deactivate(Grab.command());
-                    CommandScheduler.activate(CancelGrab.command());
+                    CommandScheduler.deactivate(Grab.command);
+                    CommandScheduler.activate(CancelGrab.command);
                 }
             }
 
