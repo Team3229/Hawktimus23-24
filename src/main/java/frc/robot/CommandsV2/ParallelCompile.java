@@ -7,12 +7,15 @@ public class ParallelCompile extends Command{
     private String commandID = "ERROR";
 
     private ArrayList<Command> commands;
+    private ArrayList<Command> _commands;
 
     public ParallelCompile(String commandID, Command... commands){
         this.commandID = commandID;
         this.commands = new ArrayList<Command>();
+        this._commands = new ArrayList<Command>();
         for(int i = 0; i < commands.length; i++){
             this.commands.add(commands[i]);
+            this._commands.add(commands[i]);
         }
     }
 
@@ -28,6 +31,7 @@ public class ParallelCompile extends Command{
         for(int i = 0; i < commands.size(); i++) {
             commands.get(i).periodic();
             if(commands.get(i).isDone()){
+                commands.get(i).end();
                 commands.remove(i);
             }
         }
@@ -39,7 +43,10 @@ public class ParallelCompile extends Command{
     }
 
     @Override
-    public void end(){}
+    public void end(){
+        commands.clear();
+        commands.addAll(_commands);
+    }
 
     @Override
     public String getID() {return commandID;}
