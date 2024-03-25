@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.Shooter.ShooterStates;
+import frc.robot.Subsystems.Intake.Intake;
 
 public class LEDs {
     
@@ -11,6 +12,7 @@ public class LEDs {
     private static float setLED = 0f;
 
     private static float RAINBOW = -0.99f;
+    private static float BLUE = 1.0f;
     private static float HEARTBEAT_GOLD = 0.25f;
     private static float STROBE_RED = -0.11f;
     private static float AQUA = 0.81f;
@@ -46,6 +48,13 @@ public class LEDs {
                 setLED = STROBE_RED;
             }
         }
+        // Check if Intake has a note
+        if ( Intake.hasNote == true) {
+            setLED = BLUE;
+        }
+
+
+
 
         blinkin.set(setLED);
     }
