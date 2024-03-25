@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.hal.simulation.PowerDistributionDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -75,8 +74,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("shooterTarget", false);
 
 		DriverStation.silenceJoystickConnectionWarning(true);
-
-		PowerDistributionDataJNI.setVoltage(0, kDefaultPeriod);
 
 	}
 
