@@ -1,6 +1,35 @@
 package frc.robot.CommandsV2;
 
 public class Command extends edu.wpi.first.wpilibj2.command.Command{
+
+    public static Command createFromWPILIB(edu.wpi.first.wpilibj2.command.Command command) {
+        return new Command() {
+            @Override
+            public void init() {
+                command.initialize();
+            }
+
+            @Override
+            public void periodic() {
+                command.execute();
+            }
+
+            @Override
+            public boolean isDone() {
+                return command.isFinished();
+            }
+
+            @Override
+            public void end() {
+                command.end(false);
+            }
+
+            @Override
+            public String getID() {
+                return command.getName();
+            }
+        };
+    }
     
     public void init(){}
 

@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,7 +32,8 @@ import frc.robot.CommandsV2.CommandScheduler;
  */
 public class Robot extends TimedRobot {
 
-	Command autoCommand;
+	Command pathPlannerCommand;
+	frc.robot.CommandsV2.Command autoCommand;
 	PathPlanner autoManager;
 	SendableChooser<Command> autoChooser;
 
@@ -97,21 +97,14 @@ public class Robot extends TimedRobot {
 		SwerveKinematics.configureDrivetrain();
         SwerveKinematics.chassisState = new ChassisSpeeds();
 
-		if (autoChooser.getSelected().getName() == "Mid 1.5 Note") SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
-		if (autoChooser.getSelected().getName() == "Amp Side 1 Note") SwerveOdometry.resetPose(new Pose2d(0.73, 6.63, Rotation2d.fromDegrees(60.63)));
-		if (autoChooser.getSelected().getName() == "Amp Side 1.5 Note") SwerveOdometry.resetPose(new Pose2d(0.73, 6.63, Rotation2d.fromDegrees(60.63)));
-		if (autoChooser.getSelected().getName() == "Amp Side 2 Note") SwerveOdometry.resetPose(new Pose2d(0.73, 6.63, Rotation2d.fromDegrees(60.63)));
-		if (autoChooser.getSelected().getName() == "Source Side 1.5 Note") SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, Rotation2d.fromDegrees(-60.63)));
-
-		SwerveOdometry.resetPose(new Pose2d(1.35, 5.55, SwerveKinematics.robotRotation));
-
 		RunControls.nullControls();
 
 		ModuleOffsets.checkBoolean();
 
-		autoCommand = autoChooser.getSelected();
+		pathPlannerCommand = autoChooser.getSelected();
 
-		autoCommand.initialize();
+		autoCommand = frc.robot.CommandsV2.Command.createFromWPILIB(pathPlannerCommand);
+		CommandScheduler.activate(autoCommand);
 
 		CommandScheduler.activate(ArmCommands.backwardRail);
 
@@ -123,13 +116,7 @@ public class Robot extends TimedRobot {
 	@Override 
 	public void autonomousPeriodic() {
 
-		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);        
-		
-		if (!autoCommand.isFinished()) {
-			autoCommand.execute();
-		} else {
-			Shooter.stop();
-		}
+		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		Subsystems.update();
 
