@@ -61,21 +61,19 @@ public class Shooter {
     private static void spinningUp(){
         
         if (Utils.getRobotState() == RobotStates.Autonomous) {
-            if (targetSpeed != AMP_SPEED & targetSpeed != -AMP_SPEED) {
-                double distance = 0;
-                if (Utils.getAlliance() == Alliance.Blue) {
-                    distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
-                } else {
-                    distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.RED_SPEAKER_P);
-                }
-                distance *= 39.3701;
-
-                distance -= 34/2;
-
-                targetSpeed = (1.6966e-10*Math.pow(distance, 5.59732)) + 4492.38;
-                targetSpeed = (targetSpeed > 5200) ? 5200 : targetSpeed;
-                pid.setReference(targetSpeed, ControlType.kVelocity);
+            double distance = 0;
+            if (Utils.getAlliance() == Alliance.Blue) {
+                distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.BLUE_SPEAKER_P);
+            } else {
+                distance = SwerveOdometry.getPose().getTranslation().getDistance(FieldConstants.RED_SPEAKER_P);
             }
+            distance *= 39.3701;
+
+            distance -= 34/2;
+
+            targetSpeed = (1.6966e-10*Math.pow(distance, 5.59732)) + 4492.38;
+            targetSpeed = (targetSpeed > 5200) ? 5200 : targetSpeed;
+            pid.setReference(targetSpeed, ControlType.kVelocity);
         } else {
             if (Intake.hasNote & targetSpeed != AMP_SPEED & targetSpeed != -AMP_SPEED) {
                 double distance = 0;

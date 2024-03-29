@@ -154,6 +154,8 @@ public class Robot extends TimedRobot {
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
+		
+
 		Subsystems.update();
 
 		CommandScheduler.periodic();

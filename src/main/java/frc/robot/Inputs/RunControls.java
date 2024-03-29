@@ -58,13 +58,14 @@ public class RunControls {
 
         SwerveKinematics.maxChassisRotationSpeed = 10 * (double) driveStick.get(Controls.FlightStick.Throttle);
 
-        if((boolean) driveStick.get(Controls.FlightStick.Trigger)){
+        if((boolean) driveStick.get(Controls.FlightStick.Button4) | (boolean) driveStick.get(Controls.FlightStick.Trigger)){
             SwerveKinematics.relativeMode = true;
         } else {
             SwerveKinematics.relativeMode = false;
         }
     
         if ((boolean) driveStick.get(Controls.FlightStick.Hazard)) {
+            //Drive w/ Rotation towards speaker.
             if (Utils.getAlliance() == Alliance.Blue) {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
@@ -82,6 +83,36 @@ public class RunControls {
                             FieldConstants.RED_SPEAKER[1] - SwerveOdometry.getPose().getY())
 					);
             }
+        } else if ((boolean) driveStick.get(Controls.FlightStick.Trigger)) {
+            //Drive w/ Rotation towards source.
+            if (Utils.getAlliance() == Alliance.Blue) {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						Rotation2d.fromDegrees(60)
+					);
+            } else {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						Rotation2d.fromDegrees(-60)
+					);
+            }
+        } else if((boolean)driveStick.get(Controls.FlightStick.Button9)){
+            //Align with amp
+            if (Utils.getAlliance() == Alliance.Blue) {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						Rotation2d.fromDegrees(-90)
+					);
+            } else {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						Rotation2d.fromDegrees(90)
+					);
+            }
         } else {
             SwerveKinematics.drive(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
@@ -93,12 +124,6 @@ public class RunControls {
 		if((boolean) driveStick.get(Controls.FlightStick.Button10Toggle)){
 			SwerveKinematics.zeroGyro();
 		}
-
-        if ((boolean) driveStick.get(Controls.FlightStick.Trigger)) {
-            SwerveKinematics.relativeMode = true;
-        } else {
-            SwerveKinematics.relativeMode = false;
-        }
 
     }
 
@@ -188,12 +213,21 @@ public class RunControls {
                 }
             }
 
+            //Auto spin up code, adjust line as needed. To disable, comment this and uncomment the spinup line in button3toggle.
+            if(Utils.getAlliance() == Alliance.Blue){
+                if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
+                    Shooter.spinUp();
+                }
+            } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
+                Shooter.spinUp();
+            }
+
             if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
                 if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
                     Shooter.stop();
                     Angular.isShooting = false;
                 } else {
-                    Shooter.spinUp();
+                    // Shooter.spinUp();
                     Angular.isShooting = true;
                 }
             }

@@ -42,12 +42,7 @@ public class SwerveOdometry {
     }
 
     public static void update(Rotation2d rotation, SwerveModulePosition[] swervePositions) {
-        Pose2d position = Vision.getPose();
-        boolean valid = Vision.isValid();
-        if (position.getTranslation().getDistance(odometry.getEstimatedPosition().getTranslation()) > 0.5) {
-            // valid = false;
-        }
-        addSensorData(Vision.getPose(), 0, valid);
+        addSensorData(Vision.getPose(), 0, Vision.isValid());
         odometry.update(rotation, swervePositions);
     }
 
