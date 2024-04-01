@@ -130,7 +130,7 @@ public class ArmCommands {
         @Override
         public boolean isDone() {
             //The arm is constantly trying to move to its target, thus this needs nothing more.
-            return Angular.checkTarget() & Shooter.atTarget();
+            return Angular.checkTarget();
         }
 
         @Override

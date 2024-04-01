@@ -43,16 +43,15 @@ public class LEDs {
             setLED = STROBE_RED;
         }
         
-        if (Shooter.atTarget() & Shooter.targetSpeed != 0 & Angular.checkTarget()) {
-            setLED = AQUA;
-            if (endgameShootColor) {
-                setLED = STROBE_RED;
-            }
-        }
         // Check if Intake has a note
-        if ( Intake.hasNote == true) {
+        if (Intake.hasNote) {
             setLED = PURPLE;
         }
+        
+        if (Shooter.atTarget() & Shooter.targetSpeed != 0/* & Angular.checkTarget()*/) {
+            setLED = AQUA;
+        }
+        
 
         blinkin.set(setLED);
     }

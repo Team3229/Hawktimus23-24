@@ -70,13 +70,13 @@ public class Vision {
         if (Utils.getRobotState() == RobotStates.Autonomous) {
             return false;
         }
-        if(Utils.getAlliance() == Alliance.Blue){
-            if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
-                return false;
-            }
-        } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
-            return false;
-        }
+        // if(Utils.getAlliance() == Alliance.Blue){
+        //     if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
+        //         return false;
+        //     }
+        // } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
+        //     return false;
+        // }
 
         return visionData.hasTargets();
     }

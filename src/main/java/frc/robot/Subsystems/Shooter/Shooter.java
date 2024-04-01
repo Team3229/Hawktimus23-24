@@ -25,7 +25,7 @@ public class Shooter {
     public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;
     public static boolean ampIntent = false;
-    public static final double RPM_DEADBAND = 20;
+    public static final double RPM_DEADBAND = 30;
 
     public static SparkPIDController pid;
     public static RelativeEncoder encoder;

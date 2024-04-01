@@ -75,6 +75,8 @@ public class Robot extends TimedRobot {
 
 		DriverStation.silenceJoystickConnectionWarning(true);
 
+		SwerveKinematics.navxGyro.zeroYaw();
+
 	}
 
 	/**
@@ -88,6 +90,8 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		Logging.log();
 		LEDs.periodic();
+		
+		CommandScheduler.periodic();
 	}
 
 	/** This function is called once when autonomous is enabled. */
@@ -119,8 +123,6 @@ public class Robot extends TimedRobot {
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
 		Subsystems.update();
-
-		CommandScheduler.periodic();
 
 	}
 
@@ -154,11 +156,7 @@ public class Robot extends TimedRobot {
 
 		SwerveOdometry.update(SwerveKinematics.robotRotation, SwerveKinematics.modulePositions);
 
-		
-
 		Subsystems.update();
-
-		CommandScheduler.periodic();
 
 		LEDs.matchTime = (int) (135-((System.currentTimeMillis()/1000)-timeOffset));
 

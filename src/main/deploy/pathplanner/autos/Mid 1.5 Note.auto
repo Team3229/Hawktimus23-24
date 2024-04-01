@@ -36,16 +36,41 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Speaker"
+                  "name": "OpGrabStart"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "M_Speaker_L"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "OpGrabEnd"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "M_Speaker_L"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
           }
         },
         {

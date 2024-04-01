@@ -213,21 +213,21 @@ public class RunControls {
                 }
             }
 
-            //Auto spin up code, adjust line as needed. To disable, comment this and uncomment the spinup line in button3toggle.
-            if(Utils.getAlliance() == Alliance.Blue){
-                if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
-                    Shooter.spinUp();
-                }
-            } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
-                Shooter.spinUp();
-            }
+            // //Auto spin up code, adjust line as needed. To disable, comment this and uncomment the spinup line in button3toggle.
+            // if(Utils.getAlliance() == Alliance.Blue){
+            //     if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
+            //         Shooter.spinUp();
+            //     }
+            // } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
+            //     Shooter.spinUp();
+            // }
 
             if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
                 if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
                     Shooter.stop();
                     Angular.isShooting = false;
                 } else {
-                    // Shooter.spinUp();
+                    Shooter.spinUp();
                     Angular.isShooting = true;
                 }
             }

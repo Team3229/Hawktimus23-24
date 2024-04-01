@@ -1,4 +1,6 @@
 package frc.robot.Autonomous;
+import org.json.simple.JSONObject;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -11,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Autonomous.Sequences.Grab;
+import frc.robot.Autonomous.Sequences.OpGrabEnd;
+import frc.robot.Autonomous.Sequences.OpGrabStart;
 import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -21,8 +25,8 @@ public class PathPlanner extends SubsystemBase {
 
     private HolonomicPathFollowerConfig autoConfig = 
         new HolonomicPathFollowerConfig(
-            new PIDConstants(15, 0, 0), // Translation PID constants
-            new PIDConstants(0.02, 0.0, 0.0), // Rotation PID constants
+            new PIDConstants(25, 4, 0), // Translation PID constants
+            new PIDConstants(5, 0.0, 0.0), // Rotation PID constants
             SwerveKinematics.maxModuleSpeed, // Max module speed, in m/s
             Math.sqrt(2 * (Math.pow(SwerveKinematics.robotWidth/2 - SwerveKinematics.moduleEdgeOffset, 2))), // Drive base radius in meters. Distance from robot center to furthest module.
             new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -31,6 +35,8 @@ public class PathPlanner extends SubsystemBase {
     public PathPlanner() {
 
         NamedCommands.registerCommand("Grab", Grab.command);
+        NamedCommands.registerCommand("OpGrabStart", OpGrabStart.command);
+        NamedCommands.registerCommand("OpGrabEnd", OpGrabEnd.command);
         NamedCommands.registerCommand("Speaker", ArmCommands.speakerPosition);
         NamedCommands.registerCommand("Shoot", IntakeCommands.feed);
         
