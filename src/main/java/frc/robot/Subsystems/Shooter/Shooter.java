@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Utils.FieldConstants;
@@ -86,7 +87,7 @@ public class Shooter {
 
                 distance -= 34/2;
 
-                if (Utils.getRobotState() == RobotStates.Autonomous) {
+                if (Linear.goingBackwards) {
                     distance += 12;
                 }
 

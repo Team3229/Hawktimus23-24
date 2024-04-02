@@ -114,7 +114,7 @@ public class Angular {
         distance *= 39.3701;
         distance -= 34/2;
 
-        if (Utils.getRobotState() == RobotStates.Autonomous) {
+        if (Linear.goingBackwards) {
             distance += 12;
         }
 
