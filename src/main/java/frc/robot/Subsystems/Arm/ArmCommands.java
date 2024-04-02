@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.Arm;
 
 import frc.robot.CommandsV2.Command;
-import frc.robot.Subsystems.Shooter.Shooter;
 
 public class ArmCommands {
     

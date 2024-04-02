@@ -1,5 +1,4 @@
 package frc.robot.Autonomous;
-import org.json.simple.JSONObject;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;

@@ -26,7 +26,7 @@ public class Shooter {
     public static ShooterStates state = ShooterStates.idle;
     public static double targetSpeed = 0;
     public static boolean ampIntent = false;
-    public static final double RPM_DEADBAND = 30;
+    public static final double RPM_DEADBAND = 100;
 
     public static SparkPIDController pid;
     public static RelativeEncoder encoder;
@@ -87,8 +87,8 @@ public class Shooter {
 
                 distance -= 34/2;
 
-                if (Linear.goingBackwards) {
-                    distance += 12;
+                if (!Linear.goingBackwards) {
+                    distance += 10;
                 }
 
                 targetSpeed = (1.6966e-10*Math.pow(distance, 5.59732)) + 4492.38;

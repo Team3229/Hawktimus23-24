@@ -65,6 +65,10 @@ public class Vision {
         return new Transform3d(robotPose(), object).getTranslation().getDistance(new Translation3d());
     }
 
+    public static double getLatency() {
+        return visionData.getLatencyMillis();
+    }
+
     public static boolean isValid() {
 
         if (Utils.getRobotState() == RobotStates.Autonomous) {

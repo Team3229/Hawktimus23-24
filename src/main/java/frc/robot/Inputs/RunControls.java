@@ -206,6 +206,7 @@ public class RunControls {
 
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
                 if(!CommandScheduler.isActive(Grab.command)){
+                    CommandScheduler.deactivate(CancelGrab.command);
                     CommandScheduler.activate(Grab.command);
                 } else {
                     CommandScheduler.deactivate(Grab.command);

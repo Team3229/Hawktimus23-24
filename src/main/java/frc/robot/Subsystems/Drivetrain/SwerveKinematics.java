@@ -68,9 +68,9 @@ public class SwerveKinematics {
 
     public static PIDController linearXMovement = new PIDController(0.8, 0.0, 0.5);
     public static PIDController linearYMovement = new PIDController(0.8, 0.0, 0.5);
-    public static PIDController angularMovement = new PIDController(0.02, 0, 0);
+    public static PIDController angularMovement = new PIDController(0.04, 0, 0);
 
-    public static final double ANGULAR_MAX_VEL = 2;
+    public static final double DRIVE_W_ROT_MAX_SPEED = 5;
 
     public SwerveKinematics() {}
 
@@ -205,11 +205,14 @@ public class SwerveKinematics {
 
     public static void driveWithRotation(double X, double Y, Rotation2d rotation) {
 
+        maxChassisRotationSpeed = 5;
+
         double odometry = MathUtil.inputModulus(-SwerveOdometry.getPose().getRotation().getDegrees(), 0, 360);
         double rot = MathUtil.inputModulus(-rotation.getDegrees()+180, 0, 360);
 
         double output = angularMovement.calculate(odometry, rot);
-        output = output > ANGULAR_MAX_VEL ? ANGULAR_MAX_VEL : output;
+        output = output > DRIVE_W_ROT_MAX_SPEED ? DRIVE_W_ROT_MAX_SPEED : output;
+        output = output < -DRIVE_W_ROT_MAX_SPEED ? -DRIVE_W_ROT_MAX_SPEED : output;
 
         drive(
             X,

@@ -110,9 +110,7 @@ public class Robot extends TimedRobot {
 		autoCommand = frc.robot.CommandsV2.Command.createFromWPILIB(pathPlannerCommand);
 		CommandScheduler.activate(autoCommand);
 
-		if (autoCommand.getName() != "Mid 4 Note Optimized") {
-			CommandScheduler.activate(ArmCommands.backwardRail);
-		}
+		// CommandScheduler.activate(ArmCommands.backwardRail);
 
 		Shooter.spinUp();
 		
