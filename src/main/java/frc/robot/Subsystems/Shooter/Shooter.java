@@ -86,6 +86,10 @@ public class Shooter {
 
                 distance -= 34/2;
 
+                if (Utils.getRobotState() == RobotStates.Autonomous) {
+                    distance += 12;
+                }
+
                 targetSpeed = (1.6966e-10*Math.pow(distance, 5.59732)) + 4492.38;
                 targetSpeed = (targetSpeed > 5200) ? 5200 : targetSpeed;
                 pid.setReference(targetSpeed, ControlType.kVelocity);

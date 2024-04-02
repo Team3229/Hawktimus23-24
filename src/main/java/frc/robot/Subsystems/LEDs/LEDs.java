@@ -34,21 +34,21 @@ public class LEDs {
         setLED = RAINBOW;
         endgameShootColor = false;
 
-        if (Shooter.state == ShooterStates.spinningUp) {
-            setLED = HEARTBEAT_GOLD;
-        }
-
         if (matchTime <= 25) {
             endgameShootColor = !endgameShootColor;
             setLED = STROBE_RED;
         }
-        
+
         // Check if Intake has a note
         if (Intake.hasNote) {
             setLED = PURPLE;
         }
+
+        if (Shooter.state == ShooterStates.spinningUp) {
+            setLED = HEARTBEAT_GOLD;
+        }
         
-        if (Shooter.atTarget() & Shooter.targetSpeed != 0/* & Angular.checkTarget()*/) {
+        if (Angular.checkTarget() & Angular.isShooting & Shooter.atTarget() & Shooter.targetSpeed != 0) {
             setLED = AQUA;
         }
         

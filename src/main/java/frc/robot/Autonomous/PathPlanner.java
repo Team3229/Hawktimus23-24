@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Autonomous.Sequences.Grab;
+import frc.robot.Autonomous.Sequences.NoRailGrab;
 import frc.robot.Autonomous.Sequences.OpGrabEnd;
 import frc.robot.Autonomous.Sequences.OpGrabStart;
 import frc.robot.Subsystems.Arm.ArmCommands;
@@ -37,6 +38,7 @@ public class PathPlanner extends SubsystemBase {
         NamedCommands.registerCommand("Grab", Grab.command);
         NamedCommands.registerCommand("OpGrabStart", OpGrabStart.command);
         NamedCommands.registerCommand("OpGrabEnd", OpGrabEnd.command);
+        NamedCommands.registerCommand("NoRailGrab", NoRailGrab.command);
         NamedCommands.registerCommand("Speaker", ArmCommands.speakerPosition);
         NamedCommands.registerCommand("Shoot", IntakeCommands.feed);
         

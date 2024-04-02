@@ -10,6 +10,7 @@ import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Utils.FieldConstants;
 import frc.robot.Utils.Utils;
+import frc.robot.Utils.Utils.RobotStates;
 
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
@@ -112,6 +113,11 @@ public class Angular {
         }
         distance *= 39.3701;
         distance -= 34/2;
+
+        if (Utils.getRobotState() == RobotStates.Autonomous) {
+            distance += 12;
+        }
+
         targetAngle = (411.464*Math.pow(distance, -0.632142)) + 37.4285;
     }
 
