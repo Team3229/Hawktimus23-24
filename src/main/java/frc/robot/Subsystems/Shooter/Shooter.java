@@ -6,6 +6,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -87,8 +88,12 @@ public class Shooter {
 
                 distance -= 34/2;
 
-                if (!Linear.goingBackwards) {
-                    distance += 10;
+                if (Utils.getRobotState() == RobotStates.Autonomous) {
+                    distance += 9;
+                }
+
+                if (Utils.getRobotState() == RobotStates.Autonomous & Utils.timer > 11) {
+                    distance += 3;
                 }
 
                 targetSpeed = (1.6966e-10*Math.pow(distance, 5.59732)) + 4492.38;

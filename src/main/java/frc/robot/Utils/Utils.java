@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Utils {
 
+    public static double timer = 0;
+
     public static enum RobotStates {
         Teleop,
         Autonomous,
@@ -39,6 +41,10 @@ public class Utils {
         }
 
         return RobotStates.Disabled;
+    }
+
+    public static void runMatchTime() {
+        timer += 0.02;
     }
     
 }

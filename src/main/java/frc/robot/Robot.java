@@ -21,6 +21,7 @@ import frc.robot.Subsystems.LEDs.LEDs;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Utils.Logging;
+import frc.robot.Utils.Utils;
 import frc.robot.Autonomous.PathPlanner;
 import frc.robot.CommandsV2.CommandScheduler;
 	
@@ -77,6 +78,8 @@ public class Robot extends TimedRobot {
 
 		SwerveKinematics.navxGyro.zeroYaw();
 
+		Utils.timer = 0;
+
 	}
 
 	/**
@@ -92,11 +95,15 @@ public class Robot extends TimedRobot {
 		LEDs.periodic();
 		
 		CommandScheduler.periodic();
+
+		Utils.runMatchTime();
 	}
 
 	/** This function is called once when autonomous is enabled. */
 	@Override
 	public void autonomousInit() {
+
+		Utils.timer = 0;
 
 		SwerveKinematics.configureDrivetrain();
         SwerveKinematics.chassisState = new ChassisSpeeds();
@@ -129,6 +136,8 @@ public class Robot extends TimedRobot {
 	/** This function is called once when teleop is enabled. */
 	@Override
 	public void teleopInit() {
+
+		Utils.timer = 0;
 
 		LEDs.matchTime = 135;
 
