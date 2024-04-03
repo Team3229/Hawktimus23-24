@@ -24,15 +24,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "M_Travel_L"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "OpGrabStart"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "M_Travel_M"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "M_Speaker_L"
+            "name": "OpGrabEnd"
           }
         },
         {
@@ -48,9 +61,78 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "M_Travel_M"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "M_Travel_R"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "OpGrabStart"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "M_Speaker_R"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "OpGrabEnd"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Speaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "M_Travel_L"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "OpGrabStart"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OpGrabEnd"
           }
         },
         {
