@@ -80,7 +80,6 @@ public class Intake {
 
     public static void run(double speed) {
         intake.set(speed);
-
     }
 
     public static void forceeject() {

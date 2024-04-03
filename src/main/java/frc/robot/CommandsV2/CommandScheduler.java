@@ -46,6 +46,7 @@ public class CommandScheduler {
         for (int i = 0; i < commandList.size(); i++) {
             Command iter = commandList.get(i);
             if (iter.getID() == command.getID()) {
+                commandList.get(i).end();
                 commandList.remove(i);
             }
         }

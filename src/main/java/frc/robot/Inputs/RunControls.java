@@ -1,8 +1,5 @@
 package frc.robot.Inputs;
 
-import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Autonomous.Sequences.CancelGrab;
@@ -169,10 +166,6 @@ public class RunControls {
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button11)){
-                Intake.run(-0.2);
-            }
-            
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
                 if(Intake.state == IntakeStates.feed){
                     Intake.stop();
@@ -181,18 +174,11 @@ public class RunControls {
                 }
             }
 
-            if ((boolean) manipStick.get(Controls.FlightStick.Button12)) {
-                Linear.linearRail.setIdleMode(IdleMode.kCoast);
-                Linear.pid.setReference(0, ControlType.kDutyCycle);
-            } else {
-                Linear.linearRail.setIdleMode(IdleMode.kBrake);
-            }
-
         } else {
             //Auto control scheme
 
-
             if ((boolean) manipStick.get(Controls.FlightStick.Button7)) {
+                System.out.println("Ejecting");
                 Intake.forceeject();
                 Shooter.feed();
             } else {
@@ -214,15 +200,23 @@ public class RunControls {
                 }
             }
 
-            // //Auto spin up code, adjust line as needed. To disable, comment this and uncomment the spinup line in button3toggle.
-            // if(Utils.getAlliance() == Alliance.Blue){
-            //     if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
+            // Auto spin up code, never to be ran :(
+            // if(Intake.hasNote){
+            //     if(Utils.getAlliance() == Alliance.Blue){
+            //         if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
+            //             Shooter.spinUp();
+            //         } else {
+            //             Shooter.stop();
+            //         }
+            //     } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
             //         Shooter.spinUp();
+            //     } else {
+            //         Shooter.stop();
             //     }
-            // } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
-            //     Shooter.spinUp();
+            // } else {
+            //     Shooter.stop();
             // }
-
+            
             if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
                 if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
                     Shooter.stop();

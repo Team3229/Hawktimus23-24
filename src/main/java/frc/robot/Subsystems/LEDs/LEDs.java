@@ -48,7 +48,7 @@ public class LEDs {
             setLED = HEARTBEAT_GOLD;
         }
         
-        if (Angular.checkTarget() & Angular.isShooting & Shooter.atTarget() & Shooter.targetSpeed != 0) {
+        if (Angular.checkTarget() & Angular.isShooting) {
             setLED = AQUA;
         }
         

@@ -13,26 +13,31 @@ public class SequentialCompile extends Command{
 
     @Override
     public void init(){
-        commands[index].init();
-        System.out.println(commands[index].getID() + " started now");
+        if(index < commands.length){
+            commands[index].init();
+        }
     }
 
     @Override
     public void periodic(){
-        commands[index].periodic();
-        if(commands[index].isDone()){
-            commands[index].end();
-            index++;
-            if(index < commands.length){
-                commands[index].init();
+        if(index < commands.length){
+            commands[index].periodic();
+            if(commands[index].isDone()){
+                commands[index].end();
+                index++;
+                if(index < commands.length){
+                    commands[index].init();
+                }
             }
         }
     }
 
     @Override
     public void end(){
+        if(index < commands.length){
+            commands[index].end();
+        }
         index = 0;
-        System.out.println(getID() + " ended");
     }
 
     @Override

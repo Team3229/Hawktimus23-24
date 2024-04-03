@@ -5,7 +5,6 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Subsystems.Intake.Intake;
@@ -34,7 +33,7 @@ public class Angular {
 
     private static double STOWED_ANGLE = 90;
     private static double GRAB_ANGLE = 110;
-    public static double AMP_ANGLE = 0;
+    public static double AMP_ANGLE = 1;
     private static double SUBWOOF_SHOOT = 75;
     public static double RAISED = 83;
     public static boolean manual = false;
