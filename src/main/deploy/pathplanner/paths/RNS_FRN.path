@@ -12,20 +12,20 @@
         "y": 4.43700226155578
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RNS"
     },
     {
       "anchor": {
-        "x": 7.78,
-        "y": 0.76
+        "x": 7.684714713224005,
+        "y": 0.772915212021579
       },
       "prevControl": {
-        "x": 5.991731046926157,
-        "y": 0.8387029317889781
+        "x": 5.894714713224005,
+        "y": 0.772915212021579
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "FRN"
     }
   ],
   "rotationTargets": [],
@@ -39,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -42.56999999999999,
+    "rotation": 7.815293546766845,
     "rotateFast": false
   },
   "reversed": false,
