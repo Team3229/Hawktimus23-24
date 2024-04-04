@@ -49,7 +49,10 @@ public class LEDs {
         }
         
         if (Angular.checkTarget() & Angular.isShooting) {
+            SmartDashboard.putBoolean("Ready to Shoot", true);
             setLED = AQUA;
+        } else {
+            SmartDashboard.putBoolean("Ready to Shoot", false);
         }
         
 

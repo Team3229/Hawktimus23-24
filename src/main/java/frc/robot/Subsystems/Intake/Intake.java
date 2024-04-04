@@ -61,7 +61,6 @@ public class Intake {
             stop();
         }
     }
-
     private static void intaking(){
         if(!hasNote){
             intake.set(0.6);

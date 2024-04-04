@@ -86,28 +86,17 @@ public class RunControls {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromDegrees(60)
+						new Rotation2d(
+                            0.571 - SwerveOdometry.getPose().getX(),
+                            0.621 - SwerveOdometry.getPose().getY())
 					);
             } else {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromDegrees(-60)
-					);
-            }
-        } else if((boolean)driveStick.get(Controls.FlightStick.Button9)){
-            //Align with amp
-            if (Utils.getAlliance() == Alliance.Blue) {
-                SwerveKinematics.driveWithRotation(
-						(double) driveStick.get(Controls.FlightStick.AxisX),
-						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromDegrees(-90)
-					);
-            } else {
-                SwerveKinematics.driveWithRotation(
-						(double) driveStick.get(Controls.FlightStick.AxisX),
-						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromDegrees(90)
+						new Rotation2d(
+                            15.967 - SwerveOdometry.getPose().getX(),
+                            0.620 - SwerveOdometry.getPose().getY())
 					);
             }
         } else {

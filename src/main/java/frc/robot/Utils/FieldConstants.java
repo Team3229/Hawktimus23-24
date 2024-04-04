@@ -12,7 +12,7 @@ public class FieldConstants {
     
     public static final double[] RED_AMP = {14.7, 8.2};
     public static final double[] RED_SPEAKER = {16.5, 5.5};
-    public static final double[] RED_SHOOTING_LINE = {0, 10.8};
+    public static final double[] RED_SHOOTING_LINE = {10.8, 0};
     public static final double[][] RED_STAGE = {{13.7,4.3},{10.5,5.8},{10.5,2.8}};
 
     public static final Translation2d BLUE_SPEAKER_P = new Translation2d(BLUE_SPEAKER[0], BLUE_SPEAKER[1]);

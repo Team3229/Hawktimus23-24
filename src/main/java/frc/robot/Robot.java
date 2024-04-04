@@ -140,7 +140,7 @@ public class Robot extends TimedRobot {
 
 		LEDs.matchTime = 135;
 
-		SwerveOdometry.init(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
+		// SwerveOdometry.init(new Pose2d(Vision.getPose().getX(), Vision.getPose().getY(), SwerveKinematics.robotRotation));
 
 		RunControls.nullControls();
 

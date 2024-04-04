@@ -123,6 +123,11 @@ public class Angular {
         }
 
         targetAngle = (411.464*Math.pow(distance, -0.632142)) + 37.4285;
+
+        if (Utils.getRobotState() == RobotStates.Autonomous) {
+            targetAngle -= 2;
+        }
+
     }
 
     private static void goToAngle(){
