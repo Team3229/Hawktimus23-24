@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.496814123442796,
-        "y": 6.8157068696448375
+        "x": 2.5,
+        "y": 6.82
       },
       "prevControl": {
-        "x": 1.2203329399526115,
-        "y": 6.077924167260602
+        "x": 1.2273276760273009,
+        "y": 6.084333529516311
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,11 +45,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 29.577838681261262,
+    "rotation": 29.58,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Note Autos",
+  "folder": "Mid Side Paths (4 Note)",
   "previewStartingState": {
     "rotation": -45.3219258166154,
     "velocity": 0

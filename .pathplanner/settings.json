@@ -3,7 +3,9 @@
   "robotLength": 0.8636,
   "holonomicMode": true,
   "pathFolders": [
-    "4 Note Autos"
+    "Mid Side Paths (4 Note)",
+    "Amp Side Paths",
+    "Source Side Paths"
   ],
   "autoFolders": [
     "Mid"

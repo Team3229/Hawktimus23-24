@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 1.99,
-        "y": 4.344720358484939
+        "y": 4.34
       },
       "prevControl": {
-        "x": 2.3530359329192265,
-        "y": 4.262744502664469
+        "x": 2.350919365173504,
+        "y": 4.258530914803498
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 Note Autos",
+  "folder": "Mid Side Paths (4 Note)",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
