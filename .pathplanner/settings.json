@@ -8,7 +8,9 @@
     "Source Side Paths"
   ],
   "autoFolders": [
-    "Mid"
+    "Amp",
+    "Mid",
+    "Source"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 1.0,
