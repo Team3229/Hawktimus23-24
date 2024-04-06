@@ -17,19 +17,30 @@ public class ShooterCommands {
 
         @Override
         public boolean isDone() {
-            return Shooter.atSpeed;
+            return Shooter.atTarget();
+        }
+
+        @Override
+        public String getID() {
+            return "shootAmp";
         }
     };
 
     public static Command shootSpeaker = new Command() {
+
         @Override
-        public void init() {
+        public void periodic() {
             Shooter.spinUp();
         }
 
         @Override
         public boolean isDone() {
-            return Shooter.atSpeed;
+            return false;
+        }
+
+        @Override
+        public String getID() {
+            return "shootSpeaker";
         }
     };
 }

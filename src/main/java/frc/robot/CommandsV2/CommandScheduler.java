@@ -43,8 +43,13 @@ public class CommandScheduler {
      * @param command Command to interrupt
      */
     public static void deactivate(Command command) {
-        commandList.get(commandList.indexOf(command)).end();
-        commandList.remove(commandList.indexOf(command));
+        for (int i = 0; i < commandList.size(); i++) {
+            Command iter = commandList.get(i);
+            if (iter.getID() == command.getID()) {
+                commandList.get(i).end();
+                commandList.remove(i);
+            }
+        }
     }
 
     /**
@@ -53,7 +58,12 @@ public class CommandScheduler {
      * @return true if command is running
      */
     public static boolean isActive(Command command) {
-        return commandList.contains(command);
+        for (int i = 0; i < commandList.size(); i++) {
+            if (commandList.get(i).getID() == command.getID()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void emptyTrashCan() {

@@ -8,22 +8,41 @@ public class ArmCommands {
         @Override
         public void init() {
             Angular.stow();
+            Angular.isShooting = false;
         }
 
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.checkTarget();
+        }
+
+        @Override
+        public String getID() {
+            return "stow";
         }
     };
 
     public static Command raise = new Command(){
         @Override
         public void init(){
+            Angular.isShooting = false;
             Angular.raise();
         }
+
+        @Override
+        public void periodic() {}
+
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.encoder.getPosition() <= 90;
+        }
+
+        @Override
+        public void end() {}
+
+        @Override
+        public String getID() {
+            return "raise";
         }
     };
 
@@ -31,11 +50,17 @@ public class ArmCommands {
         @Override
         public void init() {
             Angular.grab();
+            Angular.isShooting = false;
         }
 
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.checkTarget();
+        }
+
+        @Override
+        public String getID() {
+            return "intakePos";
         }
     };
     
@@ -43,11 +68,17 @@ public class ArmCommands {
         @Override
         public void init() {
             Angular.amp();
+            Angular.isShooting = false;
         }
 
         @Override
         public boolean isDone() {
-            return Angular.atTarget;
+            return Angular.checkTarget();
+        }
+
+        @Override
+        public String getID() {
+            return "ampPos";
         }
     };
 
@@ -61,6 +92,11 @@ public class ArmCommands {
         public boolean isDone() {
             return Linear.atTarget;
         }
+
+        @Override
+        public String getID() {
+            return "forwardRail";
+        }
     };
 
     public static Command backwardRail = new Command() {
@@ -73,13 +109,37 @@ public class ArmCommands {
         public boolean isDone() {
             return Linear.atTarget;
         }
+
+        @Override
+        public String getID() {
+            return "backwardRail";
+        }
     };
 
     public static Command speakerPosition = new Command() {
         @Override
+        public void init() {
+            Angular.isShooting = true;
+            System.out.println("startSpeaker");
+        }
+
+        @Override
+        public void periodic() {}
+
+        @Override
         public boolean isDone() {
             //The arm is constantly trying to move to its target, thus this needs nothing more.
-            return Angular.atTarget;
+            return Angular.checkTarget();
+        }
+
+        @Override
+        public void end() {
+            Angular.isShooting = false;
+        }
+
+        @Override
+        public String getID() {
+            return "speakerPos";
         }
     };
 }

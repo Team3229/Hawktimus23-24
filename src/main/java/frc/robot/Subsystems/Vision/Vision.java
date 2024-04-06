@@ -13,6 +13,10 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
+import frc.robot.Utils.Utils;
+import frc.robot.Utils.Utils.RobotStates;
 
 public class Vision {
 
@@ -31,7 +35,7 @@ public class Vision {
 
         aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
-        robotToCam = new Transform3d(new Translation3d(-0.2032,0.3175,0.38735), new Rotation3d(0,0,0));
+        robotToCam = new Transform3d(new Translation3d(-0.2032,0.3229,0.384175), new Rotation3d(0,0,Math.PI));
 
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, robotToCam);
     
@@ -60,7 +64,23 @@ public class Vision {
         return new Transform3d(robotPose(), object).getTranslation().getDistance(new Translation3d());
     }
 
+    public static double getLatency() {
+        return visionData.getLatencyMillis();
+    }
+
     public static boolean isValid() {
+
+        if (Utils.getRobotState() == RobotStates.Autonomous) {
+            return false;
+        }
+        if(Utils.getAlliance() == Alliance.Blue){
+            if(SwerveOdometry.getPose().getX() < 2){
+                return false;
+            }
+        } else if(SwerveOdometry.getPose().getX() > 14.5){
+            return false;
+        }
+
         return visionData.hasTargets();
     }
 

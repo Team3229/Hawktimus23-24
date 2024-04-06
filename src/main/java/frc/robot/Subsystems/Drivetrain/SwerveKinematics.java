@@ -66,9 +66,11 @@ public class SwerveKinematics {
     /**Whether or not to run the drive motors in brake mode. */
     private static final boolean brakeMode = true;
 
-    public static PIDController linearXMovement = new PIDController(40, 0.0, 0.5);
-    public static PIDController linearYMovement = new PIDController(40, 0.0, 0.5);
-    public static PIDController angularMovement = new PIDController(5, 0, 0);
+    public static PIDController linearXMovement = new PIDController(0.8, 0.0, 0.5);
+    public static PIDController linearYMovement = new PIDController(0.8, 0.0, 0.5);
+    public static PIDController angularMovement = new PIDController(0.04, 0, 0);
+
+    public static final double DRIVE_W_ROT_MAX_SPEED = 5;
 
     public SwerveKinematics() {}
 
@@ -95,6 +97,8 @@ public class SwerveKinematics {
         modulePositions[3] = new SwerveModulePosition();
 
         chassisState = new ChassisSpeeds();
+
+        angularMovement.enableContinuousInput(0, 360);
     }
 
     public static void configureDrivetrain() {
@@ -131,8 +135,6 @@ public class SwerveKinematics {
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
 
         // Set each module state
-        SmartDashboard.putNumber("FL setpoint", moduleStates[0].speedMetersPerSecond);
-        SmartDashboard.putNumber("FL getpoint", frontLeftModule.driveEncoder.getPosition());
         frontLeftModule.setModuleState(moduleStates[0]);
         frontRightModule.setModuleState(moduleStates[1]);
         backLeftModule.setModuleState(moduleStates[2]);
@@ -164,9 +166,9 @@ public class SwerveKinematics {
 
         chassisState = speeds;
 
-        chassisState.omegaRadiansPerSecond *= -1;
-        chassisState.vxMetersPerSecond *= -1;
-        chassisState.vyMetersPerSecond *= -1;
+        // chassisState.omegaRadiansPerSecond *= -1;
+        // chassisState.vxMetersPerSecond *= -1;
+        // chassisState.vyMetersPerSecond *= -1;
         
         moduleStates = kinematics.toSwerveModuleStates(chassisState);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, maxModuleSpeed);
@@ -202,11 +204,26 @@ public class SwerveKinematics {
     }
 
     public static void driveWithRotation(double X, double Y, Rotation2d rotation) {
+
+        maxChassisRotationSpeed = 5;
+
+        double odometry = MathUtil.inputModulus(-SwerveOdometry.getPose().getRotation().getDegrees(), 0, 360);
+        double rot = MathUtil.inputModulus(-rotation.getDegrees()+180, 0, 360);
+
+        double output = angularMovement.calculate(odometry, rot);
+        output = output > DRIVE_W_ROT_MAX_SPEED ? DRIVE_W_ROT_MAX_SPEED : output;
+        output = output < -DRIVE_W_ROT_MAX_SPEED ? -DRIVE_W_ROT_MAX_SPEED : output;
+
         drive(
             X,
             Y,
-            angularMovement.calculate(Vision.getPose().getRotation().getDegrees(),SwerveOdometry.getPose().getRotation().getDegrees())
+            output
         );
+
+        SmartDashboard.putNumberArray("r", new double[] {
+            odometry,
+            rot
+        });
     }
 
     public static ChassisSpeeds getSpeeds() {

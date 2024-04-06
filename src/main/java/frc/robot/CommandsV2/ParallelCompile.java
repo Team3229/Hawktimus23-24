@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 public class ParallelCompile extends Command{
 
-    private ArrayList<Command> _commands;
-    private ArrayList<Command> commands;
+    private String commandID = "ERROR";
 
-    public ParallelCompile(Command... commands){
+    private ArrayList<Command> commands;
+    private ArrayList<Command> _commands;
+
+    public ParallelCompile(String commandID, Command... commands){
+        this.commandID = commandID;
         this.commands = new ArrayList<Command>();
         this._commands = new ArrayList<Command>();
         for(int i = 0; i < commands.length; i++){
@@ -27,7 +30,8 @@ public class ParallelCompile extends Command{
     public void periodic(){
         for(int i = 0; i < commands.size(); i++) {
             commands.get(i).periodic();
-            if(!commands.get(i).isDone()){
+            if(commands.get(i).isDone()){
+                commands.get(i).end();
                 commands.remove(i);
             }
         }
@@ -40,6 +44,10 @@ public class ParallelCompile extends Command{
 
     @Override
     public void end(){
-        this.commands = this._commands;
+        commands.clear();
+        commands.addAll(_commands);
     }
+
+    @Override
+    public String getID() {return commandID;}
 }

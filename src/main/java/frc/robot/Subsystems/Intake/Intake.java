@@ -14,7 +14,7 @@ Controls intaking a note
 -Eject note
  */
 public class Intake {
-    public static boolean hasNote = false;
+    public static boolean hasNote = true;
     private static CANSparkMax intake;
     private static final int INTAKE_ID = 8;
     private static DigitalInput sensor;
@@ -24,7 +24,8 @@ public class Intake {
         intaking,
         feed,
         ejecting,
-        idle
+        idle,
+        forceeject
     }
 
     public static void init(){
@@ -47,6 +48,9 @@ public class Intake {
             case feed:
                 feeding();
                 break;
+            case forceeject:
+                run(0.35);
+                break;
         }
     }
 
@@ -57,10 +61,9 @@ public class Intake {
             stop();
         }
     }
-
     private static void intaking(){
         if(!hasNote){
-            intake.set(0.75);
+            intake.set(0.6);
         } else {
             stop();
         }
@@ -72,6 +75,14 @@ public class Intake {
         } else {
             stop();
         }
+    }
+
+    public static void run(double speed) {
+        intake.set(speed);
+    }
+
+    public static void forceeject() {
+        state = IntakeStates.forceeject;
     }
 
     private static boolean detectNote(){

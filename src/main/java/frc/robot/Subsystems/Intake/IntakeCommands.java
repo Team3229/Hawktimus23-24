@@ -22,6 +22,28 @@ public class IntakeCommands {
         public boolean isDone() {
             return Intake.hasNote;
         }
+
+        @Override
+        public String getID() {
+            return "intakeNote";
+        }
+    };
+
+    public static Command stop = new Command() {
+        @Override
+        public void init() {
+            Intake.stop();
+        }
+
+        @Override
+        public boolean isDone() {
+            return true;
+        }
+
+        @Override
+        public String getID() {
+            return "stopIntake";
+        }
     };
 
     public static Command feed = new Command() {
@@ -41,6 +63,11 @@ public class IntakeCommands {
         @Override
         public boolean isDone() {
             return !Intake.hasNote;
+        }
+
+        @Override
+        public String getID() {
+            return "intakeFeed";
         }
     };
 

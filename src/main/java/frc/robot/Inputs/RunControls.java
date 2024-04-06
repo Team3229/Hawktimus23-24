@@ -2,13 +2,14 @@ package frc.robot.Inputs;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Autonomous.Sequences.CancelGrab;
 import frc.robot.Autonomous.Sequences.Grab;
-import frc.robot.Autonomous.Sequences.ScoreAmp;
-import frc.robot.Autonomous.Sequences.ScoreSpeaker;
 import frc.robot.CommandsV2.CommandScheduler;
+import frc.robot.CommandsV2.SequentialCompile;
 import frc.robot.Inputs.Controller.ControllerType;
 import frc.robot.Inputs.Controller.Controls;
 import frc.robot.Subsystems.Arm.Angular;
+import frc.robot.Subsystems.Arm.ArmCommands;
 import frc.robot.Subsystems.Arm.Linear;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -24,7 +25,9 @@ public class RunControls {
     private static Controller driveStick;
     private static Controller manipStick;
 
-    public static boolean manipManualControl = true;
+    public static boolean manipManualControl = false;
+
+    private static boolean wasShooting = false;
 
     public static void init(){
         driveStick = new Controller(ControllerType.FlightStick, 0);
@@ -42,7 +45,6 @@ public class RunControls {
 
         //Those commands take driving control, only allow the override to be ran.  Everything else is fully auto.
         if((boolean) driveStick.get(Controls.FlightStick.Button5Toggle) | (boolean) manipStick.get(Controls.FlightStick.Button5Toggle)) CommandScheduler.terminated = !CommandScheduler.terminated;
-        if(CommandScheduler.isActive(ScoreAmp.command) | CommandScheduler.isActive(ScoreSpeaker.command)) return;
 
         runDriver();
         runManip();
@@ -51,28 +53,50 @@ public class RunControls {
     
     private static void runDriver(){
 
-        if((boolean) driveStick.get(Controls.FlightStick.Trigger)){
+        SwerveKinematics.maxChassisRotationSpeed = 10 * (double) driveStick.get(Controls.FlightStick.Throttle);
+
+        if((boolean) driveStick.get(Controls.FlightStick.Button4) | (boolean) driveStick.get(Controls.FlightStick.Trigger)){
             SwerveKinematics.relativeMode = true;
         } else {
             SwerveKinematics.relativeMode = false;
         }
     
         if ((boolean) driveStick.get(Controls.FlightStick.Hazard)) {
+            //Drive w/ Rotation towards speaker.
             if (Utils.getAlliance() == Alliance.Blue) {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromRadians(Math.atan2(
-                            SwerveOdometry.getPose().getX() - FieldConstants.BLUE_SPEAKER[0],
-                            SwerveOdometry.getPose().getY() - FieldConstants.BLUE_SPEAKER[1]))
+						new Rotation2d(
+                            FieldConstants.BLUE_SPEAKER[0] - SwerveOdometry.getPose().getX(),
+                            FieldConstants.BLUE_SPEAKER[1] - SwerveOdometry.getPose().getY())
 					);
             } else {
                 SwerveKinematics.driveWithRotation(
 						(double) driveStick.get(Controls.FlightStick.AxisX),
 						(double) driveStick.get(Controls.FlightStick.AxisY),
-						Rotation2d.fromRadians(Math.atan2(
-                            SwerveOdometry.getPose().getX() - FieldConstants.RED_SPEAKER[0],
-                            SwerveOdometry.getPose().getY() - FieldConstants.RED_SPEAKER[1]))
+						new Rotation2d(
+                            FieldConstants.RED_SPEAKER[0] - SwerveOdometry.getPose().getX(),
+                            FieldConstants.RED_SPEAKER[1] - SwerveOdometry.getPose().getY())
+					);
+            }
+        } else if ((boolean) driveStick.get(Controls.FlightStick.Trigger)) {
+            //Drive w/ Rotation towards source.
+            if (Utils.getAlliance() == Alliance.Blue) {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						new Rotation2d(
+                            0.571 - SwerveOdometry.getPose().getX(),
+                            0.621 - SwerveOdometry.getPose().getY())
+					);
+            } else {
+                SwerveKinematics.driveWithRotation(
+						(double) driveStick.get(Controls.FlightStick.AxisX),
+						(double) driveStick.get(Controls.FlightStick.AxisY),
+						new Rotation2d(
+                            15.967 - SwerveOdometry.getPose().getX(),
+                            0.620 - SwerveOdometry.getPose().getY())
 					);
             }
         } else {
@@ -111,6 +135,9 @@ public class RunControls {
             else if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle) & Linear.goingBackwards){
                 Angular.subwoofShoot();
             }
+            else if((boolean) manipStick.get(Controls.FlightStick.Button9Toggle) & Linear.goingBackwards) {
+                Angular.stow();
+            }
 
             if((boolean) manipStick.get(Controls.FlightStick.HazardToggle)){
                 if(Linear.goingBackwards){
@@ -120,7 +147,15 @@ public class RunControls {
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
+                if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
+                    Shooter.stop();
+                } else {
+                    Shooter.spinUp();
+                }
+            }
+
+            if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
                 if(Intake.state == IntakeStates.feed){
                     Intake.stop();
                 } else {
@@ -128,38 +163,115 @@ public class RunControls {
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
-                if(Shooter.state == ShooterStates.spinningUp){
-                    Shooter.stop();
-                } else {
-                    Shooter.spinUp(5000 * (((double) manipStick.get(Controls.FlightStick.Throttle)/2) + 0.5));
-                }
-            }
-
-            if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
-                Intake.eject();
-            }
-            
-            if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
-                if(Intake.state == IntakeStates.intaking){
-                    Intake.stop();
-                } else {
-                    Intake.intake();
-                }
-            }
-
         } else {
             //Auto control scheme
-            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle)){
-                Intake.eject();
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Button7)) {
+                System.out.println("Ejecting");
+                Intake.forceeject();
+                Shooter.feed();
+            } else {
+                if (Shooter.targetSpeed == Shooter.AMP_SPEED & !Intake.hasNote) {
+                    Shooter.stop();
+                }
+                if (Intake.state == IntakeStates.forceeject) {
+                    Intake.stop();
+                }
             }
-            if((boolean) manipStick.get(Controls.FlightStick.Button11Toggle)){
-                Shooter.ampIntent = !Shooter.ampIntent;
+
+            if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
+                if(!CommandScheduler.isActive(Grab.command)){
+                    CommandScheduler.deactivate(CancelGrab.command);
+                    CommandScheduler.activate(Grab.command);
+                } else {
+                    CommandScheduler.deactivate(Grab.command);
+                    CommandScheduler.activate(CancelGrab.command);
+                }
             }
-            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle) && !CommandScheduler.isActive(Grab.command)){
-                CommandScheduler.activate(Grab.command);
+
+            // Auto spin up code, never to be ran :(
+            // if(Intake.hasNote){
+            //     if(Utils.getAlliance() == Alliance.Blue){
+            //         if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
+            //             Shooter.spinUp();
+            //         } else {
+            //             Shooter.stop();
+            //         }
+            //     } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
+            //         Shooter.spinUp();
+            //     } else {
+            //         Shooter.stop();
+            //     }
+            // } else {
+            //     Shooter.stop();
+            // }
+            
+            if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
+                if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
+                    Shooter.stop();
+                    Angular.isShooting = false;
+                } else {
+                    Shooter.spinUp();
+                    Angular.isShooting = true;
+                }
+            }
+
+            if (wasShooting == true & Angular.isShooting == false) {
+                //stow
+                CommandScheduler.activate(
+                    new SequentialCompile(
+                        "Stow1",
+                        ArmCommands.raise,
+                        ArmCommands.backwardRail,
+                        ArmCommands.stow
+                    )
+                );
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+                if(Intake.state == IntakeStates.feed){
+                    Intake.stop();
+                } else {
+                    Intake.feed();
+                }
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Trigger) & Angular.targetAngle == Angular.AMP_ANGLE) {
+                Intake.feed();
+                Shooter.feed();
+            } else if (Angular.targetAngle == Angular.AMP_ANGLE) {
+                Intake.stop();
+                Shooter.stop();
+            }
+
+            if (Angular.targetAngle == Angular.AMP_ANGLE & !Intake.hasNote) {
+                CommandScheduler.activate(
+                    new SequentialCompile(
+                        "Stow2",
+                        ArmCommands.raise,
+                        ArmCommands.backwardRail,
+                        ArmCommands.stow
+                    )
+                );
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Button9Toggle)) {
+                Angular.amp();
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Button6Toggle)) {
+                CommandScheduler.activate(
+                    new SequentialCompile(
+                        "Stow2",
+                        ArmCommands.raise,
+                        ArmCommands.backwardRail,
+                        ArmCommands.stow
+                    )
+                );
             }
         }
+
+        wasShooting = Angular.isShooting;
 
     }
     private static void update(){

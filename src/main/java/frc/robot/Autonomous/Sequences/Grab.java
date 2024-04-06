@@ -12,19 +12,21 @@ Grabbing note
 -Once grabbed, stow
  */
 public class Grab {
-    
-    public static final Command command = new SequentialCompile(
+
+    public static Command command = new SequentialCompile(
+        "Grab",
         ArmCommands.raise,
+        ArmCommands.forwardRail,
         new ParallelCompile(
-            ArmCommands.forwardRail,
-            ArmCommands.intakePos
+            "Grab_Intake",
+            ArmCommands.intakePos,
+            IntakeCommands.intakeNote
         ),
-        IntakeCommands.intakeNote,
         ArmCommands.raise,
         new ParallelCompile(
+            "Grab_Stow",
             ArmCommands.backwardRail,
             ArmCommands.stow
         )
     );
-
 }
