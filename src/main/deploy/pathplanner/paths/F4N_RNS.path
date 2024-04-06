@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.684714713224005,
-        "y": 0.772915212021579
+        "x": 7.7666905690476895,
+        "y": 2.2953239629690803
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.699282900634536,
-        "y": 0.7722740561942694
+        "x": 6.056908433360374,
+        "y": 0.9368669236625209
       },
       "isLocked": false,
-      "linkedName": "FRN"
+      "linkedName": "F4N"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 4.34
       },
       "prevControl": {
-        "x": 3.9255092164265033,
-        "y": 1.6394977893669709
+        "x": 2.4148409859744997,
+        "y": 2.728625631861789
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -45,8 +45,8 @@
   "reversed": false,
   "folder": "Source Side Paths",
   "previewStartingState": {
-    "rotation": -1.275640035777809,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

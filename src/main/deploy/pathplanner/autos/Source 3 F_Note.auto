@@ -30,10 +30,85 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": null
+                  "pathName": "RS_FRN"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "NoRailGrab"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FRN_RNS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RNS_F4N"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "NoRailGrab"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "F4N_RNS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]
