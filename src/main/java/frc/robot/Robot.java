@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Inputs.RunControls;
 import frc.robot.Subsystems.Subsystems;
+import frc.robot.Subsystems.Arm.Angular;
 import frc.robot.Subsystems.Drivetrain.ModuleOffsets;
 import frc.robot.Subsystems.Drivetrain.SwerveKinematics;
 import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
@@ -136,6 +137,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 
+		Angular.targetAngle = Angular.encoder.getPosition();
+ 
 		Utils.timer = 0;
 
 		LEDs.matchTime = 135;

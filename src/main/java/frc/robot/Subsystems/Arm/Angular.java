@@ -44,6 +44,8 @@ public class Angular {
 
     public static boolean isShooting = false;
 
+    public static boolean sub = false; 
+
     public static void update(){
         goToAngle();
     }
@@ -93,7 +95,8 @@ public class Angular {
     }
 
     public static void subwoofShoot(){
-        isShooting = false;
+        isShooting = true;
+        sub = true;
         manual = false;
         targetAngle = SUBWOOF_SHOOT;
     }
@@ -124,15 +127,13 @@ public class Angular {
 
         targetAngle = (411.464*Math.pow(distance, -0.632142)) + 37.4285;
 
-        if (Utils.getRobotState() == RobotStates.Autonomous) {
-            targetAngle -= 2;
-        }
+        targetAngle -= 2.5;
 
     }
 
     private static void goToAngle(){
 
-        if(isShooting & !manual) {
+        if(isShooting & !manual & !sub) {
             if (!Intake.hasNote) isShooting = false;
             shoot();
         }
@@ -169,7 +170,7 @@ public class Angular {
         pidController.setPositionPIDWrappingMinInput(0);
         pidController.setPositionPIDWrappingMinInput(360);
         
-        pidController.setOutputRange(-0.5, 0.5);
+        pidController.setOutputRange(-0.4, 0.4);
 
         targetAngle = encoder.getPosition();
         

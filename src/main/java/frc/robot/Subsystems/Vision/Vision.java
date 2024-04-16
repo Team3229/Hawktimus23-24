@@ -13,8 +13,6 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Subsystems.Drivetrain.SwerveOdometry;
 import frc.robot.Utils.Utils;
 import frc.robot.Utils.Utils.RobotStates;
 
@@ -71,13 +69,6 @@ public class Vision {
     public static boolean isValid() {
 
         if (Utils.getRobotState() == RobotStates.Autonomous) {
-            return false;
-        }
-        if(Utils.getAlliance() == Alliance.Blue){
-            if(SwerveOdometry.getPose().getX() < 2){
-                return false;
-            }
-        } else if(SwerveOdometry.getPose().getX() > 14.5){
             return false;
         }
 

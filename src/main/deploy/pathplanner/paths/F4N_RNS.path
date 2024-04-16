@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.7666905690476895,
-        "y": 2.2953239629690803
+        "x": 8.059461482689013,
+        "y": 2.4475648380683346
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.056908433360374,
-        "y": 0.9368669236625209
+        "x": 6.349679347001698,
+        "y": 1.0891077987617752
       },
       "isLocked": false,
       "linkedName": "F4N"
     },
     {
       "anchor": {
-        "x": 1.99,
-        "y": 4.34
+        "x": 0.7284778050297884,
+        "y": 4.414985377759629
       },
       "prevControl": {
-        "x": 2.4148409859744997,
-        "y": 2.728625631861789
+        "x": 1.1533187910042884,
+        "y": 2.803611009621418
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,14 +32,14 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -42.56999999999999,
+    "rotation": -58.62699485989154,
     "rotateFast": false
   },
   "reversed": false,
@@ -48,5 +48,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

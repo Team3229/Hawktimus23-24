@@ -25,7 +25,7 @@ public class RunControls {
     private static Controller driveStick;
     private static Controller manipStick;
 
-    public static boolean manipManualControl = false;
+    public static boolean manipManualControl = true;
 
     private static boolean wasShooting = false;
 
@@ -114,28 +114,19 @@ public class RunControls {
     }
 
     private static void runManip(){
-        if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
-            manipManualControl = !manipManualControl;
-            CommandScheduler.emptyTrashCan();
-            if(!manipManualControl){
-                Angular.manual = false;
-            }
-        }
+        // if((boolean) manipStick.get(Controls.FlightStick.Button10Toggle)){
+        //     manipManualControl = !manipManualControl;
+        //     CommandScheduler.emptyTrashCan();
+        //     if(!manipManualControl){
+        //         Angular.manual = false;
+        //     }
+        // }
 
         if(manipManualControl){
             
             Angular.runManual(-(double) manipStick.get(Controls.FlightStick.AxisY)/3);
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button7Toggle) & Linear.goingBackwards){
-                Angular.amp();
-            }
-            else if((boolean) manipStick.get(Controls.FlightStick.Button6Toggle) & !Linear.goingBackwards){
-                Angular.grab();
-            }
-            else if((boolean) manipStick.get(Controls.FlightStick.Button8Toggle) & Linear.goingBackwards){
-                Angular.subwoofShoot();
-            }
-            else if((boolean) manipStick.get(Controls.FlightStick.Button9Toggle) & Linear.goingBackwards) {
+            if((boolean) manipStick.get(Controls.FlightStick.Button9Toggle) & Linear.goingBackwards) {
                 Angular.stow();
             }
 
@@ -150,33 +141,29 @@ public class RunControls {
             if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
                 if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
                     Shooter.stop();
+                    Angular.stow();
+                    wasShooting = false;
                 } else {
                     Shooter.spinUp();
+                    wasShooting = true;
+                    Angular.subwoofShoot();
                 }
             }
 
-            if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
-                if(Intake.state == IntakeStates.feed){
-                    Intake.stop();
-                } else {
-                    Intake.feed();
-                }
+            if(!Intake.hasNote){
+                Angular.isShooting = false;
             }
 
-        } else {
-            //Auto control scheme
-
-            if ((boolean) manipStick.get(Controls.FlightStick.Button7)) {
-                System.out.println("Ejecting");
-                Intake.forceeject();
-                Shooter.feed();
-            } else {
-                if (Shooter.targetSpeed == Shooter.AMP_SPEED & !Intake.hasNote) {
-                    Shooter.stop();
-                }
-                if (Intake.state == IntakeStates.forceeject) {
-                    Intake.stop();
-                }
+            if ((wasShooting == true & Angular.isShooting == false) | (boolean) manipStick.get(Controls.FlightStick.Button6Toggle) | (Angular.targetAngle == Angular.AMP_ANGLE & !Intake.hasNote)) {
+                //stow
+                CommandScheduler.activate(
+                    new SequentialCompile(
+                        "Stow1",
+                        ArmCommands.raise,
+                        ArmCommands.backwardRail,
+                        ArmCommands.stow
+                    )
+                );
             }
 
             if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
@@ -189,22 +176,26 @@ public class RunControls {
                 }
             }
 
-            // Auto spin up code, never to be ran :(
-            // if(Intake.hasNote){
-            //     if(Utils.getAlliance() == Alliance.Blue){
-            //         if(SwerveOdometry.getPose().getX() < FieldConstants.BLUE_SHOOTING_LINE[0]){
-            //             Shooter.spinUp();
-            //         } else {
-            //             Shooter.stop();
-            //         }
-            //     } else if(SwerveOdometry.getPose().getX() > FieldConstants.RED_SHOOTING_LINE[0]){
-            //         Shooter.spinUp();
-            //     } else {
-            //         Shooter.stop();
-            //     }
-            // } else {
-            //     Shooter.stop();
-            // }
+            if((boolean) manipStick.get(Controls.FlightStick.TriggerToggle)){
+                if(Intake.state == IntakeStates.feed){
+                    Intake.stop();
+                } else {
+                    Intake.feed();
+                }
+            }
+
+        } else {
+            //Auto control scheme
+
+            if((boolean) manipStick.get(Controls.FlightStick.Button4Toggle)){
+                if(!CommandScheduler.isActive(Grab.command)){
+                    CommandScheduler.deactivate(CancelGrab.command);
+                    CommandScheduler.activate(Grab.command);
+                } else {
+                    CommandScheduler.deactivate(Grab.command);
+                    CommandScheduler.activate(CancelGrab.command);
+                }
+            }
             
             if((boolean) manipStick.get(Controls.FlightStick.Button3Toggle)){
                 if(Shooter.state == ShooterStates.spinningUp | !Intake.hasNote){
@@ -268,6 +259,18 @@ public class RunControls {
                         ArmCommands.stow
                     )
                 );
+            }
+
+            if ((boolean) manipStick.get(Controls.FlightStick.Button7)) {
+                Intake.forceeject();
+                Shooter.feed();
+            } else {
+                if (Shooter.targetSpeed == Shooter.AMP_SPEED & !Intake.hasNote) {
+                    Shooter.stop();
+                }
+                if (Intake.state == IntakeStates.forceeject) {
+                    Intake.stop();
+                }
             }
         }
 

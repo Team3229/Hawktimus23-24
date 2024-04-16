@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.684714713224005,
-        "y": 0.772915212021579
+        "x": 8.000907299960106,
+        "y": 0.7377827023842345
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.699282900634536,
-        "y": 0.7722740561942694
+        "x": 8.015475487370637,
+        "y": 0.7371415465569249
       },
       "isLocked": false,
       "linkedName": "FRN"
     },
     {
       "anchor": {
-        "x": 1.99,
-        "y": 4.34
+        "x": 0.7284778050297884,
+        "y": 4.414985377759629
       },
       "prevControl": {
-        "x": 3.9255092164265033,
-        "y": 1.6394977893669709
+        "x": 2.406633455678433,
+        "y": 1.3164737016936483
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,20 +32,20 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -42.56999999999999,
+    "rotation": -57.65255650055796,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Source Side Paths",
   "previewStartingState": {
-    "rotation": -1.275640035777809,
+    "rotation": -1.2799999999999727,
     "velocity": 0
   },
   "useDefaultConstraints": false
