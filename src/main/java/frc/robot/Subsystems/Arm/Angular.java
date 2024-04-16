@@ -175,5 +175,5 @@ public class Angular {
         targetAngle = encoder.getPosition();
         
     }
-    
+
 }
