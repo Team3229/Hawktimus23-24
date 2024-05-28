@@ -1,4 +1,4 @@
-package frc.robot.Inputs;
+package frc.robot.CleanupProcess.Inputs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,34 +7,14 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class Controller {
-    /**
-     * Flight Stick or Xbox Controller
-     */
+    
     private ControllerType controllerType;
-
-    /**
-     * Way to get imput from the controller
-     */
     public GenericHID controller;
-
-    /**
-     * Maps anything to anything
-     */
     Map<Object, Object> inputs;
-
-    /**
-     * A deadband where the stick/joystick doesn't work, prevents stick drift
-     */
     private final double STICK_DEADBAND = 0.125;
 
-    /**
-     * How much your imputs on the stick are "weighted," 0 is linear the higher the number is the more exponential it gets
-     */
     private final double JOYSTICK_GAIN = 0;
 
-    /**
-     * The setup of the controller
-     */
     public Controller(ControllerType type, int id) {
         this.controllerType = type;
         this.controller = new GenericHID(id);
@@ -43,9 +23,6 @@ public class Controller {
         nullControls();
     }
 
-    /**
-     * Updates the controls if any are changed
-     */
     public void update() {
         switch(controllerType) {
             case FlightStick:
@@ -200,16 +177,10 @@ public class Controller {
         }
     }
     
-    /**
-     * Gets the provided control
-     */
     public Object get(Object input) {
         return inputs.get(input);
     }
 
-    /**
-     * Vibrating controllers
-     */
     public void rumble(RumbleType rumbleType, double strength) {
         controller.setRumble(rumbleType, strength);
     }
