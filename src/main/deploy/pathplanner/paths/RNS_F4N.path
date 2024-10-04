@@ -1,0 +1,58 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.7284778050297884,
+        "y": 4.414985377759629
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.6497501011867235,
+        "y": 0.5902621857699182
+      },
+      "isLocked": false,
+      "linkedName": "RNS"
+    },
+    {
+      "anchor": {
+        "x": 8.059461482689013,
+        "y": 2.4475648380683346
+      },
+      "prevControl": {
+        "x": 8.047928560064694,
+        "y": 2.445531272643244
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "F4N"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4,
+      "rotationDegrees": 10.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 10.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Source Side Paths",
+  "previewStartingState": {
+    "rotation": -59.04000000000002,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
