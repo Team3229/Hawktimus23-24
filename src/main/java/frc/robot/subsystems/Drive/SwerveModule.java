@@ -2,12 +2,9 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Drive;
+package frc.robot.subsystems.drive;
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -17,7 +14,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.PIDConstants;
+import frc.robot.constants.PIDConstants;
 
 public class SwerveModule {
   private static final double kWheelRadius = 0.0508;
@@ -46,9 +43,6 @@ public class SwerveModule {
 
   private final CANcoder m_turningAbsoluteEncoder;
 
-  private CANcoderConfigurator m_absoluteEncoderConfigurator;
-  private CANcoderConfiguration m_absoluteEncoderConfig;
-
   /**
    * Constructs a SwerveModule with a drive motor, turning motor, drive encoder and turning encoder.
    *
@@ -70,13 +64,6 @@ public class SwerveModule {
     m_turningEncoder = m_turningMotor.getEncoder();
 
     m_turningAbsoluteEncoder = new CANcoder(absoluteEncoderChannel);
-    m_absoluteEncoderConfigurator = m_turningAbsoluteEncoder.getConfigurator();
-    m_absoluteEncoderConfig = new CANcoderConfiguration();
-
-    m_absoluteEncoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-    m_absoluteEncoderConfig.MagnetSensor.MagnetOffset = 0;
-    
-    m_absoluteEncoderConfigurator.apply(m_absoluteEncoderConfig);
 
     m_drivePIDController = m_driveMotor.getPIDController();
     m_turningPIDController = m_turningMotor.getPIDController();

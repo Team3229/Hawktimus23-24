@@ -1,6 +1,6 @@
-package frc.robot;
+package frc.robot.constants;
 
-public class Ports {
+public class IDConstants {
     
     public static final int RAIL = 7;
     public static final int RAIL_LIMIT_BACK = 2;

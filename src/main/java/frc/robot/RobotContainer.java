@@ -7,7 +7,7 @@ package frc.robot;
 import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
-import frc.robot.subsystems.Drive.DriveSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -45,14 +45,13 @@ public class RobotContainer {
     registerTelemetry();
 
   }
-
   public void configureBindings() {
 
     driveStick.b_Trigger().onTrue(homeRail);
 
     driveStick.b_Hazard().onTrue(rail.forwardRail());
     driveStick.b_4().onTrue(rail.backwardRail());
-    
+
   }
 
   private void registerTelemetry() {

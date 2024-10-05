@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Drive;
+package frc.robot.subsystems.drive;
 
 import java.util.function.Supplier;
 
@@ -17,8 +17,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Ports;
-import frc.robot.inputs.FlightStick;
+import frc.robot.constants.IDConstants;
 
 /** Represents a swerve drive style drivetrain. */
 public class DriveSubsystem extends SubsystemBase {
@@ -30,10 +29,10 @@ public class DriveSubsystem extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(Ports.FL_DRIVE, Ports.FL_ANGLE, Ports.FL_ABS);
-  private final SwerveModule m_frontRight = new SwerveModule(Ports.FR_DRIVE, Ports.FR_ANGLE, Ports.FR_ABS);
-  private final SwerveModule m_backLeft = new SwerveModule(Ports.BL_DRIVE, Ports.BL_ANGLE, Ports.BL_ABS);
-  private final SwerveModule m_backRight = new SwerveModule(Ports.BR_DRIVE, Ports.BR_ANGLE, Ports.BR_ABS);
+  private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS);
+  private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS);
+  private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS);
+  private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS);
 
   private final AHRS m_gyro = new AHRS(Port.kMXP);
 

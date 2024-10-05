@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.PIDConstants;
-import frc.robot.Ports;
+import frc.robot.constants.PIDConstants;
+import frc.robot.constants.IDConstants;
 
 public class RailSubsystem extends SubsystemBase {
 
@@ -34,7 +34,7 @@ public class RailSubsystem extends SubsystemBase {
 
   public RailSubsystem() {
 
-    motor = new CANSparkMax(Ports.RAIL, MotorType.kBrushless);
+    motor = new CANSparkMax(IDConstants.RAIL, MotorType.kBrushless);
     encoder = motor.getAlternateEncoder(8192);
     pid = motor.getPIDController();
 
@@ -43,8 +43,8 @@ public class RailSubsystem extends SubsystemBase {
     encoder.setPositionConversionFactor(1/2.089599609375);
     encoder.setInverted(true);
 
-    backLimit = new DigitalInput(Ports.RAIL_LIMIT_BACK);
-    frontLimit = new DigitalInput(Ports.RAIL_LIMIT_FRONT);
+    backLimit = new DigitalInput(IDConstants.RAIL_LIMIT_BACK);
+    frontLimit = new DigitalInput(IDConstants.RAIL_LIMIT_FRONT);
 
     pid.setP(PIDConstants.railkP);
     pid.setI(PIDConstants.railkI);
