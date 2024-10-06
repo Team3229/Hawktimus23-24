@@ -8,6 +8,7 @@ import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -28,6 +29,8 @@ public class RobotContainer {
 
   private Command homeRail;
 
+  private SendableChooser<String> autoDropdown = new SendableChooser<>();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -44,13 +47,25 @@ public class RobotContainer {
 
     registerTelemetry();
 
+    autoDropdown.addOption("", "");
+
+    SmartDashboard.putData(autoDropdown);
+
   }
-  public void configureBindings() {
+
+  public void configureForTeleop() {
 
     driveStick.b_Trigger().onTrue(homeRail);
 
     driveStick.b_Hazard().onTrue(rail.forwardRail());
     driveStick.b_4().onTrue(rail.backwardRail());
+
+  }
+
+  public void configureForAuto() {
+
+    drive.generateAuto(autoDropdown.getSelected());
+    drive.executeAuto();
 
   }
 
