@@ -17,12 +17,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IDConstants;
 import frc.robot.constants.PIDConstants;
+import frc.robot.constants.PreferenceConstants;
 
 /** Represents a swerve drive style drivetrain. */
 public class DriveSubsystem extends SubsystemBase {
@@ -67,6 +69,15 @@ public class DriveSubsystem extends SubsystemBase {
 	public DriveSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
 		m_gyro.reset();
 		this.setDefaultCommand(driveCommand(x, y, z));
+
+		Preferences.initDouble(PreferenceConstants.P_DRIVE, PIDConstants.moduleDrivekP);
+		Preferences.initDouble(PreferenceConstants.I_DRIVE, PIDConstants.moduleDrivekI);
+		Preferences.initDouble(PreferenceConstants.D_DRIVE, PIDConstants.moduleDrivekD);
+
+		Preferences.initDouble(PreferenceConstants.P_ANGLE, PIDConstants.moduleAnglekP);
+		Preferences.initDouble(PreferenceConstants.I_ANGLE, PIDConstants.moduleAnglekI);
+		Preferences.initDouble(PreferenceConstants.D_ANGLE, PIDConstants.moduleAnglekD);
+
 	}
 
 	public void generateAuto(String pathName) {

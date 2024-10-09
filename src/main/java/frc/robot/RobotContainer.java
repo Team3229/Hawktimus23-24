@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.inputs.FlightStick;
-import frc.robot.sequences.GrabNote;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
