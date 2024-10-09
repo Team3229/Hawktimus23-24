@@ -62,6 +62,7 @@ public class RobotContainer {
 
   }
 
+  // Runs once when enabled in auto
   public void configureForAuto() {
 
     drive.generateAuto(autoDropdown.getSelected());
