@@ -11,6 +11,7 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -73,6 +74,7 @@ public class RobotContainer {
   private void registerTelemetry() {
     SmartDashboard.putData(rail);
     SmartDashboard.putData(drive);
+    SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
 }
