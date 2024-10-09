@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.inputs.FlightStick;
-import frc.robot.sequences.GrabNote;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -66,7 +65,7 @@ public class RobotContainer {
   public void configureForAuto() {
 
     drive.generateAuto(autoDropdown.getSelected());
-    drive.executeAuto();
+    drive.executeAutoDrivePath();
 
   }
 

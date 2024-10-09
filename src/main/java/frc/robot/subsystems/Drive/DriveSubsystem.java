@@ -91,7 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
 		);
 	}
 
-	public void executeAuto() {
+	public void executeAutoDrivePath() {
 		autoCommand.schedule();
 	}
 
