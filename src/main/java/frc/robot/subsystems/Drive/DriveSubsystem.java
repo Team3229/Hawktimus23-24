@@ -1,8 +1,6 @@
 package frc.robot.subsystems.drive;
 
 import java.util.function.Supplier;
-import java.util.prefs.PreferenceChangeEvent;
-import java.util.prefs.PreferenceChangeListener;
 
 import com.choreo.lib.Choreo;
 import com.kauailabs.navx.frc.AHRS;
@@ -199,8 +197,6 @@ public class DriveSubsystem extends SubsystemBase {
      */
     @Override
     public void initSendable(SendableBuilder builder) {
-
-		
 		
         super.initSendable(builder);
 
