@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IDConstants;
 import frc.robot.constants.PIDConstants;
-import frc.robot.constants.PreferenceConstants;
+import frc.robot.constants.PreferenceKeys;
 
 /** Represents a swerve drive style drivetrain. */
 public class DriveSubsystem extends SubsystemBase {
@@ -41,6 +41,15 @@ public class DriveSubsystem extends SubsystemBase {
 	private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS);
 	private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS);
 	private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS);
+
+	private double pDrive = PIDConstants.moduleDrivekP;
+	private double iDrive = PIDConstants.moduleDrivekI;
+	private double dDrive = PIDConstants.moduleDrivekD;
+	private double pAngle = PIDConstants.moduleAnglekP;
+	private double iAngle = PIDConstants.moduleAnglekI;
+	private double dAngle = PIDConstants.moduleAnglekD;
+	private double maxAccelDrive = SwerveModule.kModuleMaxLinearAcceleration;
+	private double maxVelDrive = SwerveModule.kModuleMaxLinearAcceleration;
 
 	private final AHRS m_gyro = new AHRS(Port.kMXP);
 
@@ -70,13 +79,16 @@ public class DriveSubsystem extends SubsystemBase {
 		m_gyro.reset();
 		this.setDefaultCommand(driveCommand(x, y, z));
 
-		Preferences.initDouble(PreferenceConstants.P_DRIVE, PIDConstants.moduleDrivekP);
-		Preferences.initDouble(PreferenceConstants.I_DRIVE, PIDConstants.moduleDrivekI);
-		Preferences.initDouble(PreferenceConstants.D_DRIVE, PIDConstants.moduleDrivekD);
+		Preferences.initDouble(PreferenceKeys.P_DRIVE, PIDConstants.moduleDrivekP);
+		Preferences.initDouble(PreferenceKeys.I_DRIVE, PIDConstants.moduleDrivekI);
+		Preferences.initDouble(PreferenceKeys.D_DRIVE, PIDConstants.moduleDrivekD);
 
-		Preferences.initDouble(PreferenceConstants.P_ANGLE, PIDConstants.moduleAnglekP);
-		Preferences.initDouble(PreferenceConstants.I_ANGLE, PIDConstants.moduleAnglekI);
-		Preferences.initDouble(PreferenceConstants.D_ANGLE, PIDConstants.moduleAnglekD);
+		Preferences.initDouble(PreferenceKeys.P_ANGLE, PIDConstants.moduleAnglekP);
+		Preferences.initDouble(PreferenceKeys.I_ANGLE, PIDConstants.moduleAnglekI);
+		Preferences.initDouble(PreferenceKeys.D_ANGLE, PIDConstants.moduleAnglekD);
+
+		Preferences.initDouble(PreferenceKeys.MAX_ACCEL_DRIVE, SwerveModule.kModuleMaxLinearAcceleration);
+		Preferences.initDouble(PreferenceKeys.MAX_VEL_DRIVE, SwerveModule.kModuleMaxLinearAcceleration);
 
 	}
 
@@ -179,5 +191,23 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.addDoubleProperty("bL", () -> m_backLeft.getState().angle.getDegrees(), null);
 		builder.addDoubleProperty("bR", () -> m_backRight.getState().angle.getDegrees(), null);
 	}
+
+	public void loadPreferences() {
+		// Load all PID constants once
+		pDrive = Preferences.getDouble(PreferenceKeys.P_DRIVE, PIDConstants.moduleDrivekP);
+		iDrive = Preferences.getDouble(PreferenceKeys.I_DRIVE, PIDConstants.moduleDrivekI);
+		dDrive = Preferences.getDouble(PreferenceKeys.D_DRIVE, PIDConstants.moduleDrivekD);
+		pAngle = Preferences.getDouble(PreferenceKeys.P_ANGLE, PIDConstants.moduleAnglekP);
+		iAngle = Preferences.getDouble(PreferenceKeys.I_ANGLE, PIDConstants.moduleAnglekI);
+		dAngle = Preferences.getDouble(PreferenceKeys.D_ANGLE, PIDConstants.moduleAnglekD);
+		maxAccelDrive = Preferences.getDouble(PreferenceKeys.MAX_ACCEL_DRIVE, SwerveModule.kModuleMaxLinearAcceleration);
+		maxVelDrive = Preferences.getDouble(PreferenceKeys.MAX_VEL_DRIVE, SwerveModule.kModuleMaxLinearAcceleration);
+	
+		// Configure all four swerve modules with the same values
+		m_frontLeft.configurePID(pDrive, iDrive, dDrive, pAngle, iAngle, dAngle, maxAccelDrive, maxVelDrive);
+		m_frontRight.configurePID(pDrive, iDrive, dDrive, pAngle, iAngle, dAngle, maxAccelDrive, maxVelDrive);
+		m_backLeft.configurePID(pDrive, iDrive, dDrive, pAngle, iAngle, dAngle, maxAccelDrive, maxVelDrive);
+		m_backRight.configurePID(pDrive, iDrive, dDrive, pAngle, iAngle, dAngle, maxAccelDrive, maxVelDrive);
+	}	
 
 }

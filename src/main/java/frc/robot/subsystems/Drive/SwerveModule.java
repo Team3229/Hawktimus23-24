@@ -26,8 +26,8 @@ public class SwerveModule {
   private static final double kModuleMaxAngularAcceleration =
       2 * Math.PI; // radians per second squared
 
-  private static final double kModuleMaxLinearVelocity = DriveSubsystem.kMaxSpeed;
-  private static final double kModuleMaxLinearAcceleration = 1;
+  public static final double kModuleMaxLinearVelocity = DriveSubsystem.kMaxSpeed;
+  public static final double kModuleMaxLinearAcceleration = 1;
 
   private final CANSparkMax m_driveMotor;
   private final CANSparkMax m_turningMotor;
@@ -76,30 +76,16 @@ public class SwerveModule {
     // encoder resolution.
     m_turningEncoder.setPositionConversionFactor(2 * Math.PI / kAngleGearRatio);
 
-    // Limit the PID Controller's input range between -pi and pi and set the input
-    // to be continuous.
-    m_turningPIDController.setPositionPIDWrappingMinInput(-Math.PI);
-    m_turningPIDController.setPositionPIDWrappingMaxInput(Math.PI);
-    m_turningPIDController.setPositionPIDWrappingEnabled(true);
-
-    m_turningPIDController.setSmartMotionMaxAccel(kModuleMaxAngularAcceleration, 0);
-    m_turningPIDController.setSmartMotionMaxVelocity(kModuleMaxAngularVelocity, 0);
-
-    m_drivePIDController.setSmartMotionMaxAccel(kModuleMaxLinearAcceleration, 0);
-    m_drivePIDController.setSmartMotionMaxVelocity(kModuleMaxLinearVelocity, 0);
-
-    m_turningPIDController.setP(PIDConstants.moduleAnglekP);
-    m_turningPIDController.setI(PIDConstants.moduleAnglekI);
-    m_turningPIDController.setD(PIDConstants.moduleAnglekD);
-    m_turningPIDController.setSmartMotionAllowedClosedLoopError(PIDConstants.moduleAnglekAllowedError, 0);
-    
-    m_drivePIDController.setP(PIDConstants.moduleDrivekP);
-    m_drivePIDController.setI(PIDConstants.moduleDrivekI);
-    m_drivePIDController.setD(PIDConstants.moduleDrivekD);
-
-    m_turningEncoder.setPosition(m_turningAbsoluteEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI);
-
-    m_turningPIDController.setOutputRange(-0.75, 0.75);
+    configurePID(
+      PIDConstants.moduleDrivekP,
+      PIDConstants.moduleDrivekI,
+      PIDConstants.moduleDrivekD,
+      PIDConstants.moduleAnglekP,
+      PIDConstants.moduleAnglekI,
+      PIDConstants.moduleAnglekD,
+      kModuleMaxLinearAcceleration,
+      kModuleMaxLinearVelocity
+    );
 
   }
 
@@ -146,5 +132,31 @@ public class SwerveModule {
     // Calculate the turning motor output from the turning PID controller.
     m_turningPIDController.setReference(state.angle.getRadians(), ControlType.kSmartMotion);
 
+  }
+
+  public void configurePID(double kP_d, double kI_d, double kD_d, double kP_a, double kI_a, double kD_a, double kMaxAccel_d, double kMaxVel_d) {
+    
+    m_turningPIDController.setPositionPIDWrappingMinInput(-Math.PI);
+    m_turningPIDController.setPositionPIDWrappingMaxInput(Math.PI);
+    m_turningPIDController.setPositionPIDWrappingEnabled(true);
+
+    m_turningPIDController.setSmartMotionMaxAccel(kModuleMaxAngularAcceleration, 0);
+    m_turningPIDController.setSmartMotionMaxVelocity(kModuleMaxAngularVelocity, 0);
+
+    m_drivePIDController.setSmartMotionMaxAccel(kMaxAccel_d, 0);
+    m_drivePIDController.setSmartMotionMaxVelocity(kMaxVel_d, 0);
+
+    m_turningPIDController.setP(kP_a);
+    m_turningPIDController.setI(kI_a);
+    m_turningPIDController.setD(kD_a);
+    m_turningPIDController.setSmartMotionAllowedClosedLoopError(PIDConstants.moduleAnglekAllowedError, 0);
+    
+    m_drivePIDController.setP(kP_d);
+    m_drivePIDController.setI(kI_d);
+    m_drivePIDController.setD(kD_d);
+
+    m_turningEncoder.setPosition(m_turningAbsoluteEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI);
+
+    m_turningPIDController.setOutputRange(-0.75, 0.75);
   }
 }

@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -42,10 +41,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-
-    SmartDashboard.putNumber("driverx", m_robotContainer.driveStick.a_X());
-    SmartDashboard.putNumber("drivery", m_robotContainer.driveStick.a_Y());
-    SmartDashboard.putNumber("driverz", m_robotContainer.driveStick.a_Z());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -57,26 +52,21 @@ public class Robot extends TimedRobot {
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {
-
-  }
+  public void autonomousInit() {}
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {m_robotContainer.configureForTeleop();}
+  public void teleopInit() {m_robotContainer.teleopInit();}
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {}
 
   @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
+  public void testInit() {m_robotContainer.testInit();}
 
   /** This function is called periodically during test mode. */
   @Override

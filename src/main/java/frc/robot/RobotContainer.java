@@ -11,6 +11,7 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -45,15 +46,13 @@ public class RobotContainer {
 
     leds.setPattern(LEDSubsystem.Pattern.Rainbow);
 
-    registerTelemetry();
-
     autoDropdown.addOption("", "");
 
-    SmartDashboard.putData(autoDropdown);
+    registerTelemetry();
 
   }
 
-  public void configureForTeleop() {
+  public void teleopInit() {
 
     driveStick.b_Trigger().onTrue(homeRail);
 
@@ -62,16 +61,23 @@ public class RobotContainer {
 
   }
 
-  public void configureForAuto() {
+  public void autonomousInit() {
 
     drive.generateAuto(autoDropdown.getSelected());
     drive.executeAuto();
 
   }
 
+  public void testInit() {
+    drive.loadPreferences();
+    System.out.println("Ran Config");
+  }
+
   private void registerTelemetry() {
     SmartDashboard.putData(rail);
     SmartDashboard.putData(drive);
+
+    SmartDashboard.putData(autoDropdown);
   }
 
 }
