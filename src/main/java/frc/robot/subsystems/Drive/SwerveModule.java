@@ -18,8 +18,6 @@ public class SwerveModule {
     private static final double kWheelRadius = 0.0508;
     private static final double kAngleGearRatio = 21.42857;
     private static final double kDriveGearRatio = 6.12;
-    private static final double kModuleMaxAngularVelocity = DriveSubsystem.kMaxAngularSpeed;
-    private static final double kModuleMaxAngularAcceleration = 2 * Math.PI;
     private static final double kDriveFreeSpeed = 5.12;
 
     // Motor and Encoder objects
@@ -96,8 +94,11 @@ public class SwerveModule {
      * Initializes the turning encoder position using the absolute encoder value.
      */
     private void initializeTurningEncoderPosition() {
-        double absolutePositionRadians = m_turningAbsoluteEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI;
-        m_turningEncoder.setPosition(absolutePositionRadians);
+        m_turningEncoder.setPosition(
+            Rotation2d.fromRotations(
+                m_turningAbsoluteEncoder.getPosition().getValueAsDouble()
+            ).getRadians()
+        );
     }
 
     /**

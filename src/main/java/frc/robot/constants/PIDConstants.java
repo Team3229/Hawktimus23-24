@@ -7,11 +7,9 @@ public class PIDConstants {
     public static final double I_DRIVE = 0;
     public static final double D_DRIVE = 0;
 
-    public static final double P_ANGLE = 0.8;
-    // public static final double P_ANGLE = 0.5;
+    public static final double P_ANGLE = 0.5;
     public static final double I_ANGLE = 0;
-    // public static final double D_ANGLE = 0.0035;
-    public static final double D_ANGLE = 0;
+    public static final double D_ANGLE = 0.0035;
 
     public static final double ALLOWED_ERROR_SWERVE_ANGLE = 0.5;
 
