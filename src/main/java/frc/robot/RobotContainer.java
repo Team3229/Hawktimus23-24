@@ -56,10 +56,10 @@ public class RobotContainer {
 
   public void configureForTeleop() {
 
-    driveStick.b_Trigger().onTrue(homeRail);
+    manipStick.b_Trigger().onTrue(homeRail);
 
-    driveStick.b_Hazard().onTrue(rail.forwardRail());
-    driveStick.b_4().onTrue(rail.backwardRail());
+    manipStick.b_Hazard().onTrue(rail.forwardRail());
+    manipStick.b_4().onTrue(rail.backwardRail());
 
   }
 

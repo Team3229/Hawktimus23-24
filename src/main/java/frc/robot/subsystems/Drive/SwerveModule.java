@@ -20,8 +20,7 @@ public class SwerveModule {
     private static final double kDriveGearRatio = 6.12;
     private static final double kModuleMaxAngularVelocity = DriveSubsystem.kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration = 2 * Math.PI;
-    private static final double kModuleMaxLinearVelocity = DriveSubsystem.kMaxSpeed;
-    private static final double kModuleMaxLinearAcceleration = 1;
+    private static final double kDriveFreeSpeed = 5.12;
 
     // Motor and Encoder objects
     private final CANSparkMax m_driveMotor;
@@ -39,7 +38,7 @@ public class SwerveModule {
      * @param turningMotorChannel CAN ID for the turning motor.
      * @param absoluteEncoderChannel CAN ID for the absolute encoder.
      */
-    public SwerveModule(int driveMotorChannel, int turningMotorChannel, int absoluteEncoderChannel) {
+    public SwerveModule(int driveMotorChannel, int turningMotorChannel, int absoluteEncoderChannel, boolean inverted) {
         // Initialize hardware components
         m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
         m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
@@ -51,6 +50,8 @@ public class SwerveModule {
 
         m_drivePIDController = m_driveMotor.getPIDController();
         m_turningPIDController = m_turningMotor.getPIDController();
+
+        m_driveMotor.setInverted(inverted);
 
         // Initialize the module's configuration
         configureEncoders();
@@ -79,21 +80,16 @@ public class SwerveModule {
         m_turningPIDController.setPositionPIDWrappingMaxInput(Math.PI);
         m_turningPIDController.setPositionPIDWrappingEnabled(true);
 
-        m_turningPIDController.setSmartMotionMaxAccel(kModuleMaxAngularAcceleration, 0);
-        m_turningPIDController.setSmartMotionMaxVelocity(kModuleMaxAngularVelocity, 0);
-
         m_turningPIDController.setP(PIDConstants.P_ANGLE);
         m_turningPIDController.setI(PIDConstants.I_ANGLE);
         m_turningPIDController.setD(PIDConstants.D_ANGLE);
-        m_turningPIDController.setSmartMotionAllowedClosedLoopError(PIDConstants.ALLOWED_ERROR_SWERVE_ANGLE, 0);
         m_turningPIDController.setOutputRange(-0.75, 0.75);
 
         // Configure drive PID controller
         m_drivePIDController.setP(PIDConstants.P_DRIVE);
         m_drivePIDController.setI(PIDConstants.I_DRIVE);
         m_drivePIDController.setD(PIDConstants.D_DRIVE);
-        m_drivePIDController.setSmartMotionMaxAccel(kModuleMaxLinearAcceleration, 0);
-        m_drivePIDController.setSmartMotionMaxVelocity(kModuleMaxLinearVelocity, 0);
+        m_drivePIDController.setFF(1/kDriveFreeSpeed);
     }
 
     /**
@@ -134,6 +130,8 @@ public class SwerveModule {
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
+
+      if (desiredState.speedMetersPerSecond != 0) {
         Rotation2d currentRotation = new Rotation2d(m_turningEncoder.getPosition());
 
         // Optimize the desired state to minimize rotation
@@ -143,9 +141,10 @@ public class SwerveModule {
         optimizedState.speedMetersPerSecond *= optimizedState.angle.minus(currentRotation).getCos();
 
         // Set the desired speed for the drive motor
-        // m_drivePIDController.setReference(optimizedState.speedMetersPerSecond, ControlType.kVelocity);
+        m_drivePIDController.setReference(optimizedState.speedMetersPerSecond, ControlType.kVelocity);
 
         // Set the desired angle for the turning motor
-        m_turningPIDController.setReference(optimizedState.angle.getRadians(), ControlType.kSmartMotion);
+        m_turningPIDController.setReference(optimizedState.angle.getRadians(), ControlType.kPosition);
+      }
     }
 }
