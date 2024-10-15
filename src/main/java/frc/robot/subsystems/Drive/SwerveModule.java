@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drive;
 
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -125,14 +126,16 @@ public class SwerveModule {
         );
     }
 
+    public void setEncoderOffset(double offset) {
+        this.m_turningAbsoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withMagnetOffset(offset));
+    }
+
     /**
      * Sets the desired state for the module by optimizing and controlling drive and turning motors.
      *
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-
-      if (desiredState.speedMetersPerSecond != 0) {
         Rotation2d currentRotation = new Rotation2d(m_turningEncoder.getPosition());
 
         // Optimize the desired state to minimize rotation
@@ -146,6 +149,5 @@ public class SwerveModule {
 
         // Set the desired angle for the turning motor
         m_turningPIDController.setReference(optimizedState.angle.getRadians(), ControlType.kPosition);
-      }
     }
 }

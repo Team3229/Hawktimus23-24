@@ -36,7 +36,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Swerve Modules
     private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true);
     private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, false);
-    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true);
+    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, false);
     private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true);
 
     // Sensors
@@ -79,6 +79,12 @@ public class DriveSubsystem extends SubsystemBase {
      * Initializes the subsystem, including resetting the gyro and setting the default drive command.
      */
     private void initializeSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
+
+        m_frontLeft.setEncoderOffset(0.31396484375);
+        m_frontRight.setEncoderOffset(-0.296875);
+        m_backLeft.setEncoderOffset(0.18310546875);
+        m_backRight.setEncoderOffset(0.246826171875);
+
         m_gyro.reset();
         this.setDefaultCommand(driveCommand(x, y, z));
     }
@@ -133,8 +139,8 @@ public class DriveSubsystem extends SubsystemBase {
         var swerveModuleStates = m_kinematics.toSwerveModuleStates(
                 ChassisSpeeds.discretize(
                         fieldRelative
-                                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
-                                : new ChassisSpeeds(xSpeed, ySpeed, rot),
+                                ? ChassisSpeeds.fromFieldRelativeSpeeds(ySpeed, xSpeed, rot, m_gyro.getRotation2d())
+                                : new ChassisSpeeds(ySpeed, xSpeed, rot),
                         periodSeconds));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
