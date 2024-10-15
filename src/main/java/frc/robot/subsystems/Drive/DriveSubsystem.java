@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,16 +29,16 @@ public class DriveSubsystem extends SubsystemBase {
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
     // Module Locations
-    private final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
-    private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-    private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-    private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+    private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, -0.381);
+    private final Translation2d m_frontRightLocation = new Translation2d(0.381, 0.381);
+    private final Translation2d m_backLeftLocation = new Translation2d(0.381, -0.381);
+    private final Translation2d m_backRightLocation = new Translation2d(0.381, -0.381);
 
     // Swerve Modules
-    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true);
-    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, false);
-    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, false);
-    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true);
+    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true, 0.385009765625);
+    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, false, 0.208984375);
+    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, false, 0.43505859375);
+    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true, 0.168212890625);
 
     // Sensors
     private final AHRS m_gyro = new AHRS(Port.kMXP);
@@ -79,11 +80,6 @@ public class DriveSubsystem extends SubsystemBase {
      * Initializes the subsystem, including resetting the gyro and setting the default drive command.
      */
     private void initializeSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
-
-        m_frontLeft.setEncoderOffset(0.31396484375);
-        m_frontRight.setEncoderOffset(-0.296875);
-        m_backLeft.setEncoderOffset(0.18310546875);
-        m_backRight.setEncoderOffset(0.246826171875);
 
         m_gyro.reset();
         this.setDefaultCommand(driveCommand(x, y, z));
@@ -139,8 +135,8 @@ public class DriveSubsystem extends SubsystemBase {
         var swerveModuleStates = m_kinematics.toSwerveModuleStates(
                 ChassisSpeeds.discretize(
                         fieldRelative
-                                ? ChassisSpeeds.fromFieldRelativeSpeeds(ySpeed, xSpeed, rot, m_gyro.getRotation2d())
-                                : new ChassisSpeeds(ySpeed, xSpeed, rot),
+                                ? ChassisSpeeds.fromFieldRelativeSpeeds(ySpeed, xSpeed, -rot, m_gyro.getRotation2d())
+                                : new ChassisSpeeds(ySpeed, xSpeed, -rot),
                         periodSeconds));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);

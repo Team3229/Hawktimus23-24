@@ -37,7 +37,7 @@ public class SwerveModule {
      * @param turningMotorChannel CAN ID for the turning motor.
      * @param absoluteEncoderChannel CAN ID for the absolute encoder.
      */
-    public SwerveModule(int driveMotorChannel, int turningMotorChannel, int absoluteEncoderChannel, boolean inverted) {
+    public SwerveModule(int driveMotorChannel, int turningMotorChannel, int absoluteEncoderChannel, boolean inverted, double offset) {
         // Initialize hardware components
         m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
         m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
@@ -46,6 +46,8 @@ public class SwerveModule {
         m_turningEncoder = m_turningMotor.getEncoder();
 
         m_turningAbsoluteEncoder = new CANcoder(absoluteEncoderChannel);
+
+        setEncoderOffset(offset);
 
         m_drivePIDController = m_driveMotor.getPIDController();
         m_turningPIDController = m_turningMotor.getPIDController();
@@ -95,10 +97,10 @@ public class SwerveModule {
      * Initializes the turning encoder position using the absolute encoder value.
      */
     private void initializeTurningEncoderPosition() {
+
+        // HERE
         m_turningEncoder.setPosition(
-            Rotation2d.fromRotations(
-                m_turningAbsoluteEncoder.getPosition().getValueAsDouble()
-            ).getRadians()
+            m_turningAbsoluteEncoder.getPosition().getValueAsDouble() * 2 * Math.PI
         );
     }
 
