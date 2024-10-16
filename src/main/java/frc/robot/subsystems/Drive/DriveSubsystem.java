@@ -6,6 +6,7 @@ import com.choreo.lib.Choreo;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -29,15 +30,15 @@ public class DriveSubsystem extends SubsystemBase {
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
     // Module Locations
-    private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, -0.381);
+    private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, 0.381);
     private final Translation2d m_frontRightLocation = new Translation2d(0.381, 0.381);
-    private final Translation2d m_backLeftLocation = new Translation2d(0.381, -0.381);
+    private final Translation2d m_backLeftLocation = new Translation2d(-0.381, -0.381);
     private final Translation2d m_backRightLocation = new Translation2d(0.381, -0.381);
 
     // Swerve Modules
     private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true, 0.385009765625);
-    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, false, 0.208984375);
-    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, false, 0.43505859375);
+    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, true, 0.208984375);
+    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true, 0.43505859375);
     private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true, 0.168212890625);
 
     // Sensors
@@ -49,7 +50,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
             m_kinematics,
-            m_gyro.getRotation2d(),
+            new Rotation2d(0),
             new SwerveModulePosition[] {
                     m_frontLeft.getPosition(),
                     m_frontRight.getPosition(),
@@ -80,8 +81,18 @@ public class DriveSubsystem extends SubsystemBase {
      * Initializes the subsystem, including resetting the gyro and setting the default drive command.
      */
     private void initializeSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
-
-        m_gyro.reset();
+        // Creating a new thread so the gyro won't block the robot resetting.
+        new Thread(()->{
+            try{
+                // Team 6814's on programming swerve drive suggested sleeping.
+                Thread.sleep(1000);
+                m_gyro.reset();
+            }
+            catch(Exception e){
+                System.out.println("Expection Resetting Gyro");
+            }
+        }).start();
+        
         this.setDefaultCommand(driveCommand(x, y, z));
     }
 
