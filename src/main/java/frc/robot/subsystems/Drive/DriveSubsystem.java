@@ -30,16 +30,16 @@ public class DriveSubsystem extends SubsystemBase {
     public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
     // Module Locations
-    private final Translation2d m_frontLeftLocation = new Translation2d(-0.381, 0.381);
-    private final Translation2d m_frontRightLocation = new Translation2d(0.381, 0.381);
-    private final Translation2d m_backLeftLocation = new Translation2d(-0.381, -0.381);
-    private final Translation2d m_backRightLocation = new Translation2d(0.381, -0.381);
+    private final Translation2d m_frontLeftLocation = new Translation2d(-0.2778125, -0.2778125);
+    private final Translation2d m_frontRightLocation = new Translation2d(-0.2778125, 0.2778125);
+    private final Translation2d m_backLeftLocation = new Translation2d(0.2778125, -0.2778125);
+    private final Translation2d m_backRightLocation = new Translation2d(0.2778125, 0.2778125);
 
     // Swerve Modules
-    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, false, 0.436767578125);
+    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true, -0.103759765625);
     private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, true, 0.201904296875);
     private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true, 0.43701171875);
-    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, false, -0.3232421875);
+    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true, -0.3232421875);
 
     // Sensors
     private final AHRS m_gyro = new AHRS(Port.kMXP);
@@ -143,11 +143,12 @@ public class DriveSubsystem extends SubsystemBase {
      * @param periodSeconds Time period for discretization.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, double periodSeconds) {
+
         var swerveModuleStates = m_kinematics.toSwerveModuleStates(
                 ChassisSpeeds.discretize(
                         fieldRelative
-                                ? ChassisSpeeds.fromFieldRelativeSpeeds(ySpeed, xSpeed, -rot, m_gyro.getRotation2d())
-                                : new ChassisSpeeds(ySpeed, xSpeed, -rot),
+                                ? ChassisSpeeds.fromFieldRelativeSpeeds(ySpeed, xSpeed, rot, m_gyro.getRotation2d())
+                                : new ChassisSpeeds(ySpeed, xSpeed, rot),
                         periodSeconds));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
@@ -165,13 +166,6 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void drive(ChassisSpeeds speeds) {
         drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, 1 / 50.0);
-    }
-
-    public void initializeTurningEncoderPosition() {
-        m_frontLeft.initializeTurningEncoderPosition();
-        m_frontRight.initializeTurningEncoderPosition();
-        m_backLeft.initializeTurningEncoderPosition();
-        m_backRight.initializeTurningEncoderPosition();
     }
 
     /**
@@ -200,7 +194,7 @@ public class DriveSubsystem extends SubsystemBase {
         Command out = new Command() {
             @Override
             public void execute() {
-                drive(x.get(), y.get(), z.get(), true, 1 / 50.0);
+                drive(-x.get() * kMaxSpeed, -y.get() * kMaxSpeed, z.get() * kMaxAngularSpeed, true, 1 / 50.0);
             }
 
             @Override

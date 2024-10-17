@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -60,8 +61,6 @@ public class RobotContainer {
 
     manipStick.b_Hazard().onTrue(rail.forwardRail());
     manipStick.b_4().onTrue(rail.backwardRail());
-
-    drive.initializeTurningEncoderPosition();
 
   }
 

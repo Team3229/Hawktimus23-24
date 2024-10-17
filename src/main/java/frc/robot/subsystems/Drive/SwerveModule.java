@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drive;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -33,6 +34,8 @@ public class SwerveModule {
     private final SparkPIDController m_turningPIDController;
     private final CANcoder m_turningAbsoluteEncoder;
 
+    private double offset;
+
     /**
      * Constructs a SwerveModule with drive and turning motors, encoders, and absolute encoder.
      *
@@ -56,7 +59,7 @@ public class SwerveModule {
 
         m_turningAbsoluteEncoder = new CANcoder(absoluteEncoderChannel);
 
-        // setEncoderOffset(offset);
+        setEncoderOffset(offset);
 
         m_drivePIDController = m_driveMotor.getPIDController();
         m_turningPIDController = m_turningMotor.getPIDController();
@@ -108,15 +111,19 @@ public class SwerveModule {
         m_turningEncoder.setPosition(pos.getRadians());
     }
 
+    private Rotation2d getABSPos() {
+        return Rotation2d.fromRotations(m_turningAbsoluteEncoder.getPosition().getValueAsDouble() + this.offset);
+    }
+
     /**
      * Initializes the turning encoder position using the absolute encoder value.
      */
     public void initializeTurningEncoderPosition() {
 
-        // HERE
         m_turningEncoder.setPosition(
-            m_turningAbsoluteEncoder.getPosition().waitForUpdate(0.1).getValueAsDouble() * 2 * Math.PI
+            getABSPos().getRadians()
         );
+        
     }
 
     /**
@@ -139,7 +146,7 @@ public class SwerveModule {
     public SwerveModuleState getAbsoluteState() {
         return new SwerveModuleState(
                 m_driveEncoder.getVelocity(), 
-                new Rotation2d(m_turningAbsoluteEncoder.getPosition().getValueAsDouble() * 2 * Math.PI)
+                getABSPos()
         );
     }
 
@@ -156,7 +163,7 @@ public class SwerveModule {
     }
 
     public void setEncoderOffset(double offset) {
-        this.m_turningAbsoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withMagnetOffset(offset));
+        this.offset = offset;
     }
 
     /**
