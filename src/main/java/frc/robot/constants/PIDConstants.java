@@ -3,29 +3,29 @@ package frc.robot.constants;
 public class PIDConstants {
     
     // Drivetrain
-    public static final double moduleDrivekP = 0;
-    public static final double moduleDrivekI = 0;
-    public static final double moduleDrivekD = 0;
+    public static final double P_DRIVE = 0;
+    public static final double I_DRIVE = 0;
+    public static final double D_DRIVE = 0;
 
-    public static final double moduleAnglekP = 0.5;
-    public static final double moduleAnglekI = 0;
-    public static final double moduleAnglekD = 0.0035;
+    public static final double P_ANGLE = 0.5;
+    public static final double I_ANGLE = 0;
+    public static final double D_ANGLE = 0.0035;
 
-    public static final double moduleAnglekAllowedError = 0.5;
+    public static final double ALLOWED_ERROR_SWERVE_ANGLE = 0.5;
 
-    public static final double transkP = 0;
-    public static final double transkI = 0;
-    public static final double transkD = 0;
+    public static final double P_TRANS = 0;
+    public static final double I_TRANS = 0;
+    public static final double D_TRANS = 0;
 
-    public static final double rotkP = 0;
-    public static final double rotkI = 0;
-    public static final double rotkD = 0;
+    public static final double P_ROT = 0;
+    public static final double I_ROT = 0;
+    public static final double D_ROT = 0;
 
     // Rail
-    public static final double railkP = 1;
-    public static final double railkI = 0;
-    public static final double railkD = 0;
+    public static final double P_RAIL = 1;
+    public static final double I_RAIL = 0;
+    public static final double D_RAIL = 0;
 
-    public static final double railkAllowedError = 0.05;
+    public static final double ALLOWED_ERROR_RAIL = 0.05;
 
 }

@@ -5,13 +5,14 @@
 package frc.robot;
 
 import frc.robot.inputs.FlightStick;
-import frc.robot.sequences.GrabNote;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -56,23 +57,25 @@ public class RobotContainer {
 
   public void configureForTeleop() {
 
-    driveStick.b_Trigger().onTrue(homeRail);
+    manipStick.b_Trigger().onTrue(homeRail);
 
-    driveStick.b_Hazard().onTrue(rail.forwardRail());
-    driveStick.b_4().onTrue(rail.backwardRail());
+    manipStick.b_Hazard().onTrue(rail.forwardRail());
+    manipStick.b_4().onTrue(rail.backwardRail());
 
   }
 
+  // Runs once when enabled in auto
   public void configureForAuto() {
 
     drive.generateAuto(autoDropdown.getSelected());
-    drive.executeAuto();
+    drive.executeAutoDrivePath();
 
   }
 
   private void registerTelemetry() {
     SmartDashboard.putData(rail);
     SmartDashboard.putData(drive);
+    SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
 }

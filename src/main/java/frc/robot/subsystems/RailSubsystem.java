@@ -46,9 +46,9 @@ public class RailSubsystem extends SubsystemBase {
     backLimit = new DigitalInput(IDConstants.RAIL_LIMIT_BACK);
     frontLimit = new DigitalInput(IDConstants.RAIL_LIMIT_FRONT);
 
-    pid.setP(PIDConstants.railkP);
-    pid.setI(PIDConstants.railkI);
-    pid.setD(PIDConstants.railkD);
+    pid.setP(PIDConstants.P_RAIL);
+    pid.setI(PIDConstants.I_RAIL);
+    pid.setD(PIDConstants.D_RAIL);
     // pid.setSmartMotionAllowedClosedLoopError(PIDConstants.railkAllowedError, 0);
 
     // pid.setSmartMotionMaxAccel(0.1, 0);
@@ -86,9 +86,9 @@ public class RailSubsystem extends SubsystemBase {
     @Override
     public boolean isFinished() {
       if (dir) {
-        return encoder.getPosition() < PIDConstants.railkAllowedError;
+        return encoder.getPosition() < PIDConstants.ALLOWED_ERROR_RAIL;
       } else {
-        return encoder.getPosition() > 1 - PIDConstants.railkAllowedError;
+        return encoder.getPosition() > 1 - PIDConstants.ALLOWED_ERROR_RAIL;
       }
     }
 
