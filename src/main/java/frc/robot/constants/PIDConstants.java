@@ -7,9 +7,9 @@ public class PIDConstants {
     public static final double moduleDrivekI = 0;
     public static final double moduleDrivekD = 0;
 
-    public static final double moduleAnglekP = 0.5;
+    public static final double moduleAnglekP = 0;
     public static final double moduleAnglekI = 0;
-    public static final double moduleAnglekD = 0.0035;
+    public static final double moduleAnglekD = 0;
 
     public static final double moduleAnglekAllowedError = 0.5;
 

@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.inputs.FlightStick;
-import frc.robot.sequences.GrabNote;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -27,6 +27,7 @@ public class RobotContainer {
   private RailSubsystem rail;
   private DriveSubsystem drive;
   private LEDSubsystem leds;
+  private IntakeSubsystem intake;
 
   private Command homeRail;
 
@@ -41,6 +42,7 @@ public class RobotContainer {
     rail = new RailSubsystem();
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
     leds = new LEDSubsystem();
+    intake = new IntakeSubsystem();
 
     homeRail = rail.homeRail();
 
@@ -60,6 +62,8 @@ public class RobotContainer {
 
     driveStick.b_Hazard().onTrue(rail.forwardRail());
     driveStick.b_4().onTrue(rail.backwardRail());
+
+    driveStick.b_10().onTrue(intake.grabNote());
 
   }
 
