@@ -61,6 +61,8 @@ public class RobotContainer {
     manipStick.b_Hazard().onTrue(rail.forwardRail());
     manipStick.b_4().onTrue(rail.backwardRail());
 
+    drive.initializeTurningEncoderPosition();
+
   }
 
   // Runs once when enabled in auto

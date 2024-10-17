@@ -1,11 +1,14 @@
 package frc.robot.subsystems.drive;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,17 +45,25 @@ public class SwerveModule {
         m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
         m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
 
+        m_driveMotor.restoreFactoryDefaults();
+        m_turningMotor.restoreFactoryDefaults();
+
+        m_driveMotor.setIdleMode(IdleMode.kCoast);
+        m_turningMotor.setIdleMode(IdleMode.kCoast);
+
         m_driveEncoder = m_driveMotor.getEncoder();
         m_turningEncoder = m_turningMotor.getEncoder();
 
         m_turningAbsoluteEncoder = new CANcoder(absoluteEncoderChannel);
 
-        setEncoderOffset(offset);
+        // setEncoderOffset(offset);
 
         m_drivePIDController = m_driveMotor.getPIDController();
         m_turningPIDController = m_turningMotor.getPIDController();
 
         m_driveMotor.setInverted(inverted);
+        m_turningMotor.setInverted(true);
+        m_turningAbsoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.CounterClockwise_Positive));
 
         // Initialize the module's configuration
         configureEncoders();
@@ -93,14 +104,18 @@ public class SwerveModule {
         m_drivePIDController.setFF(1/kDriveFreeSpeed);
     }
 
+    public void setPosition(Rotation2d pos) {
+        m_turningEncoder.setPosition(pos.getRadians());
+    }
+
     /**
      * Initializes the turning encoder position using the absolute encoder value.
      */
-    private void initializeTurningEncoderPosition() {
+    public void initializeTurningEncoderPosition() {
 
         // HERE
         m_turningEncoder.setPosition(
-            m_turningAbsoluteEncoder.getPosition().getValueAsDouble() * 2 * Math.PI
+            m_turningAbsoluteEncoder.getPosition().waitForUpdate(0.1).getValueAsDouble() * 2 * Math.PI
         );
     }
 
@@ -117,13 +132,25 @@ public class SwerveModule {
     }
 
     /**
+     * Returns the current state of the swerve module.
+     *
+     * @return The current state of the module with velocity and absolute rotation.
+     */
+    public SwerveModuleState getAbsoluteState() {
+        return new SwerveModuleState(
+                m_driveEncoder.getVelocity(), 
+                new Rotation2d(m_turningAbsoluteEncoder.getPosition().getValueAsDouble() * 2 * Math.PI)
+        );
+    }
+
+    /**
      * Returns the current position of the swerve module.
      *
      * @return The current position of the module with encoder positions.
      */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-                m_driveEncoder.getPosition(), 
+                m_driveEncoder.getPosition(),
                 new Rotation2d(m_turningEncoder.getPosition())
         );
     }

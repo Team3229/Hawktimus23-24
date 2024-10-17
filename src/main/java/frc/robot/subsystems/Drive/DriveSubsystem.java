@@ -36,10 +36,10 @@ public class DriveSubsystem extends SubsystemBase {
     private final Translation2d m_backRightLocation = new Translation2d(0.381, -0.381);
 
     // Swerve Modules
-    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true, 0.385009765625);
-    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, true, 0.208984375);
-    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true, 0.43505859375);
-    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true, 0.168212890625);
+    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, false, 0.436767578125);
+    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, true, 0.201904296875);
+    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true, 0.43701171875);
+    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, false, -0.3232421875);
 
     // Sensors
     private final AHRS m_gyro = new AHRS(Port.kMXP);
@@ -167,6 +167,13 @@ public class DriveSubsystem extends SubsystemBase {
         drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, 1 / 50.0);
     }
 
+    public void initializeTurningEncoderPosition() {
+        m_frontLeft.initializeTurningEncoderPosition();
+        m_frontRight.initializeTurningEncoderPosition();
+        m_backLeft.initializeTurningEncoderPosition();
+        m_backRight.initializeTurningEncoderPosition();
+    }
+
     /**
      * Updates the robot's odometry based on module positions and gyro readings.
      */
@@ -201,6 +208,7 @@ public class DriveSubsystem extends SubsystemBase {
                 return false;
             }
         };
+
         out.addRequirements(this);
         return out;
     }
@@ -228,6 +236,16 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.addDoubleProperty("Back Right Velocity", () -> m_backRight.getState().speedMetersPerSecond, null);
 
 		builder.addDoubleProperty("Robot Angle", () -> m_gyro.getRotation2d().getRadians(), null);
+
+        builder.addDoubleProperty("Front Left ABS", () -> m_frontLeft.getAbsoluteState().angle.getDegrees(), null);
+        builder.addDoubleProperty("Front Right ABS", () -> m_frontRight.getAbsoluteState().angle.getDegrees(), null);
+        builder.addDoubleProperty("Back Left ABS", () -> m_backLeft.getAbsoluteState().angle.getDegrees(), null);
+        builder.addDoubleProperty("Back Right ABS", () -> m_backRight.getAbsoluteState().angle.getDegrees(), null);
+
+        builder.addDoubleProperty("Front Left Deg", () -> m_frontLeft.getState().angle.getDegrees(), null);
+        builder.addDoubleProperty("Front Right Deg", () -> m_frontRight.getState().angle.getDegrees(), null);
+        builder.addDoubleProperty("Back Left Deg", () -> m_backLeft.getState().angle.getDegrees(), null);
+        builder.addDoubleProperty("Back Right Deg", () -> m_backRight.getState().angle.getDegrees(), null);
 
     }
 }
