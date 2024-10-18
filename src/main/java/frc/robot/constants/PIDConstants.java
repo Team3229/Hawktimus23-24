@@ -22,9 +22,9 @@ public class PIDConstants {
     public static final double D_ROT = 0;
 
     // Rail
-    public static final double P_RAIL = 1;
-    public static final double I_RAIL = 0;
-    public static final double D_RAIL = 0;
+    public static final double railkP = 2;
+    public static final double railkI = 0;
+    public static final double railkD = 0;
 
     public static final double ALLOWED_ERROR_RAIL = 0.05;
 
