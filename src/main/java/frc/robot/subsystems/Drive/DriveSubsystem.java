@@ -85,6 +85,9 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public DriveSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
         initializeSubsystem(x, y, z);
+
+        rotController.enableContinuousInput(-Math.PI, Math.PI);
+        rotController.setTolerance(0.1);
     }
 
     @Override
@@ -244,6 +247,34 @@ public class DriveSubsystem extends SubsystemBase {
             @Override
             public boolean isFinished() {
                 return false;
+            }
+        };
+
+        out.addRequirements(this);
+        return out;
+    }
+
+    public Command pointTowards(Supplier<Double> x, Supplier<Double> y, Pose2d poi) {
+        Command out = new Command() {
+
+            @Override public void execute() {
+                drive(
+                    -x.get() * kMaxSpeed,
+                    -y.get() * kMaxSpeed,
+                    rotController.calculate(
+                        m_odometry.getEstimatedPosition().getRotation().getRadians(),
+                        poi.getTranslation()
+                            .minus(
+                                m_odometry.getEstimatedPosition().getTranslation()
+                            ).getAngle().getRadians()
+                    ),
+                    true,
+                    1 / 50.0
+                );
+            }
+
+            @Override public boolean isFinished() {
+                return rotController.atSetpoint();
             }
         };
 

@@ -32,4 +32,8 @@ public class PIDConstants {
     public static final double I_SHOOTER = 0;
     public static final double D_SHOOTER = 0;
 
+    public static final double P_ARM = 0;
+    public static final double I_ARM = 0;
+    public static final double D_ARM = 0;
+
 }
