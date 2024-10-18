@@ -33,6 +33,9 @@ public class ArmSubsystem extends SubsystemBase {
         m_encoder = m_motor.getAlternateEncoder(8192);
         m_pidController = m_motor.getPIDController();
 
+        m_encoder.setPositionConversionFactor(360);
+        m_encoder.setPosition(0);
+
         m_pidController.setP(PIDConstants.P_ARM);
         m_pidController.setI(PIDConstants.I_ARM);
         m_pidController.setD(PIDConstants.D_ARM);
