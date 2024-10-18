@@ -39,8 +39,6 @@ public class RobotContainer {
     leds = new LEDSubsystem();
     manip = new ManipSubsystem();
 
-    leds.setPattern(LEDSubsystem.Pattern.Rainbow);
-
     registerTelemetry();
 
     autoDropdown.addOption("", "");

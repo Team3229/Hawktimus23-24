@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSubsystem extends SubsystemBase {
@@ -28,13 +29,36 @@ public class LEDSubsystem extends SubsystemBase {
 
         led.setData(ledBuffer);
         led.start();
+
+        this.setDefaultCommand(defaultRainbow());
+
     }
 
     @Override
     public void periodic() {
-        setPattern(Pattern.Rainbow);
         led.setData(ledBuffer);
     }
+
+    private Command defaultRainbow() {
+
+        Command out = new Command() {
+            @Override public void execute() {
+                rainbowPattern(ledBuffer.getLength());
+            }
+        };
+
+        out.addRequirements(this);
+
+        return out;
+    }
+
+
+
+
+
+
+
+    // Helpers
 
     private  void setLED(int index, Color color) {
         ledBuffer.setLED(index % ledBuffer.getLength(), new Color(color.red, color.blue, color.green));
@@ -43,47 +67,6 @@ public class LEDSubsystem extends SubsystemBase {
     private  void setLEDRange(int first, int last, Color color) {
         for (int i = first; i < last; i++) {
             setLED(i, color);
-        }
-    }
-
-    public void setPattern(Pattern pattern) {
-
-        switch (pattern) {
-            case Rainbow:
-                rainbowPattern(ledBuffer.getLength());
-                frameSlow += 0.25;
-                break;
-            
-            case Hawk:
-                hawkPattern(10, ledBuffer.getLength());
-                frameSlow += 0.25;
-                break;
-
-            case Alternate:
-                alternate();
-                break;
-        
-            default:
-                break;
-        }
-        if (frameSlow == 1) {
-            frame += 1;
-            frameSlow = 0;
-        }
-
-        if (frame > ledBuffer.getLength()) {
-            frame = 0;
-        }
-
-    }
-    
-    private void hawkPattern(int segmentLength, int stripLength) {
-        for (int j = 0; j < stripLength; j += segmentLength * 2) {
-
-            setLEDRange(j + frame, j + frame + segmentLength, new Color(180, 0, 255));
-
-            setLEDRange(j + segmentLength + frame, j + frame + segmentLength * 2, new Color(180, 0, 255));
-            
         }
     }
 
@@ -99,13 +82,6 @@ public class LEDSubsystem extends SubsystemBase {
           rainbowFirstPixelHue += 1;
           // Check bounds
           rainbowFirstPixelHue %= 180;
-    }
-
-    private void alternate() {
-        for (int i = 36; i < ledBuffer.getLength() - 36; i += 2) {
-            setLED(i, Color.kRed);
-            setLED(i+1, Color.kBlue);
-        }
     }
 
 }
