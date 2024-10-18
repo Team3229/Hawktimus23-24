@@ -35,13 +35,13 @@ public class RailSubsystem extends SubsystemBase {
   public RailSubsystem() {
 
     motor = new CANSparkMax(IDConstants.RAIL, MotorType.kBrushless);
-    encoder = motor.getAlternateEncoder(8192);
+    encoder = motor.getEncoder();
     pid = motor.getPIDController();
 
     motor.setIdleMode(IdleMode.kBrake);
+    motor.setClosedLoopRampRate(0.2);
 
-    encoder.setPositionConversionFactor(1/2.089599609375);
-    encoder.setInverted(true);
+    encoder.setPositionConversionFactor(1/2.089599609375 / 36);
 
     backLimit = new DigitalInput(IDConstants.RAIL_LIMIT_BACK);
     frontLimit = new DigitalInput(IDConstants.RAIL_LIMIT_FRONT);
@@ -49,10 +49,6 @@ public class RailSubsystem extends SubsystemBase {
     pid.setP(PIDConstants.P_RAIL);
     pid.setI(PIDConstants.I_RAIL);
     pid.setD(PIDConstants.D_RAIL);
-    // pid.setSmartMotionAllowedClosedLoopError(PIDConstants.railkAllowedError, 0);
-
-    // pid.setSmartMotionMaxAccel(0.1, 0);
-    // pid.setSmartMotionMaxVelocity(0.1, 0);
 
     pid.setFeedbackDevice(encoder);
 
