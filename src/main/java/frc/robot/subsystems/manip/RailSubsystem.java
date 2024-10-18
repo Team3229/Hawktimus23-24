@@ -38,10 +38,12 @@ public class RailSubsystem extends SubsystemBase {
     encoder = motor.getEncoder();
     pid = motor.getPIDController();
 
-    motor.setIdleMode(IdleMode.kBrake);
+    motor.setIdleMode(IdleMode.kCoast);
     motor.setClosedLoopRampRate(0.2);
 
-    encoder.setPositionConversionFactor(1/2.089599609375 / 36);
+    encoder.setPositionConversionFactor((double) 1/(80));
+
+    System.out.println(encoder.getPositionConversionFactor());
 
     backLimit = new DigitalInput(IDConstants.RAIL_LIMIT_BACK);
     frontLimit = new DigitalInput(IDConstants.RAIL_LIMIT_FRONT);
@@ -49,7 +51,7 @@ public class RailSubsystem extends SubsystemBase {
     pid.setP(PIDConstants.P_RAIL);
     pid.setI(PIDConstants.I_RAIL);
     pid.setD(PIDConstants.D_RAIL);
-
+    
     pid.setFeedbackDevice(encoder);
 
   }
@@ -146,8 +148,17 @@ public class RailSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (!isHoming & (frontLimit.get() | backLimit.get())) {
-      forceStopRail().schedule();
+
+    if (!isHoming && backLimit.get()) {
+      if (pid.getOutputMin() != 0) pid.setOutputRange(0, 1);
+    }
+
+    if (!isHoming && frontLimit.get()) {
+      if (pid.getOutputMax() != 0) pid.setOutputRange(1, 0);
+    }
+
+    if (!frontLimit.get() && !backLimit.get()) {
+      if (!(pid.getOutputMax() == 1 && pid.getOutputMin() == -1)) pid.setOutputRange(-1, 1);
     }
   }
 

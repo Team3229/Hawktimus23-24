@@ -11,6 +11,7 @@ import frc.robot.subsystems.manip.ManipSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -51,10 +52,18 @@ public class RobotContainer {
 
     manipStick.b_10().onTrue(manip.homeRail());
 
-    manipStick.b_Hazard().onTrue(manip.readyShooterCommand());
+    manipStick.b_8().onTrue(manip.railFront());
+    manipStick.b_7().onTrue(manip.railBack());
+
+    manipStick.b_3().onTrue(manip.readyShooterCommand());
     manipStick.b_Trigger().onTrue(manip.shootCommand());
 
     manipStick.b_4().onTrue(manip.grabCommand());
+
+    CommandScheduler.getInstance().schedule(
+      Commands.run(
+        () -> manip.manualArmControl(manipStick.a_Y()))
+    );
 
   }
 

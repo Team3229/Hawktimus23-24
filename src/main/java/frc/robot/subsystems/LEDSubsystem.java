@@ -11,8 +11,6 @@ public class LEDSubsystem extends SubsystemBase {
     private AddressableLED led;
     private AddressableLEDBuffer ledBuffer;
 
-    private int frame;
-    private double frameSlow;
     private int rainbowFirstPixelHue;
 
     public enum Pattern {
@@ -45,6 +43,10 @@ public class LEDSubsystem extends SubsystemBase {
             @Override public void execute() {
                 rainbowPattern(ledBuffer.getLength());
             }
+
+            @Override public boolean runsWhenDisabled() {
+                return true;
+            }
         };
 
         out.addRequirements(this);
@@ -64,7 +66,7 @@ public class LEDSubsystem extends SubsystemBase {
         ledBuffer.setLED(index % ledBuffer.getLength(), new Color(color.red, color.blue, color.green));
     }
 
-    private  void setLEDRange(int first, int last, Color color) {
+    public void setLEDRange(int first, int last, Color color) {
         for (int i = first; i < last; i++) {
             setLED(i, color);
         }

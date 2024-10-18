@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -59,9 +60,17 @@ public class ManipSubsystem extends SubsystemBase {
             intake.feedNoteToShooter(),
             new ParallelCommandGroup(
                 shooter.slowShooter(),
-                arm.moveToAngle(Rotation2d.fromDegrees(70))   
+                arm.moveToAngle(Rotation2d.fromDegrees(70))
             )
         );
+    }
+
+    public Command railBack() {
+        return rail.backwardRail();
+    }
+
+    public Command railFront() {
+        return rail.forwardRail();
     }
 
     public void sendSubsystemTelemetry() {
@@ -69,6 +78,10 @@ public class ManipSubsystem extends SubsystemBase {
         SmartDashboard.putData(arm);
         SmartDashboard.putData(intake);
         SmartDashboard.putData(shooter);
+    }
+
+    public void manualArmControl(double speed) {
+        arm.manualArm(speed);
     }
 
     @Override public void initSendable(SendableBuilder builder) {
