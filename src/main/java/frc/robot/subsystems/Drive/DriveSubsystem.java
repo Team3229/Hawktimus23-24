@@ -5,7 +5,10 @@ import java.util.function.Supplier;
 import com.choreo.lib.Choreo;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,10 +17,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 import frc.robot.constants.IDConstants;
 import frc.robot.constants.PIDConstants;
 
@@ -45,17 +52,20 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Swerve Drive Components
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
-            m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
+        m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
+    );
 
-    private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
-            m_kinematics,
-            new Rotation2d(0),
-            new SwerveModulePosition[] {
-                    m_frontLeft.getPosition(),
-                    m_frontRight.getPosition(),
-                    m_backLeft.getPosition(),
-                    m_backRight.getPosition()
-            });
+    private final SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
+        m_kinematics,
+        m_gyro.getRotation2d().plus(Rotation2d.fromDegrees(180)),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_backLeft.getPosition(),
+            m_backRight.getPosition()
+        },
+        new Pose2d()
+    );
 
     // PID Controllers for Auto Mode
     private final PIDController xController = new PIDController(PIDConstants.P_TRANS, PIDConstants.I_TRANS, PIDConstants.D_TRANS);
@@ -64,6 +74,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     private Alliance alliance;
     private Command autoCommand;
+
+    private Field2d field = new Field2d();
 
     /**
      * Constructs the DriveSubsystem and sets the default drive command.
@@ -74,6 +86,37 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public DriveSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
         initializeSubsystem(x, y, z);
+    }
+
+    @Override
+    public void periodic() {
+
+        m_odometry.update(m_gyro.getRotation2d(),
+            new SwerveModulePosition[] {
+                m_frontLeft.getPosition(),
+                m_frontRight.getPosition(),
+                m_backLeft.getPosition(),
+                m_backRight.getPosition()
+            }
+        );
+
+        LimelightHelpers.SetRobotOrientation("limelight", m_odometry.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+
+        if (mt2 != null && Math.abs(m_gyro.getRate()) < 720 && mt2.tagCount != 0) {
+            m_odometry.addVisionMeasurement(
+                new Pose2d(
+                    mt2.pose.getX(),
+                    mt2.pose.getY(),
+                    mt2.pose.getRotation()
+                ),
+                mt2.timestampSeconds,
+                VecBuilder.fill(0.7, 0.7, 9999999));
+        }
+
+        field.setRobotPose(m_odometry.getEstimatedPosition());
+
     }
 
     /**
@@ -105,7 +148,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         autoCommand = Choreo.choreoSwerveCommand(
                 trajectory,
-                m_odometry::getPoseMeters,
+                m_odometry::getEstimatedPosition,
                 xController,
                 yController,
                 rotController,
@@ -172,7 +215,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         m_odometry.update(
-                m_gyro.getRotation2d(),
+                m_gyro.getRotation2d().plus(Rotation2d.fromDegrees(180)),
                 new SwerveModulePosition[] {
                         m_frontLeft.getPosition(),
                         m_frontRight.getPosition(),
@@ -213,6 +256,8 @@ public class DriveSubsystem extends SubsystemBase {
     public void initSendable(SendableBuilder builder) {
 		
         super.initSendable(builder);
+
+        SmartDashboard.putData("Odometry", field);
 
 		builder.setSmartDashboardType("SwerveDrive");
 
