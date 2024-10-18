@@ -80,6 +80,8 @@ public class SwerveModule {
         m_driveEncoder.setPositionConversionFactor(2 * Math.PI * kWheelRadius / kDriveGearRatio);
         m_driveEncoder.setVelocityConversionFactor(2 * Math.PI * kWheelRadius / 60 / kDriveGearRatio);
 
+        m_driveEncoder.setPosition(0);
+
         // Configure turning encoder conversion factor for position
         m_turningEncoder.setPositionConversionFactor(2 * Math.PI / kAngleGearRatio);
     }
