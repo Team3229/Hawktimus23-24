@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,6 +30,7 @@ public class RobotContainer {
   private DriveSubsystem drive;
   private LEDSubsystem leds;
   private IntakeSubsystem intake;
+  private ShooterSubsystem shooter;
 
   private Command homeRail;
 
@@ -44,6 +46,7 @@ public class RobotContainer {
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
     leds = new LEDSubsystem();
     intake = new IntakeSubsystem();
+    shooter = new ShooterSubsystem();
 
     homeRail = rail.homeRail();
 
@@ -79,6 +82,7 @@ public class RobotContainer {
   private void registerTelemetry() {
     SmartDashboard.putData(rail);
     SmartDashboard.putData(drive);
+    SmartDashboard.putData(shooter);
     SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
