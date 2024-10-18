@@ -21,4 +21,7 @@ public class IDConstants {
     public static final int BR_ABS = 2;
 
     public static final int INTAKE_MOTOR = 8;
+
+    public static final int ARM_MOTOR1 = 16;
+    public static final int ARM_MOTOR2 = 17;
 }

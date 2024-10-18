@@ -8,11 +8,13 @@ import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.RailSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,6 +31,7 @@ public class RobotContainer {
   private DriveSubsystem drive;
   private LEDSubsystem leds;
   private IntakeSubsystem intake;
+  private ArmSubsystem arm;
 
   private Command homeRail;
 
@@ -44,6 +47,7 @@ public class RobotContainer {
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
     leds = new LEDSubsystem();
     intake = new IntakeSubsystem();
+    arm = new ArmSubsystem();
 
     homeRail = rail.homeRail();
 
@@ -59,12 +63,18 @@ public class RobotContainer {
 
   public void configureForTeleop() {
 
-    manipStick.b_Trigger().onTrue(homeRail);
+    driveStick.b_Trigger().onTrue(homeRail);
 
-    manipStick.b_Hazard().onTrue(rail.forwardRail());
-    manipStick.b_4().onTrue(rail.backwardRail());
+    driveStick.b_Hazard().onTrue(rail.forwardRail());
+    driveStick.b_4().onTrue(rail.backwardRail());
 
     driveStick.b_10().onTrue(intake.grabNote());
+
+    CommandScheduler.getInstance().schedule(Commands.run(() -> {
+
+      arm.moveArm(driveStick.a_Throttle());
+
+    }, arm));
 
   }
 
@@ -79,6 +89,7 @@ public class RobotContainer {
   private void registerTelemetry() {
     SmartDashboard.putData(rail);
     SmartDashboard.putData(drive);
+    SmartDashboard.putData(arm);
     SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
