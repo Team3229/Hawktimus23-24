@@ -14,7 +14,7 @@ public class FlightStick {
     public double a_X() {return controller.getRawAxis(0);}
     public double a_Y() {return controller.getRawAxis(1);}
     public double a_Z() {return controller.getRawAxis(2);}
-    public double a_Throttle() {return controller.getRawAxis(0);}
+    public double a_Throttle() {return controller.getRawAxis(3);}
 
     public Trigger b_Trigger() {return controller.button(1);}
     public Trigger b_Hazard() {return controller.button(2);}
