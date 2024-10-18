@@ -13,20 +13,19 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.constants.IDConstants;
 import frc.robot.constants.PIDConstants;
+import frc.robot.subsystems.VisionSubsystem;
 
 /** Represents a swerve drive style drivetrain. */
 public class DriveSubsystem extends SubsystemBase {
@@ -91,7 +90,8 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        m_odometry.update(m_gyro.getRotation2d(),
+        m_odometry.update(
+            m_gyro.getRotation2d(),
             new SwerveModulePosition[] {
                 m_frontLeft.getPosition(),
                 m_frontRight.getPosition(),
@@ -100,11 +100,12 @@ public class DriveSubsystem extends SubsystemBase {
             }
         );
 
-        LimelightHelpers.SetRobotOrientation("limelight", m_odometry.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        PoseEstimate mt2 = VisionSubsystem.getMT2Pose(
+            m_odometry.getEstimatedPosition().getRotation(),
+            m_gyro.getRate()
+        );
 
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-
-        if (mt2 != null && Math.abs(m_gyro.getRate()) < 720 && mt2.tagCount != 0) {
+        if (mt2 != null) {
             m_odometry.addVisionMeasurement(
                 new Pose2d(
                     mt2.pose.getX(),
@@ -112,7 +113,8 @@ public class DriveSubsystem extends SubsystemBase {
                     mt2.pose.getRotation()
                 ),
                 mt2.timestampSeconds,
-                VecBuilder.fill(0.7, 0.7, 9999999));
+                VecBuilder.fill(0.7, 0.7, 9999999)
+            );
         }
 
         field.setRobotPose(m_odometry.getEstimatedPosition());
