@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.manip.ManipSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +37,7 @@ public class RobotContainer {
 
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
     leds = new LEDSubsystem();
-    manip = new ManipSubsystem();
+    manip = new ManipSubsystem(leds);
 
     registerTelemetry();
 

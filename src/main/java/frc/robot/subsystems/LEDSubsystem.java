@@ -15,6 +15,8 @@ public class LEDSubsystem extends SubsystemBase {
     private double frameSlow;
     private int rainbowFirstPixelHue;
 
+    private static final Color kNoteInIntake = new Color(63, 197, 10);
+
     public enum Pattern {
         Rainbow,
         Hawk,
@@ -45,7 +47,7 @@ public class LEDSubsystem extends SubsystemBase {
             @Override public void execute() {
                 rainbowPattern(ledBuffer.getLength());
             }
-        };
+                        };
 
         out.addRequirements(this);
 
@@ -53,6 +55,32 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
 
+    public Command noteIntake() {
+        Command out = new Command() {
+            
+            @Override public void initialize() {
+                setLEDRange(0,ledBuffer.getLength(),kNoteInIntake);
+            }
+
+            @Override public void end(boolean interrupted) {
+              
+            }
+
+            @Override public boolean isFinished() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return true; 
+            }
+
+        };
+
+        out.addRequirements(this);
+        return out;
+    }
 
 
 
@@ -84,4 +112,4 @@ public class LEDSubsystem extends SubsystemBase {
           rainbowFirstPixelHue %= 180;
     }
 
-}
+    }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.LEDSubsystem;
 
 public class ManipSubsystem extends SubsystemBase {
     
@@ -15,12 +16,14 @@ public class ManipSubsystem extends SubsystemBase {
     private RailSubsystem rail;
     private IntakeSubsystem intake;
     private ShooterSubsystem shooter;
+    private LEDSubsystem leds;
 
     private static final Rotation2d kArmShootPos = Rotation2d.fromDegrees(50);
     private static final double kShooterSpeed = 2000;
 
-    public ManipSubsystem() {
+    public ManipSubsystem(LEDSubsystem ledsIn) {
 
+        leds = ledsIn;
         arm = new ArmSubsystem();
         rail = new RailSubsystem();
         intake = new IntakeSubsystem();
@@ -40,7 +43,12 @@ public class ManipSubsystem extends SubsystemBase {
             ),
             arm.moveToAngle(Rotation2d.fromDegrees(90)),
             intake.grabNote(),
-            arm.moveToAngle(Rotation2d.fromDegrees(70)),
+             // Intake has a note
+             new ParallelDeadlineGroup(
+                // arms and leds at the same time so you don't have to wait
+                leds.noteIntake(),
+                arm.moveToAngle(Rotation2d.fromDegrees(70))
+                ),
             rail.backwardRail()
         );
     }
