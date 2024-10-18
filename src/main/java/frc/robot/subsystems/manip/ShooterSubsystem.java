@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.manip;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -40,7 +40,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public Command spinShooterTo(double velocity) {
-        return new Command() {
+        Command out = new Command() {
             @Override public void initialize() {
                 m_pidController.setReference(velocity, ControlType.kVelocity);
             }
@@ -48,6 +48,10 @@ public class ShooterSubsystem extends SubsystemBase {
                 return Math.abs(velocity - m_encoder.getVelocity()) < kVelTolerance;
             }
         };
+
+        out.addRequirements(this);
+
+        return out;
     }
 
     public Command slowShooter() {

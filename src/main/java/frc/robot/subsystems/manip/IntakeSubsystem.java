@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.manip;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -39,6 +39,26 @@ public class IntakeSubsystem extends SubsystemBase {
         };
 
         out.addRequirements(this);
+        return out;
+    }
+
+    public Command feedNoteToShooter() {
+        Command out = new Command() {
+            @Override public void initialize() {
+                if (!isFinished()) intakeMotor.set(-0.5);
+            }
+
+            @Override public void end(boolean interrupted) {
+                intakeMotor.stopMotor();
+            }
+
+            @Override public boolean isFinished() {
+                return irSensor.get();
+            }
+        };
+
+        out.addRequirements(this);
+
         return out;
     }
 

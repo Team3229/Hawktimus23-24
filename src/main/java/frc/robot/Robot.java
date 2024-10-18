@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {m_robotContainer.configureForTeleop();}
+  public void teleopInit() {m_robotContainer.setupControls();}
 
   /** This function is called periodically during operator control. */
   @Override

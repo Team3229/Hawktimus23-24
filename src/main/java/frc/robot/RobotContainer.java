@@ -6,13 +6,10 @@ package frc.robot;
 
 import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.RailSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.manip.ManipSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -26,13 +23,9 @@ public class RobotContainer {
   public FlightStick driveStick;
   public FlightStick manipStick;
 
-  private RailSubsystem rail;
   private DriveSubsystem drive;
   private LEDSubsystem leds;
-  private IntakeSubsystem intake;
-  private ShooterSubsystem shooter;
-
-  private Command homeRail;
+  private ManipSubsystem manip;
 
   private SendableChooser<String> autoDropdown = new SendableChooser<>();
 
@@ -42,13 +35,9 @@ public class RobotContainer {
     driveStick = new FlightStick(0);
     manipStick = new FlightStick(1);
 
-    rail = new RailSubsystem();
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
     leds = new LEDSubsystem();
-    intake = new IntakeSubsystem();
-    shooter = new ShooterSubsystem();
-
-    homeRail = rail.homeRail();
+    manip = new ManipSubsystem();
 
     leds.setPattern(LEDSubsystem.Pattern.Rainbow);
 
@@ -60,19 +49,19 @@ public class RobotContainer {
 
   }
 
-  public void configureForTeleop() {
+  public void setupControls() {
 
-    manipStick.b_Trigger().onTrue(homeRail);
+    manipStick.b_10().onTrue(manip.homeRail());
 
-    manipStick.b_Hazard().onTrue(rail.forwardRail());
-    manipStick.b_4().onTrue(rail.backwardRail());
+    manipStick.b_Hazard().onTrue(manip.readyShooterCommand());
+    manipStick.b_Trigger().onTrue(manip.shootCommand());
 
-    driveStick.b_10().onTrue(intake.grabNote());
+    manipStick.b_4().onTrue(manip.grabCommand());
 
   }
 
   // Runs once when enabled in auto
-  public void configureForAuto() {
+  public void setupAuto() {
 
     drive.generateAuto(autoDropdown.getSelected());
     drive.executeAutoDrivePath();
@@ -80,9 +69,8 @@ public class RobotContainer {
   }
 
   private void registerTelemetry() {
-    SmartDashboard.putData(rail);
     SmartDashboard.putData(drive);
-    SmartDashboard.putData(shooter);
+    SmartDashboard.putData(manip);
     SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
