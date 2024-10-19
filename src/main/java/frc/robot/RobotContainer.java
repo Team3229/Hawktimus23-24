@@ -11,6 +11,7 @@ import frc.robot.subsystems.manip.ManipSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -71,8 +72,15 @@ public class RobotContainer {
   // Runs once when enabled in auto
   public void setupAuto() {
 
-    drive.generateAuto(autoDropdown.getSelected());
-    drive.executeAutoDrivePath();
+    // drive.generateAuto(autoDropdown.getSelected());
+    // drive.executeAutoDrivePath();
+
+    new SequentialCommandGroup(
+        manip.homeRail(),
+        manip.readyShooterCommand(),
+        manip.shootCommand(),
+        drive.taxi()
+    );
 
   }
 

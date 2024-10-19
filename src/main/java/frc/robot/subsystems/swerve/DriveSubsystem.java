@@ -164,6 +164,18 @@ public class DriveSubsystem extends SubsystemBase {
         );
     }
 
+    public Command taxi() {
+        return new Command() {
+            @Override public void execute() {
+                drive(0, -0.5, 0, true, 1/50);
+            }
+
+            @Override public void end(boolean interrupted) {
+                if (interrupted) drive(0, 0, 0, true, 1/50);
+            }
+        };
+    }
+
     /**
      * Schedules the autonomous drive command.
      */
