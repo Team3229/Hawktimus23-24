@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.manip;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -35,26 +35,28 @@ public class RailSubsystem extends SubsystemBase {
   public RailSubsystem() {
 
     motor = new CANSparkMax(IDConstants.RAIL, MotorType.kBrushless);
-    encoder = motor.getAlternateEncoder(8192);
+    encoder = motor.getEncoder();
     pid = motor.getPIDController();
 
-    motor.setIdleMode(IdleMode.kBrake);
+    motor.setSmartCurrentLimit(40);
 
-    encoder.setPositionConversionFactor(1/2.089599609375);
-    encoder.setInverted(true);
+    motor.setIdleMode(IdleMode.kCoast);
+    motor.setClosedLoopRampRate(0.2);
+
+    encoder.setPositionConversionFactor((double) 1/(80));
+
+    System.out.println(encoder.getPositionConversionFactor());
 
     backLimit = new DigitalInput(IDConstants.RAIL_LIMIT_BACK);
     frontLimit = new DigitalInput(IDConstants.RAIL_LIMIT_FRONT);
 
-    pid.setP(PIDConstants.railkP);
-    pid.setI(PIDConstants.railkI);
-    pid.setD(PIDConstants.railkD);
-    // pid.setSmartMotionAllowedClosedLoopError(PIDConstants.railkAllowedError, 0);
-
-    // pid.setSmartMotionMaxAccel(0.1, 0);
-    // pid.setSmartMotionMaxVelocity(0.1, 0);
-
+    pid.setP(PIDConstants.P_RAIL);
+    pid.setI(PIDConstants.I_RAIL);
+    pid.setD(PIDConstants.D_RAIL);
+    
     pid.setFeedbackDevice(encoder);
+
+    motor.burnFlash();
 
   }
 
@@ -86,9 +88,9 @@ public class RailSubsystem extends SubsystemBase {
     @Override
     public boolean isFinished() {
       if (dir) {
-        return encoder.getPosition() < PIDConstants.railkAllowedError;
+        return encoder.getPosition() < PIDConstants.ALLOWED_ERROR_RAIL;
       } else {
-        return encoder.getPosition() > 1 - PIDConstants.railkAllowedError;
+        return encoder.getPosition() > 1 - PIDConstants.ALLOWED_ERROR_RAIL;
       }
     }
 
@@ -150,8 +152,19 @@ public class RailSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (!isHoming & (frontLimit.get() | backLimit.get())) {
-      forceStopRail().schedule();
+
+    if (!isHoming && backLimit.get()) {
+      if (pid.getOutputMin() != 0) pid.setOutputRange(0, 1);
+      encoder.setPosition(0);
+    }
+
+    if (!isHoming && frontLimit.get()) {
+      if (pid.getOutputMax() != 0) pid.setOutputRange(-1, 0);
+      encoder.setPosition(1);
+    }
+
+    if (!frontLimit.get() && !backLimit.get()) {
+      if (!(pid.getOutputMax() == 1 && pid.getOutputMin() == -1)) pid.setOutputRange(-1, 1);
     }
   }
 

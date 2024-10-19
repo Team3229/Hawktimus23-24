@@ -5,13 +5,13 @@
 package frc.robot;
 
 import frc.robot.inputs.FlightStick;
-import frc.robot.sequences.GrabNote;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.RailSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.manip.ManipSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,11 +24,9 @@ public class RobotContainer {
   public FlightStick driveStick;
   public FlightStick manipStick;
 
-  private RailSubsystem rail;
   private DriveSubsystem drive;
   private LEDSubsystem leds;
-
-  private Command homeRail;
+  private ManipSubsystem manip;
 
   private SendableChooser<String> autoDropdown = new SendableChooser<>();
 
@@ -38,13 +36,9 @@ public class RobotContainer {
     driveStick = new FlightStick(0);
     manipStick = new FlightStick(1);
 
-    rail = new RailSubsystem();
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
     leds = new LEDSubsystem();
-
-    homeRail = rail.homeRail();
-
-    leds.setPattern(LEDSubsystem.Pattern.Rainbow);
+    manip = new ManipSubsystem(manipStick::a_Y);
 
     registerTelemetry();
 
@@ -54,25 +48,38 @@ public class RobotContainer {
 
   }
 
-  public void configureForTeleop() {
+  public void setupControls() {
 
-    driveStick.b_Trigger().onTrue(homeRail);
+    driveStick.b_10().onTrue(drive.zeroGyro());
 
-    driveStick.b_Hazard().onTrue(rail.forwardRail());
-    driveStick.b_4().onTrue(rail.backwardRail());
+    // driveStick.b_Trigger().onTrue(drive.pointTowards(driveStick::a_X, driveStick::a_Y, () -> 0));
+
+    manipStick.b_10().onTrue(manip.homeRail());
+
+    manipStick.b_8().onTrue(manip.railFront());
+    manipStick.b_7().onTrue(manip.railBack());
+
+    manipStick.b_3().onTrue(manip.readyShooterCommand());
+    manipStick.b_Trigger().onTrue(manip.shootCommand());
+
+    manipStick.b_4().onTrue(manip.grabCommand());
+
+    manip.initialHoming().schedule();
 
   }
 
-  public void configureForAuto() {
+  // Runs once when enabled in auto
+  public void setupAuto() {
 
     drive.generateAuto(autoDropdown.getSelected());
-    drive.executeAuto();
+    drive.executeAutoDrivePath();
 
   }
 
   private void registerTelemetry() {
-    SmartDashboard.putData(rail);
     SmartDashboard.putData(drive);
+    SmartDashboard.putData(manip);
+    SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
 }
