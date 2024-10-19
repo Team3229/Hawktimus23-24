@@ -47,6 +47,10 @@ public class LEDSubsystem extends SubsystemBase {
             @Override public boolean runsWhenDisabled() {
                 return true;
             }
+
+            @Override public String getName() {
+                return "LEDs";
+            }
         };
 
         out.addRequirements(this);

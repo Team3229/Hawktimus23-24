@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -50,7 +49,7 @@ public class ManipSubsystem extends SubsystemBase {
             arm.moveToAngle(Rotation2d.fromDegrees(kStowAngle)),
             rail.backwardRail()
 
-        );
+        ).withName("Grabbing...");
 
         return out;
     }
@@ -61,7 +60,7 @@ public class ManipSubsystem extends SubsystemBase {
                 arm.moveToAngle(Rotation2d.fromDegrees(kShootAngle)),
                 shooter.spinShooterTo(kShooterSpeed)
             )
-        );
+        ).withName("Spinning Up...");
     }
 
     public Command shootCommand() {
@@ -71,7 +70,7 @@ public class ManipSubsystem extends SubsystemBase {
                 shooter.slowShooter(),
                 arm.moveToAngle(Rotation2d.fromDegrees(kStowAngle))
             )
-        );
+        ).withName("Shoot!");
     }
 
     public Command ejectNote() {
@@ -83,14 +82,14 @@ public class ManipSubsystem extends SubsystemBase {
             @Override public void end(boolean interrupted) {
                 if (interrupted) intake.stop();shooter.slowShooter();
             }
-        };
+        }.withName("Ejecting Note...");
     }
 
     public Command stowCommand() {
         return new SequentialCommandGroup(
             arm.moveToAngle(Rotation2d.fromDegrees(kStowAngle)),
             rail.backwardRail()
-        );
+        ).withName("Stowing...");
     }
 
     public Command railBack() {
@@ -105,7 +104,7 @@ public class ManipSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
             arm.moveToAngle(Rotation2d.fromDegrees(0)),
             rail.homeRail()  
-        );
+        ).withName("Homing...");
     }
 
     public void sendSubsystemTelemetry() {

@@ -86,7 +86,7 @@ public class RobotContainer {
         manip.readyShooterCommand(),
         manip.shootCommand(),
         drive.taxi()
-    ).schedule();
+    ).withName("Auto Sequence").schedule();
 
   }
 

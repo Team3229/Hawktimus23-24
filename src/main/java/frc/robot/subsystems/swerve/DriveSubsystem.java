@@ -261,6 +261,8 @@ public class DriveSubsystem extends SubsystemBase {
             public boolean isFinished() {
                 return false;
             }
+
+            @Override public String getName() {return "Driving";}
         };
 
         out.addRequirements(this);

@@ -110,6 +110,8 @@ public class RailSubsystem extends SubsystemBase {
         }
 
         @Override public boolean isFinished() { return frontLimit.get(); }
+
+        @Override public String getName() {return "Homing Rail...";}
     };
 
     Command second = new Command() {
@@ -139,11 +141,11 @@ public class RailSubsystem extends SubsystemBase {
   }
 
   public Command forwardRail() {
-    return new RailMoveCommand(this, false);
+    return new RailMoveCommand(this, false).withName("Forwards");
   }
 
   public Command backwardRail() {
-    return new RailMoveCommand(this, true);
+    return new RailMoveCommand(this, true).withName("Backwards");
   }
 
   public Command forceStopRail() {
