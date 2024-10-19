@@ -38,7 +38,7 @@ public class RobotContainer {
 
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
     leds = new LEDSubsystem();
-    manip = new ManipSubsystem();
+    manip = new ManipSubsystem(manipStick::a_Y);
 
     registerTelemetry();
 
@@ -50,6 +50,10 @@ public class RobotContainer {
 
   public void setupControls() {
 
+    driveStick.b_10().onTrue(drive.zeroGyro());
+
+    // driveStick.b_Trigger().onTrue(drive.pointTowards(driveStick::a_X, driveStick::a_Y, () -> 0));
+
     manipStick.b_10().onTrue(manip.homeRail());
 
     manipStick.b_8().onTrue(manip.railFront());
@@ -60,10 +64,7 @@ public class RobotContainer {
 
     manipStick.b_4().onTrue(manip.grabCommand());
 
-    CommandScheduler.getInstance().schedule(
-      Commands.run(
-        () -> manip.manualArmControl(manipStick.a_Y()))
-    );
+    manip.initialHoming().schedule();
 
   }
 

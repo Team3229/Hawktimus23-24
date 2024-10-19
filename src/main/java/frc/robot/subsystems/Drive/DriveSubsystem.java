@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.constants.IDConstants;
@@ -254,7 +255,7 @@ public class DriveSubsystem extends SubsystemBase {
         return out;
     }
 
-    public Command pointTowards(Supplier<Double> x, Supplier<Double> y, Pose2d poi) {
+    public Command pointTowards(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
         Command out = new Command() {
 
             @Override public void execute() {
@@ -263,10 +264,7 @@ public class DriveSubsystem extends SubsystemBase {
                     -y.get() * kMaxSpeed,
                     rotController.calculate(
                         m_odometry.getEstimatedPosition().getRotation().getRadians(),
-                        poi.getTranslation()
-                            .minus(
-                                m_odometry.getEstimatedPosition().getTranslation()
-                            ).getAngle().getRadians()
+                        z.get()
                     ),
                     true,
                     1 / 50.0
@@ -280,6 +278,12 @@ public class DriveSubsystem extends SubsystemBase {
 
         out.addRequirements(this);
         return out;
+    }
+
+    public Command zeroGyro() {
+
+        return Commands.runOnce(m_gyro::zeroYaw);
+
     }
 
     /**

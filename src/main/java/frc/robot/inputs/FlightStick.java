@@ -7,13 +7,15 @@ public class FlightStick {
 
     protected CommandGenericHID controller;
 
+    private static final double kControllerDeadzone = 0.1;
+
     public FlightStick(int port) {
         controller = new CommandGenericHID(port);
     }
 
-    public double a_X() {return controller.getRawAxis(0);}
-    public double a_Y() {return controller.getRawAxis(1);}
-    public double a_Z() {return controller.getRawAxis(2);}
+    public double a_X() {return applyDeadzone(controller.getRawAxis(0));}
+    public double a_Y() {return applyDeadzone(controller.getRawAxis(1));}
+    public double a_Z() {return applyDeadzone(controller.getRawAxis(2));}
     public double a_Throttle() {return controller.getRawAxis(3);}
 
     public Trigger b_Trigger() {return controller.button(1);}
@@ -33,5 +35,9 @@ public class FlightStick {
     public Trigger p_Down() {return controller.povDown();}
     public Trigger p_Left() {return controller.povLeft();}
     public Trigger p_Right() {return controller.povRight();}
+
+    private static double applyDeadzone(double input) {
+        return (Math.abs(input) > kControllerDeadzone) ? input : 0;
+    }
 
 }

@@ -18,7 +18,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private SparkPIDController m_pidController;
 
     private final double kFreeSpeed = 4700;
-    private final double kVelTolerance = 10;
+    private final double kVelTolerance = 100;
+
+
+    private double currentSetpoint = 0;
 
     public ShooterSubsystem() {
 
@@ -43,9 +46,10 @@ public class ShooterSubsystem extends SubsystemBase {
         Command out = new Command() {
             @Override public void initialize() {
                 m_pidController.setReference(velocity, ControlType.kVelocity);
+                currentSetpoint = velocity;
             }
             @Override public boolean isFinished() {
-                return Math.abs(velocity - m_encoder.getVelocity()) < kVelTolerance;
+                return isReady();
             }
         };
 
@@ -60,11 +64,16 @@ public class ShooterSubsystem extends SubsystemBase {
         }, this);
     }
 
+    private boolean isReady() {
+        return Math.abs(currentSetpoint - m_encoder.getVelocity()) < kVelTolerance;
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
 
         builder.addDoubleProperty("Shooter RPM", m_encoder::getVelocity, null);
+        builder.addBooleanProperty("Ready to Shoot", this::isReady, null);
 
     }
 

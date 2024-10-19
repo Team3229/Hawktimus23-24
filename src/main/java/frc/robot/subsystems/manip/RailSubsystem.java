@@ -38,6 +38,8 @@ public class RailSubsystem extends SubsystemBase {
     encoder = motor.getEncoder();
     pid = motor.getPIDController();
 
+    motor.setSmartCurrentLimit(40);
+
     motor.setIdleMode(IdleMode.kCoast);
     motor.setClosedLoopRampRate(0.2);
 
@@ -53,6 +55,8 @@ public class RailSubsystem extends SubsystemBase {
     pid.setD(PIDConstants.D_RAIL);
     
     pid.setFeedbackDevice(encoder);
+
+    motor.burnFlash();
 
   }
 
@@ -151,10 +155,12 @@ public class RailSubsystem extends SubsystemBase {
 
     if (!isHoming && backLimit.get()) {
       if (pid.getOutputMin() != 0) pid.setOutputRange(0, 1);
+      encoder.setPosition(0);
     }
 
     if (!isHoming && frontLimit.get()) {
-      if (pid.getOutputMax() != 0) pid.setOutputRange(1, 0);
+      if (pid.getOutputMax() != 0) pid.setOutputRange(-1, 0);
+      encoder.setPosition(1);
     }
 
     if (!frontLimit.get() && !backLimit.get()) {

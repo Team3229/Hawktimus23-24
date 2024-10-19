@@ -26,14 +26,16 @@ public class PIDConstants {
     public static final double I_RAIL = 0;
     public static final double D_RAIL = 0;
 
-    public static final double ALLOWED_ERROR_RAIL = 0.05;
+    public static final double ALLOWED_ERROR_RAIL = 0.15;
 
     public static final double P_SHOOTER = 0.0004;
     public static final double I_SHOOTER = 0;
     public static final double D_SHOOTER = 0;
 
+    // public static final double P_ARM = 0.037;
     public static final double P_ARM = 0.037;
     public static final double I_ARM = 0;
-    public static final double D_ARM = 0;
+    public static final double D_ARM = 0.018;
+    public static final double FF_ARM = 0;
 
 }
