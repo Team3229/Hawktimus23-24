@@ -6,12 +6,11 @@ package frc.robot;
 
 import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.swerve.DriveSubsystem;
 import frc.robot.subsystems.manip.ManipSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,6 +24,7 @@ public class RobotContainer {
   public FlightStick manipStick;
 
   private DriveSubsystem drive;
+  @SuppressWarnings("unused")
   private LEDSubsystem leds;
   private ManipSubsystem manip;
 
