@@ -62,6 +62,7 @@ public class SwerveModule {
         m_drivePIDController = m_driveMotor.getPIDController();
         m_turningPIDController = m_turningMotor.getPIDController();
 
+        m_driveMotor.setSmartCurrentLimit(50);
         m_driveMotor.setInverted(inverted);
         m_turningMotor.setInverted(true);
         m_turningAbsoluteEncoder.getConfigurator().apply(new MagnetSensorConfigs().withSensorDirection(SensorDirectionValue.CounterClockwise_Positive));
