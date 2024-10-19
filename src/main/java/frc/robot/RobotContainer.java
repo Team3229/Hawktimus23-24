@@ -8,6 +8,7 @@ import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.swerve.DriveSubsystem;
 import frc.robot.subsystems.manip.ManipSubsystem;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -86,7 +87,9 @@ public class RobotContainer {
         manip.readyShooterCommand(),
         manip.shootCommand(),
         drive.taxi()
-    ).withName("Auto Sequence").schedule();
+    ).withName("Auto Sequence").onlyWhile(() -> {
+      return DriverStation.isAutonomousEnabled();
+    });
 
   }
 
