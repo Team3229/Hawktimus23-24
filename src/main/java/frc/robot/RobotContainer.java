@@ -65,7 +65,7 @@ public class RobotContainer {
 
     manipStick.b_4().onTrue(manip.grabCommand());
 
-    manip.initialHoming().schedule();
+    manipStick.b_Hazard().onTrue(manip.stowCommand());
 
   }
 
@@ -76,11 +76,11 @@ public class RobotContainer {
     // drive.executeAutoDrivePath();
 
     new SequentialCommandGroup(
-        manip.homeRail(),
+        manip.initialHoming(),
         manip.readyShooterCommand(),
         manip.shootCommand(),
         drive.taxi()
-    );
+    ).schedule();
 
   }
 

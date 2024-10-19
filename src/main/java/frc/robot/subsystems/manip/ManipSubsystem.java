@@ -73,6 +73,13 @@ public class ManipSubsystem extends SubsystemBase {
         );
     }
 
+    public Command stowCommand() {
+        return new SequentialCommandGroup(
+            arm.moveToAngle(Rotation2d.fromDegrees(kStowAngle)),
+            rail.backwardRail()
+        );
+    }
+
     public Command railBack() {
         return rail.backwardRail();
     }
