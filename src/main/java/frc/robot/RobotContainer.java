@@ -48,6 +48,8 @@ public class RobotContainer {
 
     SmartDashboard.putData(autoDropdown);
 
+    setupControls();
+
   }
 
   public void setupControls() {
@@ -70,8 +72,6 @@ public class RobotContainer {
 
     manipStick.p_Up().whileTrue(manip.ejectNote());
 
-    drive.zeroGyro().schedule();
-
   }
 
   // Runs once when enabled in auto
@@ -79,8 +79,6 @@ public class RobotContainer {
 
     // drive.generateAuto(autoDropdown.getSelected());
     // drive.executeAutoDrivePath();
-
-    drive.zeroGyro().schedule();
 
     new SequentialCommandGroup(
         manip.initialHoming(),
