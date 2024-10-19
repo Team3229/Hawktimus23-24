@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -71,6 +72,18 @@ public class ManipSubsystem extends SubsystemBase {
                 arm.moveToAngle(Rotation2d.fromDegrees(kStowAngle))
             )
         );
+    }
+
+    public Command ejectNote() {
+        return new Command() {
+            @Override public void initialize() {
+                intake.ejectNote();
+                shooter.ejectNote();
+            }
+            @Override public void end(boolean interrupted) {
+                if (interrupted) intake.stop();shooter.slowShooter();
+            }
+        };
     }
 
     public Command stowCommand() {

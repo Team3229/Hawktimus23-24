@@ -67,6 +67,8 @@ public class RobotContainer {
 
     manipStick.b_Hazard().onTrue(manip.stowCommand());
 
+    manipStick.p_Up().whileTrue(manip.ejectNote());
+
   }
 
   // Runs once when enabled in auto

@@ -64,6 +64,10 @@ public class ShooterSubsystem extends SubsystemBase {
         }, this);
     }
 
+    public void ejectNote() {
+        m_pidController.setReference(-0.3, ControlType.kDutyCycle);
+    }
+
     private boolean isReady() {
         return Math.abs(currentSetpoint - m_encoder.getVelocity()) < kVelTolerance;
     }

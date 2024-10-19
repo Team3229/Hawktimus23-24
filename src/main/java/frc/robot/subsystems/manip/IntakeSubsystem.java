@@ -67,6 +67,14 @@ public class IntakeSubsystem extends SubsystemBase {
         return out;
     }
 
+    public void ejectNote() {
+        intakeMotor.set(-1);
+    }
+
+    public void stop() {
+        intakeMotor.stopMotor();
+    }
+
     @Override public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
 
