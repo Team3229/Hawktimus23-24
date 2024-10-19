@@ -9,10 +9,10 @@
         "containers": [
           {
             "title": "Odometry",
-            "x": 512.0,
+            "x": 0.0,
             "y": 0.0,
-            "width": 512.0,
-            "height": 256.0,
+            "width": 704.0,
+            "height": 384.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Odometry",
@@ -27,23 +27,11 @@
             }
           },
           {
-            "title": "Camera",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 512.0,
-            "height": 384.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/limelight",
-              "period": 0.06
-            }
-          },
-          {
             "title": "Swerve",
-            "x": 1024.0,
+            "x": 1152.0,
             "y": 0.0,
-            "width": 512.0,
-            "height": 448.0,
+            "width": 384.0,
+            "height": 384.0,
             "type": "SwerveDrive",
             "properties": {
               "topic": "/SmartDashboard/DriveSubsystem",
@@ -54,9 +42,9 @@
           },
           {
             "title": "Shooter RPM",
-            "x": 768.0,
-            "y": 256.0,
-            "width": 256.0,
+            "x": 832.0,
+            "y": 0.0,
+            "width": 320.0,
             "height": 256.0,
             "type": "Radial Gauge",
             "properties": {
@@ -74,28 +62,55 @@
             }
           },
           {
-            "title": "Auto Selector",
+            "title": "Has Note",
             "x": 0.0,
             "y": 384.0,
-            "width": 384.0,
-            "height": 128.0,
-            "type": "ComboBox Chooser",
+            "width": 704.0,
+            "height": 192.0,
+            "type": "Boolean Box",
             "properties": {
-              "topic": "/SmartDashboard/SendableChooser[0]",
+              "topic": "/SmartDashboard/IntakeSubsystem/Has Note",
               "period": 0.06,
-              "sort_options": false
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           },
           {
-            "title": "FMSInfo",
-            "x": 1024.0,
-            "y": 448.0,
-            "width": 512.0,
-            "height": 128.0,
-            "type": "FMSInfo",
+            "title": "Ready to Shoot",
+            "x": 832.0,
+            "y": 384.0,
+            "width": 704.0,
+            "height": 192.0,
+            "type": "Boolean Box",
             "properties": {
-              "topic": "/FMSInfo",
-              "period": 0.06
+              "topic": "/SmartDashboard/ShooterSubsystem/Ready to Shoot",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Rail",
+            "x": 832.0,
+            "y": 256.0,
+            "width": 320.0,
+            "height": 128.0,
+            "type": "Number Bar",
+            "properties": {
+              "topic": "/SmartDashboard/RailSubsystem/position",
+              "period": 0.06,
+              "data_type": "double",
+              "min_value": 0.0,
+              "max_value": 1.0,
+              "divisions": 2,
+              "inverted": false,
+              "orientation": "horizontal"
             }
           }
         ]
