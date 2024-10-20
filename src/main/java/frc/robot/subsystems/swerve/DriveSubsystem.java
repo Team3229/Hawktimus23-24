@@ -32,8 +32,8 @@ import frc.robot.subsystems.VisionSubsystem;
 public class DriveSubsystem extends SubsystemBase {
 
     // Constants for max speed and angular velocity
-    public static final double kMaxSpeed = 3.0; // 3 meters per second
-    public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+    public static final double kMaxSpeed = 4.0; // 3 meters per second
+    public static final double kMaxAngularSpeed = 1.3 * Math.PI; // 1/2 rotation per second
 
     // Module Locations
     private final Translation2d m_frontLeftLocation = new Translation2d(-0.2778125, -0.2778125);
@@ -57,7 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
         m_kinematics,
-        m_gyro.getRotation2d().plus(Rotation2d.fromDegrees(180)),
+        m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -95,7 +95,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
 
         m_odometry.update(
-            m_gyro.getRotation2d(),
+            m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
             new SwerveModulePosition[] {
                 m_frontLeft.getPosition(),
                 m_frontRight.getPosition(),
@@ -150,6 +150,7 @@ public class DriveSubsystem extends SubsystemBase {
      * @param pathName The name of the path to follow.
      */
     public void generateAuto(String pathName) {
+        
         var trajectory = Choreo.getTrajectory(pathName);
 
         autoCommand = Choreo.choreoSwerveCommand(
@@ -165,15 +166,22 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command taxi() {
-        return new Command() {
+
+        Command out = new Command() {
             @Override public void execute() {
-                drive(0, 0.4, 0, true, 1/50);
+                drive(0, 1.5, 0, true, 1/50.0);
             }
 
             @Override public void end(boolean interrupted) {
-                if (interrupted) drive(0, 0, 0, true, 1/50);
+                drive(0, 0, 0, true, 1/50.0);
             }
-        };
+            
+        }.withTimeout(1.5);
+
+        out.addRequirements(this);
+
+        return out;
+
     }
 
     /**
@@ -233,7 +241,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         m_odometry.update(
-                m_gyro.getRotation2d().plus(Rotation2d.fromDegrees(180)),
+            m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
                 new SwerveModulePosition[] {
                         m_frontLeft.getPosition(),
                         m_frontRight.getPosition(),

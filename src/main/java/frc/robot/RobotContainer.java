@@ -8,9 +8,9 @@ import frc.robot.inputs.FlightStick;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.swerve.DriveSubsystem;
 import frc.robot.subsystems.manip.ManipSubsystem;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -27,10 +27,9 @@ public class RobotContainer {
 
   private DriveSubsystem drive;
   @SuppressWarnings("unused")
-  private LEDSubsystem leds;
   private ManipSubsystem manip;
 
-  private SendableChooser<String> autoDropdown = new SendableChooser<>();
+  private SendableChooser<Command> autoDropdown = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -39,12 +38,33 @@ public class RobotContainer {
     manipStick = new FlightStick(1);
 
     drive = new DriveSubsystem(driveStick::a_X, driveStick::a_Y, driveStick::a_Z);
-    leds = new LEDSubsystem();
     manip = new ManipSubsystem(manipStick::a_Y);
 
     registerTelemetry();
 
-    autoDropdown.addOption("", "");
+    autoDropdown.addOption("One Note & Taxi", new SequentialCommandGroup(
+      manip.initialHoming(),
+      manip.readyShooterCommand(),
+      manip.shootCommand(),
+      drive.taxi()
+    ));
+
+    autoDropdown.addOption("Taxi", new SequentialCommandGroup(
+      manip.initialHoming(),
+      manip.stowCommand(),
+      drive.taxi()
+    ));
+
+    autoDropdown.addOption("Shoot", new SequentialCommandGroup(
+      manip.initialHoming(),
+      manip.readyShooterCommand(),
+      manip.shootCommand()
+    ));
+
+    autoDropdown.addOption("None", new SequentialCommandGroup(
+      manip.initialHoming(),
+      manip.stowCommand()
+    ));
 
     SmartDashboard.putData(autoDropdown);
 
@@ -64,6 +84,7 @@ public class RobotContainer {
     manipStick.b_7().onTrue(manip.railBack());
 
     manipStick.b_3().onTrue(manip.readyShooterCommand());
+
     manipStick.b_Trigger().onTrue(manip.shootCommand());
 
     manipStick.b_4().onTrue(manip.grabCommand());
@@ -72,22 +93,14 @@ public class RobotContainer {
 
     manipStick.p_Up().whileTrue(manip.ejectNote());
 
+    // drive.zeroGyro().schedule();
+
   }
 
   // Runs once when enabled in auto
   public void setupAuto() {
 
-    // drive.generateAuto(autoDropdown.getSelected());
-    // drive.executeAutoDrivePath();
-
-    new SequentialCommandGroup(
-        manip.initialHoming(),
-        manip.readyShooterCommand(),
-        manip.shootCommand(),
-        drive.taxi()
-    ).withName("Auto Sequence").onlyWhile(() -> {
-      return DriverStation.isAutonomousEnabled();
-    });
+    autoDropdown.getSelected().schedule();
 
   }
 

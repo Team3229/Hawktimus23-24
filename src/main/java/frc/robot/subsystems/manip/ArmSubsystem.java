@@ -53,7 +53,8 @@ public class ArmSubsystem extends SubsystemBase {
         m_motor.setIdleMode(IdleMode.kBrake);
         m_motorFollower.setIdleMode(IdleMode.kBrake);
 
-        this.setDefaultCommand(manualArm(manualArm));
+        this.setDefaultCommand(manualArm(() -> {return 0.0;}));
+        // this.setDefaultCommand(manualArm(manualArm));
 
     }
 

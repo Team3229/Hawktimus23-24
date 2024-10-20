@@ -37,6 +37,22 @@ public class LEDSubsystem extends SubsystemBase {
         led.setData(ledBuffer);
     }
 
+    public Command hasNote() {
+         Command out = new Command() {
+            @Override public void execute() {
+                setAllLEDs(new Color(255, 0, 0));
+            }
+
+            @Override public String getName() {
+                return "ledNote";
+            }
+        };
+
+        out.addRequirements(this);
+
+        return out;
+    }
+
     private Command defaultRainbow() {
 
         Command out = new Command() {
@@ -68,6 +84,12 @@ public class LEDSubsystem extends SubsystemBase {
 
     private  void setLED(int index, Color color) {
         ledBuffer.setLED(index % ledBuffer.getLength(), new Color(color.red, color.blue, color.green));
+    }
+
+    private void setAllLEDs(Color color) {
+        for (int i = 0; i < ledBuffer.getLength(); i++) {
+            setLED(i, color);
+        }
     }
 
     public void setLEDRange(int first, int last, Color color) {

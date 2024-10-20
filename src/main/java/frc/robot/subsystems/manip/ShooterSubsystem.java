@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,8 +19,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private SparkPIDController m_pidController;
 
     private final double kFreeSpeed = 4700;
-    private final double kVelTolerance = 100;
-
+    private final double kVelTolerance = 150;
+    private final double kVelAutoTolerance = 100;
 
     private double currentSetpoint = 0;
 
@@ -68,8 +69,16 @@ public class ShooterSubsystem extends SubsystemBase {
         m_pidController.setReference(-0.3, ControlType.kDutyCycle);
     }
 
-    private boolean isReady() {
-        return Math.abs(currentSetpoint - m_encoder.getVelocity()) < kVelTolerance;
+    public boolean isReady() {
+        if (currentSetpoint == 0) {
+            return false;
+        }
+
+        if (DriverStation.isAutonomousEnabled()) {
+            return Math.abs(currentSetpoint - m_encoder.getVelocity()) < kVelAutoTolerance;
+        } else {
+            return Math.abs(currentSetpoint - m_encoder.getVelocity()) < kVelTolerance;
+        }
     }
 
     @Override

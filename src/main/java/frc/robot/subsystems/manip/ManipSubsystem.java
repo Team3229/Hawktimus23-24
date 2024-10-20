@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.LEDSubsystem;
 
 public class ManipSubsystem extends SubsystemBase {
 
@@ -17,6 +18,7 @@ public class ManipSubsystem extends SubsystemBase {
     private RailSubsystem rail;
     private IntakeSubsystem intake;
     private ShooterSubsystem shooter;
+    public LEDSubsystem leds;
 
     private static final double kShooterSpeed = 3500;
 
@@ -30,6 +32,9 @@ public class ManipSubsystem extends SubsystemBase {
         rail = new RailSubsystem();
         intake = new IntakeSubsystem();
         shooter = new ShooterSubsystem();
+        leds = new LEDSubsystem();
+
+        intake.note.whileTrue(leds.hasNote());
 
     }
 
@@ -57,6 +62,7 @@ public class ManipSubsystem extends SubsystemBase {
     public Command readyShooterCommand() {
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
+                rail.backwardRail(),
                 arm.moveToAngle(Rotation2d.fromDegrees(kShootAngle)),
                 shooter.spinShooterTo(kShooterSpeed)
             )
@@ -65,10 +71,10 @@ public class ManipSubsystem extends SubsystemBase {
 
     public Command shootCommand() {
         return new SequentialCommandGroup(
-            intake.feedNoteToShooter(),
+            intake.feedNoteToShooter(shooter::isReady),
             new ParallelCommandGroup(
                 shooter.slowShooter(),
-                arm.moveToAngle(Rotation2d.fromDegrees(kStowAngle))
+                stowCommand()
             )
         ).withName("Shoot!");
     }
@@ -80,7 +86,8 @@ public class ManipSubsystem extends SubsystemBase {
                 shooter.ejectNote();
             }
             @Override public void end(boolean interrupted) {
-                if (interrupted) intake.stop();shooter.slowShooter();
+                intake.stop();
+                shooter.slowShooter().initialize();
             }
         }.withName("Ejecting Note...");
     }
