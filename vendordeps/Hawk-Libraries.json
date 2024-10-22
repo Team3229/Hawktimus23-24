@@ -1,0 +1,18 @@
+{
+    "fileName": "Hawk-Libraries.json",
+    "name": "Hawk-Libraries",
+    "version": "0.0.1",
+    "frcYear": "2024",
+    "uuid": "18a68476-fe82-441d-88f7-c778f0c3414c",
+    "mavenUrls": [
+        "https://maven.pkg.github.com/team3229/Hawk-Libraries"
+    ],
+    "jsonUrl": "https://team3229.github.io/Hawk-Libraries/Hawk-Libraries.json",
+    "javaDependencies": [
+        {
+            "groupId": "com.hawktimusprime",
+            "artifactId": "hawk-libraries",
+            "version": "0.0.1"
+        }
+    ]
+}
