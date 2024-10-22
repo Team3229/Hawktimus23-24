@@ -1,5 +1,6 @@
 package frc.robot.subsystems.manip;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import com.revrobotics.CANSparkMax;

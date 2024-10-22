@@ -50,9 +50,6 @@ def includeDesktopSupport = false
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
 dependencies {
-
-    implementation fileTree(include: ['*.jar'], dir: 'vendordeps')
-
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 
@@ -72,7 +69,6 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
 }
 
 test {

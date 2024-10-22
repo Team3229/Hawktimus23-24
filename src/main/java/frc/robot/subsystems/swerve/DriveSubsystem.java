@@ -85,7 +85,6 @@ public class DriveSubsystem extends SubsystemBase {
      * @param z Supplier for the rotation speed
      */
     public DriveSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
-
         initializeSubsystem(x, y, z);
 
         rotController.enableContinuousInput(-Math.PI, Math.PI);
