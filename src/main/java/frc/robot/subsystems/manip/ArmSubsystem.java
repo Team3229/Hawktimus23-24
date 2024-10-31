@@ -18,6 +18,7 @@ import frc.robot.constants.PIDConstants;
 
 public class ArmSubsystem extends SubsystemBase {
     
+    private static final double kDontMove = 0.0;
     private CANSparkMax m_motor;
     private CANSparkMax m_motorFollower;
 
@@ -53,7 +54,7 @@ public class ArmSubsystem extends SubsystemBase {
         m_motor.setIdleMode(IdleMode.kBrake);
         m_motorFollower.setIdleMode(IdleMode.kBrake);
 
-        this.setDefaultCommand(manualArm(() -> {return 0.0;}));
+        this.setDefaultCommand(manualArm(() -> {return kDontMove;}));
         // this.setDefaultCommand(manualArm(manualArm));
 
     }
@@ -80,11 +81,11 @@ public class ArmSubsystem extends SubsystemBase {
     public Command manualArm(Supplier<Double> speed) {
         Command out = new Command() {
             @Override public void execute() {
-                if (currentSetpoint == null && speed.get() == 0) {
+                if (currentSetpoint == null && speed.get() == kDontMove) {
                     currentSetpoint = m_encoder.getPosition();
-                } else if (speed.get() != 0) {
+                } else if (speed.get() != kDontMove) {
                     currentSetpoint = null;
-                    m_pidController.setReference(speed.get() * 0.2, ControlType.kDutyCycle);
+                    m_pidController.setReference(speed.get(), ControlType.kDutyCycle);
                 } else if (currentSetpoint != null) {
                     m_pidController.setReference(currentSetpoint, ControlType.kPosition);
                 }

@@ -15,6 +15,11 @@ import frc.robot.constants.IDConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
     
+    private static final int kReverseMaxIntakeSpeed = -1;
+    private static final int kMaxIntakeSpeed = 1;
+    private static final double kIntakingSpeed = 0.8;
+    private static final int kCurrentLimit = 80;
+    private static final int kIrChannel = 0;
     private CANSparkMax intakeMotor;
     private DigitalInput irSensor;
 
@@ -23,11 +28,11 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakeSubsystem() {
 
         intakeMotor = new CANSparkMax(IDConstants.INTAKE_MOTOR, MotorType.kBrushless);
-        irSensor = new DigitalInput(0);
+        irSensor = new DigitalInput(kIrChannel);
 
         note = new Trigger(this::hasNote);
 
-        intakeMotor.setSmartCurrentLimit(80);
+        intakeMotor.setSmartCurrentLimit(kCurrentLimit);
 
         intakeMotor.burnFlash();
 
@@ -41,7 +46,7 @@ public class IntakeSubsystem extends SubsystemBase {
         Command out = new Command() {
             
             @Override public void initialize() {
-                if (!isFinished()) intakeMotor.set(0.8);
+                if (!isFinished()) intakeMotor.set(kIntakingSpeed);
             }
 
             @Override public void end(boolean interrupted) {
@@ -63,14 +68,14 @@ public class IntakeSubsystem extends SubsystemBase {
             @Override public void initialize() {
 
                 if (!isFinished() && isReady.get()) {
-                    intakeMotor.set(1);
+                    intakeMotor.set(kMaxIntakeSpeed);
                 }
             }
 
             @Override
             public void execute() {
                 if (isReady.get()) {
-                    intakeMotor.set(1);
+                    intakeMotor.set(kMaxIntakeSpeed);
                 }
             }
 
@@ -89,7 +94,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void ejectNote() {
-        intakeMotor.set(-1);
+        intakeMotor.set(kReverseMaxIntakeSpeed);
     }
 
     public void stop() {

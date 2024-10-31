@@ -14,6 +14,7 @@ import frc.robot.subsystems.LEDSubsystem;
 
 public class ManipSubsystem extends SubsystemBase {
 
+    private static final int kHomingAngle = 0;
     private ArmSubsystem arm;
     private RailSubsystem rail;
     private IntakeSubsystem intake;
@@ -109,7 +110,7 @@ public class ManipSubsystem extends SubsystemBase {
 
     public Command initialHoming() {
         return new SequentialCommandGroup(
-            arm.moveToAngle(Rotation2d.fromDegrees(0)),
+            arm.moveToAngle(Rotation2d.fromDegrees(kHomingAngle)),
             rail.homeRail()  
         ).withName("Homing...");
     }
