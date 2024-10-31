@@ -20,7 +20,7 @@ public class IDConstants {
     public static final int BL_ABS = 11;
     public static final int BR_ABS = 2;
     
-    public static final int OUTTAKE_MOTOR = 9;
+    public static final int SHOOTER_MOTOR = 9;
     public static final int INTAKE_MOTOR = 8;
 
     public static final int ARM_M1 = 16;
