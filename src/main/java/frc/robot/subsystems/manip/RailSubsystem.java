@@ -21,6 +21,7 @@ import frc.robot.constants.IDConstants;
 
 public class RailSubsystem extends SubsystemBase {
 
+  private static final int kRailCurrentLimit = 40;
   private CANSparkMax motor;
   private RelativeEncoder encoder;
   private SparkPIDController pid;
@@ -38,7 +39,7 @@ public class RailSubsystem extends SubsystemBase {
     encoder = motor.getEncoder();
     pid = motor.getPIDController();
 
-    motor.setSmartCurrentLimit(40);
+    motor.setSmartCurrentLimit(kRailCurrentLimit);
 
     motor.setIdleMode(IdleMode.kCoast);
     motor.setClosedLoopRampRate(0.2);

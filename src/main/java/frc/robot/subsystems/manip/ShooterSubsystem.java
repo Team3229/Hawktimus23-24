@@ -11,9 +11,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.PIDConstants;
+import frc.robot.constants.IDConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
+    private static final int kRailFront = 0;
+    private static final int kMaxPIDOutput = 1;
+    private static final int kMinPIDOutput = 0;
     private CANSparkMax m_motor;
     private RelativeEncoder m_encoder;
     private SparkPIDController m_pidController;
@@ -26,7 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem() {
 
-        m_motor = new CANSparkMax(9, MotorType.kBrushless);
+        m_motor = new CANSparkMax(IDConstants.OUTTAKE_MOTOR, MotorType.kBrushless);
 
         m_motor.restoreFactoryDefaults(true);
 
@@ -34,12 +39,12 @@ public class ShooterSubsystem extends SubsystemBase {
         m_encoder = m_motor.getEncoder();
         m_pidController = m_motor.getPIDController();
 
-        m_pidController.setP(0.0004);
+        m_pidController.setP(PIDConstants.P_SHOOTER);
         m_pidController.setI(0);
         m_pidController.setD(0);
         m_pidController.setFF(1 / kFreeSpeed);
 
-        m_pidController.setOutputRange(0, 1);
+        m_pidController.setOutputRange(kMinPIDOutput, kMaxPIDOutput);
 
     }
 
@@ -70,7 +75,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean isReady() {
-        if (currentSetpoint == 0) {
+        if (currentSetpoint == kRailFront) {
             return false;
         }
 
