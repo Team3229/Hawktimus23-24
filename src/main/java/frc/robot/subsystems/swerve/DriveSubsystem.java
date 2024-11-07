@@ -30,22 +30,31 @@ import frc.robot.subsystems.VisionSubsystem;
 
 /** Represents a swerve drive style drivetrain. */
 public class DriveSubsystem extends SubsystemBase {
-
+    /**In rotations */
+    private static final double kFrontLeftAngleOffset = -0.103759765625;
+    /**In rotations */
+    private static final double kFrontRightAngleOffset = 0.201904296875;
+    /**In rotations */
+    private static final double kBackLeftAngleOffset = 0.43701171875;
+    /**In rotations */
+    private static final double kBackRightAngleOffset = -0.3232421875;
+    /**In meters */
+    private static final double kSwerveOffset = 0.2778125;
     // Constants for max speed and angular velocity
     public static final double kMaxSpeed = 4.0; // 3 meters per second
     public static final double kMaxAngularSpeed = 1.3 * Math.PI; // 1/2 rotation per second
 
     // Module Locations
-    private final Translation2d m_frontLeftLocation = new Translation2d(-0.2778125, -0.2778125);
-    private final Translation2d m_frontRightLocation = new Translation2d(-0.2778125, 0.2778125);
-    private final Translation2d m_backLeftLocation = new Translation2d(0.2778125, -0.2778125);
-    private final Translation2d m_backRightLocation = new Translation2d(0.2778125, 0.2778125);
+    private final Translation2d m_frontLeftLocation = new Translation2d(-kSwerveOffset, -kSwerveOffset);
+    private final Translation2d m_frontRightLocation = new Translation2d(-kSwerveOffset, kSwerveOffset);
+    private final Translation2d m_backLeftLocation = new Translation2d(kSwerveOffset, -kSwerveOffset);
+    private final Translation2d m_backRightLocation = new Translation2d(kSwerveOffset, kSwerveOffset);
 
     // Swerve Modules
-    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true, -0.103759765625);
-    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, true, 0.201904296875);
-    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true, 0.43701171875);
-    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true, -0.3232421875);
+    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true, kFrontLeftAngleOffset);
+    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, true, kFrontRightAngleOffset);
+    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true, kBackLeftAngleOffset);
+    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true, kBackRightAngleOffset);
 
     // Sensors
     private final AHRS m_gyro = new AHRS(Port.kMXP);
