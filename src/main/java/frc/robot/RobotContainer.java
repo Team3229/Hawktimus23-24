@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.inputs.FlightStick;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.swerve.DriveSubsystem;
 import frc.robot.subsystems.manip.ManipSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -76,11 +75,14 @@ public class RobotContainer {
 
     driveStick.b_10().onTrue(drive.zeroGyro());
 
-    // driveStick.b_Trigger().onTrue(drive.pointTowards(driveStick::a_X, driveStick::a_Y, () -> 0));
+    driveStick.b_Hazard().onTrue(drive.pointCommand());
+
+    // driveStick.b_Trigger().onTrue(drive.pointTowards(driveStick::a_X, driveStick::a_Y, () -> 0.0));
 
     manipStick.b_10().onTrue(manip.homeRail());
 
     manipStick.b_8().onTrue(manip.railFront());
+
     manipStick.b_7().onTrue(manip.railBack());
 
     manipStick.b_3().onTrue(manip.readyShooterCommand());

@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.PoseEstimate;
 import frc.robot.constants.IDConstants;
 import frc.robot.constants.PIDConstants;
@@ -42,35 +43,40 @@ public class DriveSubsystem extends SubsystemBase {
     private final Translation2d m_backRightLocation = new Translation2d(0.2778125, 0.2778125);
 
     // Swerve Modules
-    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE, IDConstants.FL_ABS, true, -0.103759765625);
-    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE, IDConstants.FR_ABS, true, 0.201904296875);
-    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE, IDConstants.BL_ABS, true, 0.43701171875);
-    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE, IDConstants.BR_ABS, true, -0.3232421875);
+    private final SwerveModule m_frontLeft = new SwerveModule(IDConstants.FL_DRIVE, IDConstants.FL_ANGLE,
+            IDConstants.FL_ABS, true, -0.103759765625);
+    private final SwerveModule m_frontRight = new SwerveModule(IDConstants.FR_DRIVE, IDConstants.FR_ANGLE,
+            IDConstants.FR_ABS, true, 0.201904296875);
+    private final SwerveModule m_backLeft = new SwerveModule(IDConstants.BL_DRIVE, IDConstants.BL_ANGLE,
+            IDConstants.BL_ABS, true, 0.43701171875);
+    private final SwerveModule m_backRight = new SwerveModule(IDConstants.BR_DRIVE, IDConstants.BR_ANGLE,
+            IDConstants.BR_ABS, true, -0.3232421875);
 
     // Sensors
     private final AHRS m_gyro = new AHRS(Port.kMXP);
 
     // Swerve Drive Components
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
-        m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
-    );
+            m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
     private final SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
-        m_kinematics,
-        m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_backLeft.getPosition(),
-            m_backRight.getPosition()
-        },
-        new Pose2d()
-    );
+            m_kinematics,
+            m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
+            new SwerveModulePosition[] {
+                    m_frontLeft.getPosition(),
+                    m_frontRight.getPosition(),
+                    m_backLeft.getPosition(),
+                    m_backRight.getPosition()
+            },
+            new Pose2d());
 
     // PID Controllers for Auto Mode
-    private final PIDController xController = new PIDController(PIDConstants.P_TRANS, PIDConstants.I_TRANS, PIDConstants.D_TRANS);
-    private final PIDController yController = new PIDController(PIDConstants.P_TRANS, PIDConstants.I_TRANS, PIDConstants.D_TRANS);
-    private final PIDController rotController = new PIDController(PIDConstants.P_ROT, PIDConstants.I_ROT, PIDConstants.D_ROT);
+    private final PIDController xController = new PIDController(PIDConstants.P_TRANS, PIDConstants.I_TRANS,
+            PIDConstants.D_TRANS);
+    private final PIDController yController = new PIDController(PIDConstants.P_TRANS, PIDConstants.I_TRANS,
+            PIDConstants.D_TRANS);
+    private final PIDController rotController = new PIDController(PIDConstants.P_ROT, PIDConstants.I_ROT,
+            PIDConstants.D_ROT);
 
     private Alliance alliance;
     private Command autoCommand;
@@ -95,30 +101,26 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
 
         m_odometry.update(
-            m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
-            new SwerveModulePosition[] {
-                m_frontLeft.getPosition(),
-                m_frontRight.getPosition(),
-                m_backLeft.getPosition(),
-                m_backRight.getPosition()
-            }
-        );
+                m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
+                new SwerveModulePosition[] {
+                        m_frontLeft.getPosition(),
+                        m_frontRight.getPosition(),
+                        m_backLeft.getPosition(),
+                        m_backRight.getPosition()
+                });
 
         PoseEstimate mt2 = VisionSubsystem.getMT2Pose(
-            m_odometry.getEstimatedPosition().getRotation(),
-            m_gyro.getRate()
-        );
+                m_odometry.getEstimatedPosition().getRotation(),
+                m_gyro.getRate());
 
         if (mt2 != null) {
             m_odometry.addVisionMeasurement(
-                new Pose2d(
-                    mt2.pose.getX(),
-                    mt2.pose.getY(),
-                    mt2.pose.getRotation()
-                ),
-                mt2.timestampSeconds,
-                VecBuilder.fill(0.7, 0.7, 9999999)
-            );
+                    new Pose2d(
+                            mt2.pose.getX(),
+                            mt2.pose.getY(),
+                            mt2.pose.getRotation()),
+                    mt2.timestampSeconds,
+                    VecBuilder.fill(0.7, 0.7, 9999999));
         }
 
         field.setRobotPose(m_odometry.getEstimatedPosition());
@@ -126,21 +128,21 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     /**
-     * Initializes the subsystem, including resetting the gyro and setting the default drive command.
+     * Initializes the subsystem, including resetting the gyro and setting the
+     * default drive command.
      */
     private void initializeSubsystem(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
         // Creating a new thread so the gyro won't block the robot resetting.
-        new Thread(()->{
-            try{
+        new Thread(() -> {
+            try {
                 // Team 6814's on programming swerve drive suggested sleeping.
                 Thread.sleep(1000);
                 m_gyro.reset();
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("Expection Resetting Gyro");
             }
         }).start();
-        
+
         this.setDefaultCommand(driveCommand(x, y, z));
     }
 
@@ -150,7 +152,7 @@ public class DriveSubsystem extends SubsystemBase {
      * @param pathName The name of the path to follow.
      */
     public void generateAuto(String pathName) {
-        
+
         var trajectory = Choreo.getTrajectory(pathName);
 
         autoCommand = Choreo.choreoSwerveCommand(
@@ -161,21 +163,22 @@ public class DriveSubsystem extends SubsystemBase {
                 rotController,
                 this::drive,
                 this::isRedAlliance,
-                this
-        );
+                this);
     }
 
     public Command taxi() {
 
         Command out = new Command() {
-            @Override public void execute() {
-                drive(0, 1.5, 0, true, 1/50.0);
+            @Override
+            public void execute() {
+                drive(0, 1.5, 0, true, 1 / 50.0);
             }
 
-            @Override public void end(boolean interrupted) {
-                drive(0, 0, 0, true, 1/50.0);
+            @Override
+            public void end(boolean interrupted) {
+                drive(0, 0, 0, true, 1 / 50.0);
             }
-            
+
         }.withTimeout(1.5);
 
         out.addRequirements(this);
@@ -241,7 +244,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void updateOdometry() {
         m_odometry.update(
-            m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
+                m_gyro.getRotation2d().plus(Rotation2d.fromDegrees((isRedAlliance()) ? 0 : 180)),
                 new SwerveModulePosition[] {
                         m_frontLeft.getPosition(),
                         m_frontRight.getPosition(),
@@ -270,7 +273,10 @@ public class DriveSubsystem extends SubsystemBase {
                 return false;
             }
 
-            @Override public String getName() {return "Driving";}
+            @Override
+            public String getName() {
+                return "Driving";
+            }
         };
 
         out.addRequirements(this);
@@ -280,20 +286,20 @@ public class DriveSubsystem extends SubsystemBase {
     public Command pointTowards(Supplier<Double> x, Supplier<Double> y, Supplier<Double> z) {
         Command out = new Command() {
 
-            @Override public void execute() {
+            @Override
+            public void execute() {
                 drive(
-                    -x.get() * kMaxSpeed,
-                    -y.get() * kMaxSpeed,
-                    rotController.calculate(
-                        m_odometry.getEstimatedPosition().getRotation().getRadians(),
-                        z.get()
-                    ),
-                    true,
-                    1 / 50.0
-                );
+                        -x.get() * kMaxSpeed,
+                        -y.get() * kMaxSpeed,
+                        rotController.calculate(
+                                m_odometry.getEstimatedPosition().getRotation().getRadians(),
+                                z.get()),
+                        true,
+                        1 / 50.0);
             }
 
-            @Override public boolean isFinished() {
+            @Override
+            public boolean isFinished() {
                 return rotController.atSetpoint();
             }
         };
@@ -308,31 +314,98 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
 
+    // simple proportional turning control with Limelight.
+    // "proportional control" is a control algorithm in which the output is
+    // proportional to the error.
+    // in this case, we are going to return an angular velocity that is proportional
+    // to the
+    // "tx" value from the Limelight.
+    double limelight_aim_proportional() {
+        // kP (constant of proportionality)
+        // this is a hand-tuned number that determines the aggressiveness of our
+        // proportional control loop
+        // if it is too high, the robot will oscillate around.
+        // if it is too low, the robot will never reach its target
+        // if the robot never turns in the correct direction, kP should be inverted.
+        double kP = .035;
+
+        // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the
+        // rightmost edge of
+        // your limelight 3 feed, tx should return roughly 31 degrees.
+        double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
+
+        // convert to radians per second for our drive method
+        targetingAngularVelocity *= kMaxAngularSpeed;
+
+        // invert since tx is positive when the target is to the right of the crosshair
+        targetingAngularVelocity *= -1.0;
+
+        return targetingAngularVelocity;
+    }
+
+    // simple proportional ranging control with Limelight's "ty" value
+    // this works best if your Limelight's mount height and target mount height are
+    // different.
+    // if your limelight and target are mounted at the same or similar heights, use
+    // "ta" (area) for target ranging rather than "ty"
+    double limelight_range_proportional() {
+        double kP = .1;
+        double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
+        targetingForwardSpeed *= kMaxSpeed;
+        targetingForwardSpeed *= -1.0;
+        return targetingForwardSpeed;
+    }
+
+    public Command pointCommand() {
+
+        Command out = new Command() {
+
+            @Override
+            public void execute() {
+                drive(
+                        limelight_range_proportional(),
+                        0,
+                        limelight_aim_proportional(),
+                        false,
+                        1 / 50.0);
+            }
+
+            @Override
+            public boolean isFinished() {
+                return rotController.atSetpoint();
+            }
+        };
+
+        out.addRequirements(this);
+        return out;
+
+    }
+
     /**
      * Initializes SmartDashboard values for Swerve Module angles.
      */
     @Override
     public void initSendable(SendableBuilder builder) {
-		
+
         super.initSendable(builder);
 
         SmartDashboard.putData("Odometry", field);
 
-		builder.setSmartDashboardType("SwerveDrive");
+        builder.setSmartDashboardType("SwerveDrive");
 
-		builder.addDoubleProperty("Front Left Angle", () -> m_frontLeft.getState().angle.getRadians(), null);
-		builder.addDoubleProperty("Front Left Velocity", () -> m_frontLeft.getState().speedMetersPerSecond, null);
+        builder.addDoubleProperty("Front Left Angle", () -> m_frontLeft.getState().angle.getRadians(), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> m_frontLeft.getState().speedMetersPerSecond, null);
 
-		builder.addDoubleProperty("Front Right Angle", () -> m_frontRight.getState().angle.getRadians(), null);
-		builder.addDoubleProperty("Front Right Velocity", () -> m_frontRight.getState().speedMetersPerSecond, null);
+        builder.addDoubleProperty("Front Right Angle", () -> m_frontRight.getState().angle.getRadians(), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> m_frontRight.getState().speedMetersPerSecond, null);
 
-		builder.addDoubleProperty("Back Left Angle", () -> m_backLeft.getState().angle.getRadians(), null);
-		builder.addDoubleProperty("Back Left Velocity", () -> m_backLeft.getState().speedMetersPerSecond, null);
+        builder.addDoubleProperty("Back Left Angle", () -> m_backLeft.getState().angle.getRadians(), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> m_backLeft.getState().speedMetersPerSecond, null);
 
-		builder.addDoubleProperty("Back Right Angle", () -> m_backRight.getState().angle.getRadians(), null);
-		builder.addDoubleProperty("Back Right Velocity", () -> m_backRight.getState().speedMetersPerSecond, null);
+        builder.addDoubleProperty("Back Right Angle", () -> m_backRight.getState().angle.getRadians(), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> m_backRight.getState().speedMetersPerSecond, null);
 
-		builder.addDoubleProperty("Robot Angle", () -> m_gyro.getRotation2d().getRadians(), null);
+        builder.addDoubleProperty("Robot Angle", () -> m_gyro.getRotation2d().getRadians(), null);
 
         builder.addDoubleProperty("Front Left ABS", () -> m_frontLeft.getAbsoluteState().angle.getDegrees(), null);
         builder.addDoubleProperty("Front Right ABS", () -> m_frontRight.getAbsoluteState().angle.getDegrees(), null);
