@@ -1,5 +1,6 @@
 package frc.robot.inputs;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -37,9 +38,7 @@ public class FlightStick {
     public Trigger p_Right() {return controller.povRight();}
 
     private static double applyDeadzone(double input) {
-        return (Math.abs(input) > kControllerDeadzone) ? 
-        Math.pow(input,3)
-        : 0;
+        return Math.pow(MathUtil.applyDeadband(input, kControllerDeadzone), 3);
     }
 
 }
