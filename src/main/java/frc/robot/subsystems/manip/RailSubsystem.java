@@ -43,6 +43,7 @@ public class RailSubsystem extends SubsystemBase {
 
     motor.setIdleMode(IdleMode.kCoast);
     motor.setClosedLoopRampRate(0.2);
+    motor.setIdleMode(IdleMode.kBrake);
 
     encoder.setPositionConversionFactor((double) 1/(80));
 
