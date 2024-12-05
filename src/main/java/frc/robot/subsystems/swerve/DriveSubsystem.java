@@ -335,7 +335,7 @@ public class DriveSubsystem extends SubsystemBase {
         double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
 
         // convert to radians per second for our drive method
-        targetingAngularVelocity *= kMaxAngularSpeed;
+        // targetingAngularVelocity *= kMaxAngularSpeed;
 
         // invert since tx is positive when the target is to the right of the crosshair
         targetingAngularVelocity *= -1.0;
@@ -351,15 +351,13 @@ public class DriveSubsystem extends SubsystemBase {
     double limelight_range_proportional() {
         double kP = .1;
         double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-        targetingForwardSpeed *= kMaxSpeed;
+        // targetingForwardSpeed *= kMaxSpeed;
         targetingForwardSpeed *= -1.0;
         return targetingForwardSpeed;
     }
 
     public Command pointCommand() {
-
         Command out = new Command() {
-
             @Override
             public void execute() {
                 drive(
@@ -369,16 +367,10 @@ public class DriveSubsystem extends SubsystemBase {
                         false,
                         1 / 50.0);
             }
-
-            @Override
-            public boolean isFinished() {
-                return rotController.atSetpoint();
-            }
-        };
+        }.withName("Point Toward Target");
 
         out.addRequirements(this);
         return out;
-
     }
 
     /**

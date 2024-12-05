@@ -75,7 +75,7 @@ public class RobotContainer {
 
     driveStick.b_10().onTrue(drive.zeroGyro());
 
-    driveStick.b_Hazard().onTrue(drive.pointCommand());
+    driveStick.b_Hazard().whileTrue(drive.pointCommand());
 
     // driveStick.b_Trigger().onTrue(drive.pointTowards(driveStick::a_X, driveStick::a_Y, () -> 0.0));
 
