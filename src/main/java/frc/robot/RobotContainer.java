@@ -78,20 +78,20 @@ public class RobotContainer {
 
     // driveStick.b_Trigger().onTrue(drive.pointTowards(driveStick::a_X, driveStick::a_Y, () -> 0));
 
-    manipStick.b_10().onTrue(manip.homeRail());
+    driveStick.b_9().onTrue(manip.homeRail());
 
-    manipStick.b_8().onTrue(manip.railFront());
-    manipStick.b_7().onTrue(manip.railBack());
+    driveStick.b_8().onTrue(manip.railFront());
+    driveStick.b_7().onTrue(manip.railBack());
 
-    manipStick.b_3().onTrue(manip.readyShooterCommand());
+    driveStick.b_3().onTrue(manip.readyShooterCommand());
 
-    manipStick.b_Trigger().onTrue(manip.shootCommand());
+    driveStick.b_Trigger().onTrue(manip.shootCommand());
 
-    manipStick.b_4().onTrue(manip.grabCommand());
+    driveStick.b_4().onTrue(manip.grabCommand());
 
-    manipStick.b_Hazard().onTrue(manip.stowCommand());
+    driveStick.b_Hazard().onTrue(manip.stowCommand());
 
-    manipStick.p_Up().whileTrue(manip.ejectNote());
+    driveStick.p_Up().whileTrue(manip.ejectNote());
 
     // drive.zeroGyro().schedule();
 

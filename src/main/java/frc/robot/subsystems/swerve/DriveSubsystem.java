@@ -32,7 +32,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class DriveSubsystem extends SubsystemBase {
 
     // Constants for max speed and angular velocity
-    public static final double kMaxSpeed = 4.0; // 3 meters per second
+    public static final double kMaxSpeed = 2.0; // 1.5 meters per second
     public static final double kMaxAngularSpeed = 1.3 * Math.PI; // 1/2 rotation per second
 
     // Module Locations
